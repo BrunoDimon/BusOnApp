@@ -1,14 +1,10 @@
-import { Avatar, Box, Card, CopyIcon, Divider, Heading, Input, InputField, InputIcon } from "@gluestack-ui/themed"
-import { Text } from "@gluestack-ui/themed"
+import { Avatar, Box, Card, CopyIcon, Divider, Heading, Input, InputField, InputIcon, ScrollView, Pressable, InputSlot, Text } from "@gluestack-ui/themed"
 import QRCode from "react-native-qrcode-svg"
 import Label from "../components/Label"
-import { InputSlot } from "@gluestack-ui/themed"
 import * as Clipboard from 'expo-clipboard';
 import { useState } from "react"
 import { Circle } from "react-native-svg"
 import DaysCircle from "../components/DaysCircle"
-import { ScrollView } from "@gluestack-ui/themed"
-import { Pressable } from "@gluestack-ui/themed"
 
 export default Mensalidade = () => {
     const [chavePixGerada, setChavePixGerada] = useState('chave.gerada.teste.1234.banco.bb');

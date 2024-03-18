@@ -6,7 +6,7 @@ import { Center } from '@gluestack-ui/themed';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import TabBarIcon from './TabBarIcon';
 import { useSelector } from 'react-redux';
-import HistoricoPagamento from '../../screens/HistoricoPagamento';
+import HistoricoPagamento from '../../screens/HistoricoPagamento/HistoricoPagamento';
 import Mensalidade from '../../screens/Mensalidade';
 import MeusDados from '../../screens/MeusDados';
 
