@@ -15,9 +15,9 @@ export default function AppContainer() {
     const theme = useSelector(state => state.theme.theme);
     return (
         <GluestackUIProvider colorMode={theme} config={config}  >
-            <StatusBar backgroundColor={'#ffffff'} barStyle='dark-content' />
+            <StatusBar backgroundColor={theme == 'dark' ? '#000000' : '#ffffff'} barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} />
             <NavigationContainer >
-                {isAuthenticated ? <BottomTabNavigation /> : <Login />}
+                {isAuthenticated ? <DrawerNavigation /> : <Login />}
             </NavigationContainer>
         </GluestackUIProvider >
     );

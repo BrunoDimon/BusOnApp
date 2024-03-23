@@ -1,30 +1,35 @@
-import { Box, Text } from "@gluestack-ui/themed";
+import { Box, Pressable, Text } from "@gluestack-ui/themed";
 import { Center } from "@gluestack-ui/themed";
 import { StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-export default TabBarIcon = ({ allRoutes, currentRoute, focused }) => {
-    const route = allRoutes.find(route => route.name === currentRoute.name);
+export default TabBarIcon = ({ route, focused, onPress, index }) => {
     if (route.isMainRoute) {
         return (
-            <Center overflow={'hidden'} w={135} h={80}>
-                {focused && <Box position='absolute' top={0} w={'$full'} bgColor='$yellow400' h={5}></Box>}
-                <Center w={130} h={130} borderRadius={80} bgColor={'$yellow400'} style={{ ...styles.shadow }}>
-                    <MaterialCommunityIcons name={route.iconName} size={40} color={'white'} />
-                    <Text style={{ color: 'white', fontSize: 12, fontWeight: '700' }} allowFontScaling={false} adjustsFontSizeToFit={true} >{route.name}</Text>
+            <Pressable flex={1} onPress={onPress} alignItems="center">
+                <Center overflow={'hidden'} w={135} h={80}>
+                    <Center w={130} h={130} borderRadius={80} bgColor={'$yellow400'} style={{ ...styles.shadow }}>
+                        <MaterialCommunityIcons name={route.iconName} size={40} color={'white'} />
+                        <Text style={{ color: 'white', fontSize: 12, fontWeight: '700' }} allowFontScaling={false} adjustsFontSizeToFit={true} >{route.label}</Text>
+                    </Center>
                 </Center>
-            </Center>
+                {focused && <Box position='absolute' bottom={0} w={'$full'} bgColor='$yellow400' h={5}></Box>}
+            </Pressable>
+
         )
     } else {
         return (
-            <Center overflow={'hidden'} h={80} w={'$full'}>
-                {focused && <Box position='absolute' top={0} w={'$full'} bgColor='$yellow400' h={5}></Box>}
-                <Center>
-                    <MaterialCommunityIcons name={route.iconName} size={36} color={'#FFD34C'} />
-                    <Text color={'#525252'} style={{ fontSize: 12, fontWeight: '700' }} allowFontScaling={false} >{route.name}</Text>
+            <Pressable flex={1} onPress={onPress} alignItems="center">
+                <Center overflow={'hidden'} h={80} w={'$full'}>
+                    <Center>
+                        <MaterialCommunityIcons name={route.iconName} size={36} color={'#FFD34C'} />
+                        <Text $dark-color="$white" $light-color={'#525252'} style={{ fontSize: 12, fontWeight: '700' }} allowFontScaling={false} >{route.label}</Text>
+                    </Center>
                 </Center>
-            </Center>
+                {focused && <Box position='absolute' bottom={0} w={'$full'} bgColor='$yellow400' h={5}></Box>}
+            </Pressable>
+
         )
     }
 }

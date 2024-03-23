@@ -5,7 +5,7 @@ import SelectInputValues from "../components/SelectInput"
 
 export default MeusDados = () => {
     return (
-        <Box flex={1} bg={'$white'} mx={20} mb={15} borderRadius={'$3xl'}>
+        <Box flex={1} bg={'$white'} mx={'$4'} mt={'$2'} mb={'$4'} borderRadius={'$3xl'}>
             <ScrollView flex={1} >
                 <Box justifyContent="flex-start" alignItems="center" gap={15} p={15}>
                     <Box w={'$full'}>

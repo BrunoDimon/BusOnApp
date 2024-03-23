@@ -3,7 +3,7 @@ import { Center, Button, Heading, Box, Text, Image, ButtonText, Toast, VStack, T
 import { useColorMode } from "@gluestack-ui/themed"
 import Label from '../components/Label';
 import { EyeIcon, EyeOffIcon } from 'lucide-react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../store/authSlice';
 import { Path } from 'react-native-svg';
 
@@ -13,7 +13,9 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false)
     const colorMode = useColorMode();
-    const logo = colorMode === "light" ? require('../../assets/busOnFontePreta.png') : require('../../assets/busOnFonteBranca.png');
+    const theme = useSelector(state => state.theme.theme);
+
+    const logo = theme === "light" ? require('../../assets/busOnFontePreta.png') : require('../../assets/busOnFonteBranca.png');
     const draw = require('../../assets/school-bus.png');
     const dispatch = useDispatch();
 
@@ -23,8 +25,8 @@ export default function Login() {
                 nome: 'Douglas',
                 sobrenome: 'Kuerten',
                 //acesso: 'ACESSO_ADMIN'
-                //acesso: 'ACESSO_GESTAO'
-                acesso: 'ACESSO_ALUNO'
+                acesso: 'ACESSO_GESTAO'
+                //acesso: 'ACESSO_ALUNO'
             },
             token: 'exampleToken',
             refreshToken: 'exampleRefreshToken'
