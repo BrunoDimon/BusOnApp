@@ -1,7 +1,8 @@
-import { Avatar, Box, Card, CopyIcon, Divider, Heading, Input, InputField, InputIcon, ScrollView, Pressable, InputSlot, Text } from "@gluestack-ui/themed"
+import { Avatar, Box, Button, ButtonIcon, ButtonText, Card, CopyIcon, Divider, Heading, Input, InputField, InputIcon, ScrollView, Pressable, InputSlot, Text } from "@gluestack-ui/themed"
+import { EditIcon } from "lucide-react-native"
 import { useState } from "react"
 
-export default function ItemList({ title, subtitle, avatar, children }) {
+export default function ItemList({ title, subtitle, avatar, children, exibeOpcoes = false }) {
     return (
         <Box display="flex" mx={20} mb={15} borderRadius={'$3xl'} hardShadow="1" >
             <Pressable w={'$full'}>
@@ -13,6 +14,13 @@ export default function ItemList({ title, subtitle, avatar, children }) {
                                 <Heading>{title}</Heading>
                                 {subtitle && (
                                     <Text>{subtitle}</Text>
+                                )}
+                            </Box>
+                            <Box alignItems="flex-end" flexGrow={1}>
+                                {exibeOpcoes && (
+                                    <Button size="md" variant="link"> 
+                                        <ButtonIcon as={EditIcon} />
+                                    </Button>
                                 )}
                             </Box>
                         </Box>

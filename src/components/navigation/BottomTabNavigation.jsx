@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import HistoricoPagamento from '../../screens/HistoricoPagamento/HistoricoPagamento';
 import Mensalidade from '../../screens/Mensalidade';
 import MeusDados from '../../screens/MeusDados';
+import Alunos from '../../screens/Alunos/Alunos';
 
 
 const Tab = createBottomTabNavigator();
@@ -40,7 +41,34 @@ const routes = [
         accessRequired: ['ACESSO_ALUNO'],
         isInitialRoute: false,
         component: MeusDados
-    }
+    },
+    {
+        name: 'Configurações',
+        iconName: 'cog-outline',
+        isMainRoute: false,
+        visibleOnBottomTabNavigation: true,
+        accessRequired: ['ACESSO_GESTAO'],
+        isInitialRoute: false,
+        component: MeusDados
+    },
+    {
+        name: 'Pagamentos',
+        iconName: 'credit-card-check-outline',
+        isMainRoute: true,
+        visibleOnBottomTabNavigation: true,
+        accessRequired: ['ACESSO_GESTAO'],
+        isInitialRoute: true,
+        component: HistoricoPagamento
+    },
+    {
+        name: 'Alunos',
+        iconName: 'account-group',
+        isMainRoute: false,
+        visibleOnBottomTabNavigation: true,
+        accessRequired: ['ACESSO_GESTAO'],
+        isInitialRoute: false,
+        component: Alunos
+    },
 ]
 
 export default function BottomTabNavigation() {
@@ -68,7 +96,7 @@ export default function BottomTabNavigation() {
                                         right: 15, */
                     elevation: 0,
                     backgroundColor: '#ffffff',
-                    borderRadius: 25,
+                    // borderRadius: 25,
                     height: 80,
                     ...styles.shadow
                 },
