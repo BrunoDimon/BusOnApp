@@ -22,6 +22,8 @@
     "@react-navigation/native": "6.1.9",
     "@react-navigation/stack": "^6.3.28",
     "@reduxjs/toolkit": "^2.2.1",
+    "axios": "^1.6.8",
+    "date-fns": "^3.6.0",
     "expo": "49.0.21",
     "expo-clipboard": "~4.3.1",
     "expo-status-bar": "~1.6.0",

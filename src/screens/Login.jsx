@@ -25,8 +25,8 @@ export default function Login() {
                 nome: 'Douglas',
                 sobrenome: 'Kuerten',
                 //acesso: 'ACESSO_ADMIN'
-                acesso: 'ACESSO_GESTAO'
-                //acesso: 'ACESSO_ALUNO'
+                //acesso: 'ACESSO_GESTAO'
+                acesso: 'ACESSO_ALUNO'
             },
             token: 'exampleToken',
             refreshToken: 'exampleRefreshToken'

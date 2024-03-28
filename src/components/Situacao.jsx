@@ -7,7 +7,9 @@ const initialColor = {
 const initialColorSituation = {
     aberto: '$yellow500',
     pago: '#37AB00',
-    atrasado: '#DB0000'
+    atrasado: '#DB0000',
+    ativo: '#37AB00',
+    inativo: '#DB0000'
 };
 
 export default function Situacao({ cor, situacao }) {

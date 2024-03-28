@@ -3,6 +3,7 @@ import { useState } from "react"
 import ItemList from "../../components/ItemList"
 import Situacao from "../../components/Situacao"
 import formatarValorEmReais from "../../functions/FormatarValorEmReais"
+import { format } from 'date-fns';
 
 export default function ItemListPagamento({ situacao, data, valor, mes }) {
     return (
@@ -20,7 +21,7 @@ export default function ItemListPagamento({ situacao, data, valor, mes }) {
                 <Box flexDirection="row" justifyContent="space-between" adjustsFontSizeToFit={true}>
                     <Box flexDirection="row" gap={2} >
                         <Box flexDirection="row" alignItems="flex-end">
-                            <Text mt={5} fontWeight="$bold" fontSize={'$xl'}>{data}</Text>
+                            <Text mt={5} fontWeight="$bold" fontSize={'$xl'}>{format(date, 'dd/MM/yyyy')}</Text>
                             <Text mt={5} fontWeight="$bold" fontSize={'$xl'}> | </Text>
                             <Text mt={5} fontWeight="$bold" fontSize={'$xl'}>{formatarValorEmReais(valor)}</Text>
                         </Box>
