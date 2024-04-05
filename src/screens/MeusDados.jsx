@@ -1,7 +1,9 @@
 import { Box, Input, ScrollView, InputField, Button, ButtonText } from "@gluestack-ui/themed"
-import { Text } from "@gluestack-ui/themed"
 import Label from "../components/Label"
 import SelectInputValues from "../components/SelectInput"
+import { InputSelect } from "../components/formInputs/InputSelect"
+import { InputText } from "../components/formInputs/InputText"
+import { InputDate } from "../components/formInputs/InputDate"
 
 export default MeusDados = () => {
     return (
@@ -9,48 +11,46 @@ export default MeusDados = () => {
             <ScrollView flex={1} >
                 <Box justifyContent="flex-start" alignItems="center" gap={15} p={15}>
                     <Box w={'$full'}>
-                        <Label label={"Nome Completo"} >
-                            <Input h={50} borderRadius={'$xl'}>
-                                <InputField type={'text'} />
-                            </Input>
-                        </Label>
-                        <Label label={"E-mail"} >
-                            <Input h={50} borderRadius={'$xl'}>
-                                <InputField type={'text'} />
-                            </Input>
-                        </Label>
-                        <Label label={"Telefone"} >
-                            <Input h={50} borderRadius={'$xl'}>
-                                <InputField type={'text'} />
-                            </Input>
-                        </Label>
-                        <Label label={"Faculdade"} >
-                            <SelectInputValues values={[
-                                {
-                                    label: 'UNISATC',
-                                    value: 'UNISATC',
-                                    isDisabled: false
-                                },
-                                {
-                                    label: 'UNESC',
-                                    value: 'UNESC',
-                                    isDisabled: false
-                                },
-                                {
-                                    label: 'ESUCRI',
-                                    value: 'ESUCRI',
-                                    isDisabled: false
-                                },
+                        <InputText label={'Nome Completo'} inputOnChangeText={(value) => handleChangeInputValues('nome', value)} isRequired={true} />
+                        <InputText label={'E-mail'} inputOnChangeText={(value) => handleChangeInputValues('email', value)} isRequired={true} />
+                        <InputText label={'Telefone'} inputOnChangeText={(value) => handleChangeInputValues('telefone', value)} isRequired={true} />
+                        <InputSelect label="Faculdade" selectValues={[
+                            {
+                                label: 'UNISATC',
+                                value: 'UNISATC',
+                                isDisabled: false
+                            },
+                            {
+                                label: 'UNESC',
+                                value: 'UNESC',
+                                isDisabled: false
+                            },
+                            {
+                                label: 'ESUCRI',
+                                value: 'ESUCRI',
+                                isDisabled: false
+                            },
 
-                            ]} />
+                        ]} />
+                        <InputSelect label="Curso" selectValues={[
+                            {
+                                label: 'Eng Soft',
+                                value: 'ENG_SOFT',
+                                isDisabled: false
+                            },
+                            {
+                                label: 'Eng Compt',
+                                value: 'ENG_COMPT',
+                                isDisabled: false
+                            },
+                            {
+                                label: 'Publi Prop',
+                                value: 'PUBLI_PROP',
+                                isDisabled: false
+                            },
 
-                        </Label>
-                        <Label label={"Curso"} >
-                            <SelectInputValues />
-                        </Label>
-                        <Label label={"Ponto de Entrada"} >
-                            <SelectInputValues />
-                        </Label>
+                        ]} />
+                        <InputDate />
 
                         <Button size='xl' borderRadius={'$xl'} alignSelf="flex-end">
                             <ButtonText maxFontSizeMultiplier={1.5}>

@@ -9,6 +9,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Appearance, useColorScheme, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
+import { DialogProvider } from './components/dialog/DialogContext';
 
 export default function AppContainer() {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -16,9 +17,11 @@ export default function AppContainer() {
     return (
         <GluestackUIProvider colorMode={theme} config={config}  >
             <StatusBar backgroundColor={theme == 'dark' ? '#000000' : '#ffffff'} barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} />
-            <NavigationContainer >
-                {isAuthenticated ? <DrawerNavigation /> : <Login />}
-            </NavigationContainer>
+            <DialogProvider>
+                <NavigationContainer >
+                    {isAuthenticated ? <DrawerNavigation /> : <Login />}
+                </NavigationContainer>
+            </DialogProvider>
         </GluestackUIProvider >
     );
 }

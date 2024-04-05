@@ -18,7 +18,7 @@ export default function ItemList({ title, subtitle, avatar, children, exibeOpcoe
                             </Box>
                             <Box alignItems="flex-end" flexGrow={1}>
                                 {exibeOpcoes && (
-                                    <Button size="md" variant="link"> 
+                                    <Button size="md" variant="link">
                                         <ButtonIcon as={EditIcon} />
                                     </Button>
                                 )}
