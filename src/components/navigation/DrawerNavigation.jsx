@@ -8,6 +8,8 @@ import Login from '../../screens/Login';
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import BottomTabNavigation from './BottomTabNavigation';
 import { useSelector } from 'react-redux';
+import IaChat from '../../screens/IaChat';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Drawer = createDrawerNavigator();
 export default function DrawerNavigation() {
@@ -20,8 +22,9 @@ export default function DrawerNavigation() {
                 drawerContent={(props) => <SideBar {...props} />}
                 screenOptions={{
                     headerShown: false,
-                    drawerActiveBackgroundColor: "#facc15",
-                    drawerActiveTintColor: '#FFF',
+                    
+                    drawerInactiveBackgroundColor: "#facc15",
+                    drawerActiveTintColor: '#fff',
                     drawerInactiveTintColor: (theme === "light" ? '#d7dbdd' : '#445460'),
                     LabelStyle: {
                         marginLeft: -25, fontSize: 15, color: (theme === "light" ? 'white' : 'black')
@@ -32,6 +35,7 @@ export default function DrawerNavigation() {
                 }}
                 initialRouteName="BottomTabNavigation" >
                 <Drawer.Screen name="BottomTabNavigation" component={BottomTabNavigation} options={{ drawerType: 'front', drawerItemStyle: { display: 'none' }, drawerIcon: ({ color }) => <Ionicons name="home-outline" size={22} color={color} /> }} />
+                <Drawer.Screen name="IA Chat" component={IaChat} options={{ drawerType: 'front', drawerActiveBackgroundColor: '#facc15', drawerItemStyle: { display: 'flex' }, drawerIcon: ({ color }) => <MaterialCommunityIcons name={"robot-outline"} size={22} color={color}/> }} />
             </Drawer.Navigator >
         </Box>
     );
