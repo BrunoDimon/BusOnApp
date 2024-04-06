@@ -1,19 +1,36 @@
-import { Box, Input, ScrollView, InputField, Button, ButtonText } from "@gluestack-ui/themed"
+import { Box, Input, ScrollView, InputField } from "@gluestack-ui/themed"
 import Label from "../components/Label"
 import { InputSelect } from "../components/formInputs/InputSelect"
 import { InputText } from "../components/formInputs/InputText"
 import { InputDate } from "../components/formInputs/InputDate"
+import { useState } from "react"
+import { Button } from "../components/buttons/Button"
 
 export default MeusDados = () => {
+    const [dadosEdicao, setDadosEdicao] = useState({});
+    const [inputValues, setInputValues] = useState({
+        nomeCompleto: dadosEdicao?.nomeCompleto || null,
+        email: dadosEdicao?.email || null,
+        telefone: dadosEdicao?.telefone || null,
+        faculdade: dadosEdicao?.faculdade || null,
+        curso: dadosEdicao?.curso || null,
+        data: dadosEdicao?.data || null,
+    });
+    const handleChangeInputValues = (fieldName, value) => {
+        setInputValues({
+            ...inputValues,
+            [fieldName]: value,
+        });
+    };
     return (
         <Box flex={1} bg={'$white'} mx={'$4'} mt={'$2'} mb={'$4'} borderRadius={'$3xl'}>
             <ScrollView flex={1} >
                 <Box justifyContent="flex-start" alignItems="center" gap={15} p={15}>
                     <Box w={'$full'}>
-                        <InputText label={'Nome Completo'} inputOnChangeText={(value) => handleChangeInputValues('nome', value)} isRequired={true} />
-                        <InputText label={'E-mail'} inputOnChangeText={(value) => handleChangeInputValues('email', value)} isRequired={true} />
-                        <InputText label={'Telefone'} inputOnChangeText={(value) => handleChangeInputValues('telefone', value)} isRequired={true} />
-                        <InputSelect label="Faculdade" selectValues={[
+                        <InputText label={'Nome Completo'} inputOnChange={(value) => handleChangeInputValues('nomeCompleto', value)} isRequired={true} inputValue={inputValues.nomeCompleto} />
+                        <InputText label={'E-mail'} inputOnChange={(value) => handleChangeInputValues('email', value)} isRequired={true} inputValue={inputValues.email} />
+                        <InputText label={'Telefone'} inputOnChange={(value) => handleChangeInputValues('telefone', value)} isRequired={true} inputValue={inputValues.telefone} />
+                        <InputSelect label="Faculdade" inputOnChange={(value) => handleChangeInputValues('faculdade', value)} inputValue={inputValues.faculdade} selectValues={[
                             {
                                 label: 'UNISATC',
                                 value: 'UNISATC',
@@ -49,13 +66,8 @@ export default MeusDados = () => {
                             },
 
                         ]} />
-                        <InputDate inputValue={Date.now()} />
 
-                        <Button size='xl' borderRadius={'$xl'} alignSelf="flex-end">
-                            <ButtonText maxFontSizeMultiplier={1.5}>
-                                Salvar
-                            </ButtonText>
-                        </Button>
+                        <Button label={'Salvar'} onPress={() => console.log('Pressionado salvar')} />
                     </Box>
                 </Box>
             </ScrollView>

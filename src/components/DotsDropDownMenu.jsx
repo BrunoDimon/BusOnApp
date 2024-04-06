@@ -37,7 +37,7 @@ export default DotsDropdownMenu = ({ dotsColor, opcoesMenu, titulo }) => {
                                 titulo &&
                                 (
                                     <>
-                                        <ActionsheetSectionHeaderText fontSize={18} my={15}>
+                                        <ActionsheetSectionHeaderText fontSize={18} my={15} maxFontSizeMultiplier={1.3}>
                                             {titulo}
                                         </ActionsheetSectionHeaderText>
                                         <Divider />
@@ -48,11 +48,11 @@ export default DotsDropdownMenu = ({ dotsColor, opcoesMenu, titulo }) => {
                             {
                                 opcoesMenu?.map((value, index) => {
                                     return (
-                                        <ActionsheetItem key={index} onPress={() => value.onPress()} p={20}>
+                                        <ActionsheetItem key={index} onPress={() => { value.onPress(); closeDropdown() }} p={20}>
                                             <ActionsheetIcon height={30} w={30} >
                                                 <MaterialCommunityIcons name={value.nomeIcone} size={24} color={value.corIcone} />
                                             </ActionsheetIcon>
-                                            <ActionsheetItemText lineHeight={'$xl'} fontSize={'$xl'}>{value.label}</ActionsheetItemText>
+                                            <ActionsheetItemText lineHeight={'$xl'} fontSize={'$xl'} maxFontSizeMultiplier={1.3}>{value.label}</ActionsheetItemText>
                                         </ActionsheetItem>
                                     )
                                 })

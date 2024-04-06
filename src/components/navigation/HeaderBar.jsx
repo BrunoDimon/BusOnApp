@@ -16,7 +16,7 @@ export default HeaderBar = ({ options, navigationDrawer }) => {
                 options.rigthButtonHeader
                     ?
                     (
-                        <Pressable onPress={() => console.log('Botão Sync')} >
+                        <Pressable onPress={() => options.onRightButtonPress} >
                             <MaterialCommunityIcons name={options.rigthButtonHeader} size={30} color={theme === 'light' ? '#525252' : 'white'} />
                         </Pressable>
                     )

@@ -12,10 +12,10 @@ import { SelectContent } from "@gluestack-ui/themed"
 import { SelectDragIndicatorWrapper } from "@gluestack-ui/themed"
 import { Icon } from "@gluestack-ui/themed"
 
-export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, selectValues = [] }) => {
+export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, selectValues = [], defaultValue }) => {
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Select >
+            <Select onValueChange={(v) => inputOnChange(v)} selectedValue={inputValue} defaultValue={defaultValue}>
                 <SelectTrigger h={50} borderRadius={'$xl'} pr={23}>
                     <SelectInput placeholder="Selecionar" />
                     <SelectIcon size={'lg'}>

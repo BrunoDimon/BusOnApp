@@ -11,7 +11,7 @@ export const FormInput = ({ label, erro, inputValue, inputOnChangeText, isDisabl
             mb={10}
         >
             <FormControlLabel>
-                <FormControlLabelText color="$textDark800" size="xl" lineHeight="$xl" fontWeight="$semibold" maxFontSizeMultiplier={1.2}>
+                <FormControlLabelText mr={5} color="$textDark800" size="xl" lineHeight="$xl" fontWeight="$semibold" maxFontSizeMultiplier={1.2}>
                     {label}
                 </FormControlLabelText>
             </FormControlLabel>

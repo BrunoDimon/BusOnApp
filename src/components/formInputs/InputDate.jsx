@@ -14,12 +14,17 @@ export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, 
         inputOnChange(selectedDate)
         setShow(false);
     };
-
+    const handlePress = async () => {
+        if (show) {
+            await setShow(false);
+        }
+        setShow(true);
+    }
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Button variant="outline" borderColor="$secondary200" h={50} borderRadius={'$xl'} onPress={() => setShow(true)} justifyContent="space-between" >
-                <ButtonText color="gray">
-                    {moment(inputValue).format('DD/MM/yyyy') || 'dd/mm/yyyy'}
+            <Button variant="outline" borderColor="$secondary200" h={50} borderRadius={'$xl'} onPress={handlePress} justifyContent="space-between" >
+                <ButtonText color={inputValue ? "black" : "gray"} fontWeight={"$normal"}>
+                    {inputValue ? moment(inputValue).format('DD/MM/yyyy') : 'dd/mm/yyyy'}
                 </ButtonText>
                 <ButtonIcon size={'lg'}>
                     <Icon as={CalendarDaysIcon} color={"$secondary400"} size="lg" />
@@ -35,7 +40,6 @@ export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, 
                     onChange={onChange}
                 />
             )}
-
         </FormInput >
 
     )
