@@ -4,7 +4,7 @@ import { Text, Box } from "@gluestack-ui/themed";
 export default function Home() {
     const colorMode = useColorMode();
     const logo = colorMode === "light" ? require('../../assets/busOnFontePreta.png') : require('../../assets/busOnFonteBranca.png');
-    const draw = require('../../assets/school-bus.png');
+    const draw = require('../../assets/school-bus-predios-dark.png');
 
     return (
         <Box flex={1} justifyContent="center" bgColor="transparent">

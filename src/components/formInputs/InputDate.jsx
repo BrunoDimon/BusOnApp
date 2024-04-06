@@ -1,32 +1,40 @@
-import { AlertCircleIcon, Button, ButtonText, FormControlErrorText, FormControlLabelText, Input, InputField } from "@gluestack-ui/themed"
-import { FormControl, FormControlError, FormControlErrorIcon, FormControlLabel, } from "@gluestack-ui/themed"
+import { AlertCircleIcon, Button, ButtonIcon, ButtonText, FormControlErrorText, FormControlLabelText, Icon, Input, InputField } from "@gluestack-ui/themed"
+import { CalendarDaysIcon, FormControl, FormControlError, FormControlErrorIcon, FormControlLabel, } from "@gluestack-ui/themed"
 import { FormInput } from "./FormInput"
 import { useState } from "react";
-import DatePicker from 'react-native-date-picker'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
+import 'moment/locale/pt-br';
+moment.locale('pt-br');
 
-export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, selectValues = [] }) => {
-    const [date, setDate] = useState(new Date())
-    const [open, setOpen] = useState(false)
+export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, calendarType = 'date' }) => {
+    const [show, setShow] = useState(false);
+
+    const onChange = (event, selectedDate) => {
+        inputOnChange(selectedDate)
+        setShow(false);
+    };
+
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Button variant="outline" borderColor="#E2E2E2" h={50} borderRadius={'$xl'} onPress={() => setOpen(true)}>
+            <Button variant="outline" borderColor="$secondary200" h={50} borderRadius={'$xl'} onPress={() => setShow(true)} justifyContent="space-between" >
                 <ButtonText color="gray">
-                    dd/mm/yyyy
+                    {moment(inputValue).format('DD/MM/yyyy') || 'dd/mm/yyyy'}
                 </ButtonText>
+                <ButtonIcon size={'lg'}>
+                    <Icon as={CalendarDaysIcon} color={"$secondary400"} size="lg" />
+                </ButtonIcon>
             </Button>
 
-            {/* <DatePicker
-                modal
-                open={open}
-                date={date}
-                onConfirm={(date) => {
-                    setOpen(false)
-                    setDate(date)
-                }}
-                onCancel={() => {
-                    setOpen(false)
-                }}
-            /> */}
+            {show && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={new Date(inputValue)}
+                    mode={calendarType} // Pode ser date ou time
+                    is24Hour={true}
+                    onChange={onChange}
+                />
+            )}
 
         </FormInput >
 

@@ -16,7 +16,7 @@ export default function Login() {
     const theme = useSelector(state => state.theme.theme);
 
     const logo = theme === "light" ? require('../../assets/busOnFontePreta.png') : require('../../assets/busOnFonteBranca.png');
-    const draw = require('../../assets/school-bus.png');
+    const draw = require('../../assets/school-bus-predios-dark.png');
     const dispatch = useDispatch();
 
     const handleLogin = () => {

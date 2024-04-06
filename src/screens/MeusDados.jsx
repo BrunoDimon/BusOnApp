@@ -1,6 +1,5 @@
 import { Box, Input, ScrollView, InputField, Button, ButtonText } from "@gluestack-ui/themed"
 import Label from "../components/Label"
-import SelectInputValues from "../components/SelectInput"
 import { InputSelect } from "../components/formInputs/InputSelect"
 import { InputText } from "../components/formInputs/InputText"
 import { InputDate } from "../components/formInputs/InputDate"
@@ -50,7 +49,7 @@ export default MeusDados = () => {
                             },
 
                         ]} />
-                        <InputDate />
+                        <InputDate inputValue={Date.now()} />
 
                         <Button size='xl' borderRadius={'$xl'} alignSelf="flex-end">
                             <ButtonText maxFontSizeMultiplier={1.5}>
