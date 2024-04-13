@@ -32,11 +32,11 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
             } else {
                 await editarPagamento(dadosEdicao.id, inputValues);
             }
-            toast.show(toastConfig('success', 'Sucesso', 'Sucesso ao cadastrar!', toast.close()));
+            toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao cadastrar!', (v) => toast.close(v)));
             onClose(true);
         } catch (error) {
             console.error(error);
-            toast.show(toastConfig('error', 'Erro', error.response.data.message, toast.close()));
+            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
         }
     }
 

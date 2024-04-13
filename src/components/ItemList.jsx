@@ -1,6 +1,7 @@
 import { Avatar, Box, Button, ButtonIcon, ButtonText, Card, CopyIcon, Divider, Heading, Input, InputField, InputIcon, ScrollView, Pressable, InputSlot, Text } from "@gluestack-ui/themed"
 import { EditIcon } from "lucide-react-native"
 import { useState } from "react"
+import ButtonDotsDropdownMenu from "./buttons/ButtonDotsDropdownMenu"
 
 export default function ItemList({ title, subtitle, avatar, children, exibeOpcoes = false }) {
     return (
@@ -16,12 +17,9 @@ export default function ItemList({ title, subtitle, avatar, children, exibeOpcoe
                                     <Text>{subtitle}</Text>
                                 )}
                             </Box>
-                            <Box alignItems="flex-end" flexGrow={1}>
+                            <Box alignItems="flex-end" flexGrow={1} mb={15}>
                                 {exibeOpcoes && (
-                                    <Button size="md" variant="link">
-                                        <ButtonIcon as={EditIcon} />
-                                    </Button>
-                                )}
+                                    <ButtonDotsDropdownMenu />)}
                             </Box>
                         </Box>
                         {children}

@@ -1,21 +1,14 @@
 import React from 'react';
-import { Box, Button, ButtonText } from "@gluestack-ui/themed"
+import { Box } from "@gluestack-ui/themed"
 import ListAlunos from "./ListAlunos";
-
-const cadastrarAluno = ({ navigation }) => {
-    navigation.navigate('CadastroAlunos');
-}
+import { Button } from '../../components/buttons/Button';
 
 export default Alunos = () => {
     return (
         <Box>
             <Box mx={20} mb={15} justifyContent="space-between" borderRadius={'$5x1'} flexDirection="row">
-                <Button variant="outline">
-                    <ButtonText>Filtros</ButtonText>
-                </Button>
-                <Button onPress={cadastrarAluno}>
-                    <ButtonText>Cadastrar Aluno</ButtonText>
-                </Button>
+                <Button label={'Filtros'} variant={'outline'} />
+                <Button label={'Cadastrar Aluno'} />
             </Box>
             <ListAlunos />
         </Box>

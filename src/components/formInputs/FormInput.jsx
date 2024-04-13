@@ -5,7 +5,7 @@ export const FormInput = ({ label, erro, inputValue, inputOnChangeText, isDisabl
     return (
         <FormControl
             isDisabled={isDisabled}
-            isInvalid={isInvalid}
+            isInvalid={isInvalid || erro}
             isReadOnly={isReadOnly}
             isRequired={isRequired}
             mb={10}

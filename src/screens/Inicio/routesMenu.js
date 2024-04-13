@@ -53,8 +53,8 @@ export default routesMenu = [
                 accessRequired: ['ACESSO_GESTAO'],
             },
             {
-                name: 'faculdades',
-                label: 'Faculdades',
+                name: 'instituicoes',
+                label: 'Instituições',
                 iconName: 'town-hall',
                 accessRequired: ['ACESSO_GESTAO'],
             },

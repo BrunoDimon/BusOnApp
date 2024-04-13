@@ -1,8 +1,8 @@
 import { Button as Btn, ButtonIcon, ButtonSpinner, ButtonText } from "@gluestack-ui/themed"
 
-export const Button = ({ label, onPress, variant, isLoading, isDisabled, icon }) => {
+export const Button = ({ label, onPress, variant, isLoading, isDisabled, icon, action }) => {
     return (
-        <Btn size='xl' gap={10} borderRadius={'$xl'} onPress={onPress} variant={variant} isDisabled={isLoading || isDisabled} >
+        <Btn size='xl' gap={10} borderRadius={'$xl'} onPress={onPress} variant={variant} isDisabled={isLoading || isDisabled} action={action} >
             {
                 icon &&
                 (

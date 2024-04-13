@@ -1,7 +1,7 @@
 import React from 'react';
 import ToastAlert from './ToastAlert'; // Importe o componente ToastAlert aqui
 
-const toastConfig = ((tipo, titulo, descricao, onClose) => {
+const ToastConfig = ((tipo, titulo, descricao, onClose) => {
     return {
         placement: "top",
         render: ({ id }) => (
@@ -16,4 +16,4 @@ const toastConfig = ((tipo, titulo, descricao, onClose) => {
     }
 });
 
-export default toastConfig;
+export default ToastConfig;

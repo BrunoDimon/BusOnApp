@@ -24,9 +24,10 @@ export default function Login() {
             user: {
                 nome: 'Douglas',
                 sobrenome: 'Kuerten',
-                //tipoAcesso: 'ACESSO_ADMIN'
-                tipoAcesso: 'ACESSO_GESTAO'
-                //tipoAcesso: 'ACESSO_ALUNO'
+                //tipoAcesso: 'ACESSO_ADMIN',
+                tipoAcesso: 'ACESSO_GESTAO',
+                //tipoAcesso: 'ACESSO_ALUNO',
+                associacaoId: 1
             },
             token: 'exampleToken',
             refreshToken: 'exampleRefreshToken'

@@ -12,15 +12,13 @@ const initialColorSituation = {
     inativo: '#DB0000'
 };
 
-export default function Situacao({ cor, situacao }) {
+export default function Situacao({ cor, situacao, ...props }) {
 
-    const color = cor ? initialColor[cor] : initialColorSituation[situacao.toLowerCase()];
+    const color = cor ? initialColor[cor] : initialColorSituation[situacao?.toLowerCase()];
     return (
-        <Box>
-            <Box flexDirection="row" justifySelf={'flex-end'} gap={5} h={20} alignItems="center">
-                <Box bg={color} h={10} aspectRatio={'1/1'} borderRadius={'$full'}></Box>
-                <Text color={color} fontWeight="$extrabold" textAlignVertical="center">{situacao}</Text>
-            </Box>
+        <Box flexDirection="row" gap={5} h={20} alignItems="center" {...props}>
+            <Box bg={color} h={10} aspectRatio={'1/1'} borderRadius={'$full'}></Box>
+            <Text lineHeight={'$xs'} color={color} fontWeight="$extrabold" >{situacao}</Text>
         </Box>
     )
 }

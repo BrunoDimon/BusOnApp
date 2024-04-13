@@ -1,6 +1,5 @@
 import Alunos from "../screens/Alunos/Alunos";
 import Parametros from "../screens/Parametros/Parametros";
-import Faculdade from "../screens/Faculdade/Faculdade";
 import HistoricoPagamento from "../screens/HistoricoPagamento/HistoricoPagamento";
 import Mensalidade from "../screens/Mensalidade/Mensalidade";
 import Inicio from "../screens/Inicio/Inicio";
@@ -8,6 +7,7 @@ import MeusDados from "../screens/MeusDados/MeusDados";
 import Pagamentos from "../screens/Pagamentos/Pagamentos";
 import IaChat from "../screens/IaChat";
 import Cursos from "../screens/Cursos/Cursos";
+import Instituicao from "../screens/Instituicao/Instituicao";
 
 export default routes = [
     {
@@ -69,11 +69,11 @@ export default routes = [
         component: Alunos
     },
     {
-        name: 'faculdades',
-        label: 'Faculdades',
+        name: 'instituicoes',
+        label: 'Instituições',
         accessRequired: ['ACESSO_GESTAO'],
         rigthButtonHeader: 'sync',
-        component: Faculdade
+        component: Instituicao
     },
     {
         name: 'cursos',

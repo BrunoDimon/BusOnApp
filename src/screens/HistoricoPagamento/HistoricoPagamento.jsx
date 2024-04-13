@@ -1,9 +1,9 @@
 import { Box, Button, ButtonText, useToast, FlatList } from "@gluestack-ui/themed"
-import ListPagamento from "./itemListPagamento";
+import ListPagamento from "./ItemListPagamento";
 import { useEffect, useState } from "react";
 import CardBoxPagamento from "./CardBoxPagamento";
 import { buscarTodosPagamentos, cadastrarPagamento, buscarPagamentoPorId, editarPagamento, excluirPagamento } from "../../service/api/requests/pagamentoRequest";
-import toastConfig from "../../components/toasts/ToastConfig";
+import ToastConfig from "../../components/toasts/ToastConfig";
 import { FormHistPagamento } from "./FormHistPagamento";
 import { useSelector } from "react-redux";
 
@@ -24,7 +24,7 @@ export default HistoricoPagamentos = ({ navigation }) => {
             setPagamentos(dados);
         } catch (error) {
             console.error('Erro ao obter pagamentos:', error);
-            toast.show(toastConfig('error', 'Erro ao encotrar!', error.response.data.message, toast.close()));
+            toast.show(ToastConfig('error', 'Erro ao encotrar!', error.response.data.message, (v) => toast.close(v)));
         }
     }
 
@@ -32,9 +32,9 @@ export default HistoricoPagamentos = ({ navigation }) => {
         try {
             await excluirPagamento(id);
             buscarPagamentos();
-            toast.show(toastConfig('success', 'Sucesso', 'Sucesso ao deletar!', toast.close()));
+            toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao deletar!', (v) => toast.close(v)));
         } catch (error) {
-            toast.show(toastConfig('error', 'Erro ao deletar!', error.response.data.message, toast.close()));
+            toast.show(ToastConfig('error', 'Erro ao deletar!', error.response.data.message, (v) => toast.close(v)));
         }
     }
 
@@ -52,7 +52,7 @@ export default HistoricoPagamentos = ({ navigation }) => {
         }).catch((error) => {
             setDadosFormEdicao(null);
             console.error(error.response.data)
-            toast.show(toastConfig('error', 'Erro', error.response.data.message, toast.close()));
+            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
         })
     }
 

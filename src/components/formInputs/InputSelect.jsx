@@ -12,7 +12,16 @@ import { SelectContent } from "@gluestack-ui/themed"
 import { SelectDragIndicatorWrapper } from "@gluestack-ui/themed"
 import { Icon } from "@gluestack-ui/themed"
 
-export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, selectValues = [], defaultValue }) => {
+export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, selectValues = [], typeSelectValues, defaultValue }) => {
+    const enumToOptions = (enumObject) => {
+        return Object.entries(enumObject).map(([key, value]) => ({
+            label: value,
+            value: key,
+            isDisabled: false
+        }));
+    };
+    const values = typeSelectValues === 'ENUM' ? enumToOptions(selectValues) : selectValues;
+
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
             <Select onValueChange={(v) => inputOnChange(v)} selectedValue={inputValue} defaultValue={defaultValue}>
@@ -29,7 +38,7 @@ export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled
                             <SelectDragIndicator />
                         </SelectDragIndicatorWrapper>
                         {
-                            selectValues?.map((value, index) => (
+                            values?.map((value, index) => (
                                 <SelectItem key={index} label={value.label} value={value.value} isDisabled={value.isDisabled} />
                             ))
                         }
