@@ -4,7 +4,7 @@ import Situacao from "../../components/Situacao"
 import formatarValorEmReais from "../../functions/FormatarValorEmReais"
 import moment from 'moment';
 import 'moment/locale/pt-br';
-import DotsDropDownMenu from "../../components/DotsDropDownMenu";
+import ButtonDotsDropdownMenu from "../../components/buttons/ButtonDotsDropdownMenu";
 moment.locale('pt-br');
 
 export default function ItemListPagamento({ situacao, data, valor, mes }) {
@@ -35,7 +35,7 @@ export default function ItemListPagamento({ situacao, data, valor, mes }) {
     )
 }
 /* 
-<DotsDropDownMenu titulo={'id' + '-' + 'nome'} opcoesMenu={
+<ButtonDotsDropdownMenu titulo={'id' + '-' + 'nome'} opcoesMenu={
                         [{
                             //onPress: () => {voidEdit() },
                             nomeIcone: 'pencil-outline',

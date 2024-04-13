@@ -1,9 +1,9 @@
 import { Box, Heading } from "@gluestack-ui/themed"
 
-export default Configuracoes = () => {
+export default Pagamentos = () => {
     return (
         <Box>
-            <Heading>Tela de Alunos [GESTAO]</Heading>
+            <Heading>Tela de Pagamentos [GESTAO]</Heading>
         </Box>
     )
 }

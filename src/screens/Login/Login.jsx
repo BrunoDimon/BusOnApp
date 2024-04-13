@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Center, Button, Heading, Box, Text, Image, ButtonText, Toast, VStack, ToastTitle, useToast, Input, InputField, InputSlot, InputIcon, Pressable, HStack, Divider, KeyboardAvoidingView, ScrollView } from "@gluestack-ui/themed";
 import { useColorMode } from "@gluestack-ui/themed"
-import Label from '../components/Label';
+import Label from '../../components/Label';
 import { EyeIcon, EyeOffIcon } from 'lucide-react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../store/authSlice';
+import { login } from '../../store/authSlice';
 import { Path } from 'react-native-svg';
 
 
@@ -15,8 +15,8 @@ export default function Login() {
     const colorMode = useColorMode();
     const theme = useSelector(state => state.theme.theme);
 
-    const logo = theme === "light" ? require('../../assets/busOnFontePreta.png') : require('../../assets/busOnFonteBranca.png');
-    const draw = require('../../assets/school-bus-predios-dark.png');
+    const logo = theme === "light" ? require('../../../assets/busOnFontePreta.png') : require('../../../assets/busOnFonteBranca.png');
+    const draw = require('../../../assets/school-bus-predios-dark.png');
     const dispatch = useDispatch();
 
     const handleLogin = () => {
@@ -24,9 +24,9 @@ export default function Login() {
             user: {
                 nome: 'Douglas',
                 sobrenome: 'Kuerten',
-                //acesso: 'ACESSO_ADMIN'
-                //acesso: 'ACESSO_GESTAO'
-                acesso: 'ACESSO_ALUNO'
+                //tipoAcesso: 'ACESSO_ADMIN'
+                tipoAcesso: 'ACESSO_GESTAO'
+                //tipoAcesso: 'ACESSO_ALUNO'
             },
             token: 'exampleToken',
             refreshToken: 'exampleRefreshToken'

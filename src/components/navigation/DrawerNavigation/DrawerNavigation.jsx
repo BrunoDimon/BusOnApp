@@ -3,12 +3,11 @@ import React from 'react';
 import { Text, Box, useColorMode, useTheme } from "@gluestack-ui/themed";
 import SideBar from "./SideBar";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Home from '../../screens/Home';
-import Login from '../../screens/Login';
+import Login from '../../../screens/Login/Login';
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import BottomTabNavigation from './BottomTabNavigation';
+import BottomTabNavigation from '../BottomTabBarNavigation/BottomTabNavigation';
 import { useSelector } from 'react-redux';
-import IaChat from '../../screens/IaChat';
+import IaChat from '../../../screens/IaChat';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Drawer = createDrawerNavigator();
@@ -22,7 +21,7 @@ export default function DrawerNavigation() {
                 drawerContent={(props) => <SideBar {...props} />}
                 screenOptions={{
                     headerShown: false,
-                    
+
                     drawerInactiveBackgroundColor: "#facc15",
                     drawerActiveTintColor: '#fff',
                     drawerInactiveTintColor: (theme === "light" ? '#d7dbdd' : '#445460'),
@@ -35,7 +34,6 @@ export default function DrawerNavigation() {
                 }}
                 initialRouteName="BottomTabNavigation" >
                 <Drawer.Screen name="BottomTabNavigation" component={BottomTabNavigation} options={{ drawerType: 'front', drawerItemStyle: { display: 'none' }, drawerIcon: ({ color }) => <Ionicons name="home-outline" size={22} color={color} /> }} />
-                <Drawer.Screen name="IA Chat" component={IaChat} options={{ drawerType: 'front', drawerActiveBackgroundColor: '#facc15', drawerItemStyle: { display: 'flex' }, drawerIcon: ({ color }) => <MaterialCommunityIcons name={"robot-outline"} size={22} color={color}/> }} />
             </Drawer.Navigator >
         </Box>
     );

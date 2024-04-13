@@ -1,10 +1,10 @@
 import { Box, Input, ScrollView, InputField } from "@gluestack-ui/themed"
-import Label from "../components/Label"
-import { InputSelect } from "../components/formInputs/InputSelect"
-import { InputText } from "../components/formInputs/InputText"
-import { InputDate } from "../components/formInputs/InputDate"
+import Label from "../../components/Label"
+import { InputSelect } from "../../components/formInputs/InputSelect"
+import { InputText } from "../../components/formInputs/InputText"
+import { InputDate } from "../../components/formInputs/InputDate"
 import { useState } from "react"
-import { Button } from "../components/buttons/Button"
+import { Button } from "../../components/buttons/Button"
 
 export default MeusDados = () => {
     const [dadosEdicao, setDadosEdicao] = useState({});

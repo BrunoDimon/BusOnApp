@@ -3,14 +3,19 @@ import TabBarIcon from "./TabBarIcon"
 import React, { useState, useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import { View, Keyboard, StyleSheet } from 'react-native';
+import routesTabBar from "./routesTabBar";
+import { useSelector } from 'react-redux';
+import { useRoute } from '@react-navigation/native';
+
 
 const getKeyboardHeight = (event) => {
     return event.endCoordinates.height;
 };
 
-export default TabBar = ({ allRoutes, state, descriptors, navigation }) => {
+export default TabBar = ({ state, navigation }) => {
     const isFocused = useIsFocused();
     const [keyboardHeight, setKeyboardHeight] = useState(0);
+    const routes = routesTabBar.filter(v => v.tipoAcesso === useSelector(state => state.auth.user.tipoAcesso))
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (event) => {
@@ -39,32 +44,27 @@ export default TabBar = ({ allRoutes, state, descriptors, navigation }) => {
         <Box $dark-bg="$backgroundDark800" $light-bg="#f1f1f1" w={'$full'} h={85} >
             <Box $dark-bg="$backgroundDark900" $light-bg="$white" w={'$full'} hardShadow={'5'} h={85} borderTopEndRadius={35} borderTopStartRadius={35} flexDirection="row" justifyContent="space-between" overflow="hidden">
                 {
-                    state.routes.map((route, index) => {
-                        const { options } = descriptors[route.key];
-                        const isFocused = state.index === index;
+                    routes[0].routes.map((route, index) => {
+                        const isFocusedRoute = state.routes[state.index].name === route.name;
                         const onPress = () => {
                             const event = navigation.emit({
                                 type: 'tabPress',
-                                target: route.key,
+                                target: route.name,
                                 canPreventDefault: true,
                             });
 
-                            if (!isFocused && !event.defaultPrevented) {
+                            if (!isFocusedRoute && !event.defaultPrevented) {
                                 navigation.navigate(route.name);
                             }
                         };
                         const routeValues = {
-                            label: options.label || route.name,
-                            iconName: options.iconName,
-                            isMainRoute: options.isMainRoute,
-                            visibleOnBottomTabNavigation: options.visibleOnBottomTabNavigation,
-                            rigthButtonHeader: options.rigthButtonHeader,
+                            label: route.label || route.name,
+                            iconName: route.iconName,
+                            isMainRoute: route.isMainRoute
                         }
-                        if (!options.visibleOnBottomTabNavigation) {
-                            return null;
-                        }
+
                         return (
-                            <TabBarIcon key={index} route={routeValues} focused={isFocused} onPress={onPress} index={index} />
+                            <TabBarIcon key={index} route={routeValues} focused={isFocusedRoute} onPress={onPress} index={index} />
                         )
                     })
                 }

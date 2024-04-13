@@ -6,9 +6,9 @@ import { ActionsheetDragIndicatorWrapper } from "@gluestack-ui/themed";
 import { Icon } from "@gluestack-ui/themed";
 import { ActionsheetIcon } from "@gluestack-ui/themed";
 import { ActionsheetItemText } from "@gluestack-ui/themed";
-import { Dialog } from "./dialog/Dialog";
+import { Dialog } from "../dialog/Dialog";
 
-export default DotsDropdownMenu = ({ dotsColor, opcoesMenu, titulo }) => {
+export default ButtonDotsDropdownMenu = ({ dotsColor, opcoesMenu, titulo }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const theme = useSelector(state => state.theme.theme);
 

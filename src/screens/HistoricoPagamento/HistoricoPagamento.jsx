@@ -89,7 +89,7 @@ export default HistoricoPagamentos = ({ navigation }) => {
                     <ButtonText>Filtros</ButtonText>
                 </Button>
                 {
-                    userInfo.acesso == 'ACESSO_GESTAO' || userInfo.acesso == 'ACESSO_ADMIN' || userInfo.acesso == 'ACESSO_ALUNO' &&
+                    userInfo.tipoAcesso == 'ACESSO_GESTAO' || userInfo.tipoAcesso == 'ACESSO_ADMIN' || userInfo.tipoAcesso == 'ACESSO_ALUNO' &&
                     (
                         <Button size='xl' borderRadius={'$xl'} onPress={() => setFormIsOpen(true)}>
                             <ButtonText maxFontSizeMultiplier={1.5} >
