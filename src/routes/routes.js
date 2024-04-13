@@ -1,75 +1,85 @@
-import Alunos from "../screens/Alunos";
-import Configuracoes from "../screens/Configuracoes";
+import Alunos from "../screens/Alunos/Alunos";
+import Parametros from "../screens/Parametros/Parametros";
+import Faculdade from "../screens/Faculdade/Faculdade";
 import HistoricoPagamento from "../screens/HistoricoPagamento/HistoricoPagamento";
-import Mensalidade from "../screens/Mensalidade";
-import MeusDados from "../screens/MeusDados";
-import Pagamentos from "../screens/Pagamentos";
+import Mensalidade from "../screens/Mensalidade/Mensalidade";
+import Inicio from "../screens/Inicio/Inicio";
+import MeusDados from "../screens/MeusDados/MeusDados";
+import Pagamentos from "../screens/Pagamentos/Pagamentos";
+import IaChat from "../screens/IaChat";
+import Cursos from "../screens/Cursos/Cursos";
 
 export default routes = [
     {
-        name: 'historico_pagamentos',
-        label: 'Histórico Pagamentos',
-        iconName: 'clipboard-text-clock-outline',
-        isMainRoute: false,
-        visibleOnBottomTabNavigation: true,
-        accessRequired: ['ACESSO_ALUNO'],
+        name: 'inicio',
+        label: 'Inicio',
+        accessRequired: ['ACESSO_ADMIN', 'ACESSO_GESTAO', 'ACESSO_ALUNO'],
+        rigthButtonHeader: 'sync',
+        component: Inicio,
         isInitialRoute: false,
+    },
+    {
+        name: 'ia-chat',
+        label: 'IA Chat',
+        accessRequired: ['ACESSO_ADMIN', 'ACESSO_GESTAO', 'ACESSO_ALUNO'],
+        rigthButtonHeader: 'sync',
+        component: IaChat,
+        isInitialRoute: false,
+    },
+    {
+        name: 'historico-pagamentos',
+        label: 'Histórico Pagamentos',
+        accessRequired: ['ACESSO_ALUNO'],
         rigthButtonHeader: 'sync',
         component: HistoricoPagamento
     },
     {
         name: 'mensalidade',
         label: 'Mensalidade',
-        iconName: 'currency-usd',
-        isMainRoute: true,
-        visibleOnBottomTabNavigation: true,
         accessRequired: ['ACESSO_ALUNO'],
-        isInitialRoute: true,
         rigthButtonHeader: 'sync',
         component: Mensalidade
     },
     {
-        name: 'meus_dados',
+        name: 'meus-dados',
         label: 'Meus Dados',
-        iconName: 'card-account-details-outline',
-        isMainRoute: false,
-        visibleOnBottomTabNavigation: true,
         accessRequired: ['ACESSO_ALUNO'],
-        isInitialRoute: false,
         rigthButtonHeader: 'sync',
         component: MeusDados
     },
     {
-        name: 'configuracoes',
-        label: 'Configurações',
-        iconName: 'cog-outline',
-        isMainRoute: false,
-        visibleOnBottomTabNavigation: true,
+        name: 'parametros',
+        label: 'Parâmetros',
         accessRequired: ['ACESSO_GESTAO'],
-        isInitialRoute: false,
         rigthButtonHeader: 'sync',
-        component: Configuracoes
+        component: Parametros
     },
     {
         name: 'pagamentos',
         label: 'Pagamentos',
-        iconName: 'receipt', //receipt-text-check-outline,
-        isMainRoute: true,
-        visibleOnBottomTabNavigation: true,
         accessRequired: ['ACESSO_GESTAO'],
-        isInitialRoute: false,
         rigthButtonHeader: 'sync',
         component: Pagamentos
     },
     {
         name: 'alunos',
         label: 'Alunos',
-        iconName: 'card-account-details-outline',
-        isMainRoute: false,
-        visibleOnBottomTabNavigation: true,
         accessRequired: ['ACESSO_GESTAO'],
-        isInitialRoute: false,
         rigthButtonHeader: 'sync',
         component: Alunos
+    },
+    {
+        name: 'faculdades',
+        label: 'Faculdades',
+        accessRequired: ['ACESSO_GESTAO'],
+        rigthButtonHeader: 'sync',
+        component: Faculdade
+    },
+    {
+        name: 'cursos',
+        label: 'Cursos',
+        accessRequired: ['ACESSO_GESTAO'],
+        rigthButtonHeader: 'sync',
+        component: Cursos
     },
 ]

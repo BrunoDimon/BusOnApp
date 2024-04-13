@@ -2,7 +2,7 @@ import { Box, Heading, Text, Avatar } from "@gluestack-ui/themed"
 import Situacao from "../../components/Situacao"
 import moment from 'moment';
 import 'moment/locale/pt-br';
-import DotsDropDownMenu from "../../components/DotsDropDownMenu";
+import ButtonDotsDropdownMenu from "../../components/buttons/ButtonDotsDropdownMenu";
 import { useDialog } from "../../components/dialog/DialogContext";
 import { Dialog } from "../../components/dialog/Dialog";
 import CardBox from "../../components/CardBox";
@@ -44,9 +44,9 @@ export default function CardBoxPagamento({ id, usuario, dataVencimento, dataPaga
                 </Box>
             </Box >
             {
-                userInfo.acesso == 'ACESSO_GESTAO' || userInfo.acesso == 'ACESSO_ADMIN' || userInfo.acesso == 'ACESSO_ALUNO' &&
+                userInfo.tipoAcesso == 'ACESSO_GESTAO' || userInfo.tipoAcesso == 'ACESSO_ADMIN' || userInfo.tipoAcesso == 'ACESSO_ALUNO' &&
                 (
-                    <DotsDropDownMenu titulo={'id' + '-' + 'nome'} opcoesMenu={
+                    <ButtonDotsDropdownMenu titulo={'id' + '-' + 'nome'} opcoesMenu={
                         [{
                             onPress: () => { voidEdit() },
                             nomeIcone: 'pencil-outline',

@@ -34,7 +34,7 @@ export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, 
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
-                    value={new Date(inputValue)}
+                    value={new Date(inputValue || Date.now())}
                     mode={calendarType} // Pode ser date ou time
                     is24Hour={true}
                     onChange={onChange}

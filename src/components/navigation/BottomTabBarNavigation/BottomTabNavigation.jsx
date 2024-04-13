@@ -3,16 +3,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
-import routes from '../../routes/routes';
+import routes from '../../../routes/routes';
 import TabBar from './TabBar';
-import HeaderBar from './HeaderBar';
+import HeaderBar from '../HeaderBar';
 
 
 const Tab = createBottomTabNavigator();
 
 
 export default function BottomTabNavigation({ navigation: navigationDrawer }) {
-    const accessUser = useSelector(state => state.auth.user.acesso);
+    const accessUser = useSelector(state => state.auth.user.tipoAcesso);
     const userRoutes = routes.filter(route => route.accessRequired.includes(accessUser))
     const initialRouteName = userRoutes.filter(route => route.isInitialRoute)[0]?.name
     const theme = useSelector(state => state.theme.theme);
@@ -20,7 +20,7 @@ export default function BottomTabNavigation({ navigation: navigationDrawer }) {
     return (
         <Tab.Navigator
             initialRouteName={initialRouteName}
-            tabBar={props => <TabBar allRoutes={userRoutes} {...props} />}
+            tabBar={props => <TabBar {...props} />}
             sceneContainerStyle={{
                 backgroundColor: theme === 'light' ? '#f1f1f1' : '#404040'
             }}
