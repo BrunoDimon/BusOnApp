@@ -15,7 +15,6 @@ import CardMensagem from "../components/CardMensagem";
 const { height } = Dimensions.get("window");
 
 export default IaChat = () => {
-  const theme = useSelector((state) => state.theme.theme);
   return (
     <Box>
       <Box
@@ -27,7 +26,7 @@ export default IaChat = () => {
         borderRadius={30}
         mx={"$2"}
         my={"$2"}
-        pt={10}
+        p={10}
         justifyContent={"space-between"}
       >
         <Box borderRadius={30}>
