@@ -11,8 +11,9 @@ import { SelectBackdrop } from "@gluestack-ui/themed"
 import { SelectContent } from "@gluestack-ui/themed"
 import { SelectDragIndicatorWrapper } from "@gluestack-ui/themed"
 import { Icon } from "@gluestack-ui/themed"
+import { Spinner } from "@gluestack-ui/themed"
 
-export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, selectValues = [], typeSelectValues, defaultValue }) => {
+export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, selectValues = [], typeSelectValues, defaultValue, isLoading }) => {
     const enumToOptions = (enumObject) => {
         return Object.entries(enumObject).map(([key, value]) => ({
             label: value,
@@ -23,12 +24,22 @@ export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled
     const values = typeSelectValues === 'ENUM' ? enumToOptions(selectValues) : selectValues;
 
     return (
-        <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Select onValueChange={(v) => inputOnChange(v)} selectedValue={inputValue} defaultValue={defaultValue}>
+        <FormInput label={label} erro={erro} isDisabled={isDisabled || isLoading} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
+            <Select onValueChange={(v) => inputOnChange(v)} selectedValue={inputValue?.toString()} defaultValue={defaultValue}>
                 <SelectTrigger h={50} borderRadius={'$xl'} pr={23}>
-                    <SelectInput placeholder="Selecionar" />
-                    <SelectIcon size={'lg'}>
-                        <Icon as={ChevronDownIcon} size={'lg'} />
+                    <SelectInput placeholder={isLoading ? "Buscando..." : "Selecionar"} />
+                    <SelectIcon h={'$full'}>
+                        {
+                            isLoading
+                                ?
+                                (
+                                    <Spinner h={'$full'} size={28} />
+                                )
+                                :
+                                (
+                                    <Icon h={'$full'} as={ChevronDownIcon} size={'lg'} />
+                                )
+                        }
                     </SelectIcon>
                 </SelectTrigger>
                 <SelectPortal>
