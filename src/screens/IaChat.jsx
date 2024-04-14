@@ -16,21 +16,21 @@ const { height } = Dimensions.get("window");
 
 export default IaChat = () => {
   return (
-    <Box>
-      <Box
+    <Box flex={1}>
+      <Box flex={1}
         $dark-bg={"$backgroundDark900"}
         $light-bg={"$white"}
-        height={height - 175}
         alignItems={"start"}
         hardShadow="5"
-        borderRadius={30}
-        mx={"$2"}
-        my={"$2"}
+        borderRadius={25}
+        mx={20}
+        mb={20}
+        mt={12}
         p={10}
         justifyContent={"space-between"}
       >
-        <Box borderRadius={30}>
-          <ScrollView maxHeight={580}>
+        <Box flex={1} borderRadius={30}>
+          <ScrollView >
             <CardMensagem
               mensagem="Quais os alunos que estão com a mensalidade atrasada?"
               enviadoDe="Você"
@@ -65,22 +65,20 @@ export default IaChat = () => {
             />
           </ScrollView>
         </Box>
-        <Box>
+        <Box flexGrow={0}>
           <Input
             variant="outline"
             size="md"
-            isDisabled={false}
-            isInvalid={false}
-            isReadOnly={false}
-            mx={"$3"}
-            borderRadius={40}
+            mx={2}
+            mt={10}
+            borderRadius={18}
           >
             <InputField placeholder="Faça uma pergunta para a IA..." />
-            <Button size="sm" bg="none">
+            <Button h={'$full'} px={8} bg={'transparent'} >
               <MaterialCommunityIcons
-                name="arrow-right-box"
-                size={25}
-                color="#d3d3d3"
+                name="send-circle-outline"
+                size={30}
+                color="#c1c1c1"
               />
             </Button>
           </Input>
