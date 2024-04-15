@@ -10,18 +10,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
 import { DialogProvider } from './components/dialog/DialogContext';
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function AppContainer() {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const theme = useSelector(state => state.theme.theme);
     return (
         <GluestackUIProvider colorMode={theme} config={config}  >
-            <StatusBar translucent={false} backgroundColor={theme === 'light' ? '#f1f1f1' : '#404040'} barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} />
-            <DialogProvider>
-                <NavigationContainer >
-                    {isAuthenticated ? <DrawerNavigation /> : <Login />}
-                </NavigationContainer>
-            </DialogProvider>
+            <SafeAreaView flex={1}>
+                <StatusBar translucent={true} backgroundColor={theme === 'light' ? 'transparent' : '#404040'} barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} />
+                <DialogProvider>
+                    <NavigationContainer >
+                        {isAuthenticated ? <DrawerNavigation /> : <Login />}
+                    </NavigationContainer>
+                </DialogProvider>
+            </SafeAreaView>
         </GluestackUIProvider >
     );
 }
