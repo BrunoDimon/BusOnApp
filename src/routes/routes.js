@@ -29,7 +29,7 @@ export default routes = [
     {
         name: 'historico-pagamentos',
         label: 'Histórico Pagamentos',
-        accessRequired: ['ACESSO_ALUNO'],
+        accessRequired: ['ACESSO_ALUNO', 'ACESSO_GESTAO'],
         rigthButtonHeader: 'sync',
         component: HistoricoPagamento
     },

@@ -70,6 +70,12 @@ export default routesMenu = [
                 iconName: 'content-save-cog-outline',
                 accessRequired: ['ACESSO_GESTAO'],
             },
+            {
+                name: 'historico-pagamentos',
+                label: 'Histórico de Pagamentos',
+                iconName: 'content-save-cog-outline',
+                accessRequired: ['ACESSO_GESTAO'],
+            },
 
         ]
     },

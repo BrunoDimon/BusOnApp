@@ -1,5 +1,4 @@
 import { Box, Button, ButtonText, useToast, FlatList } from "@gluestack-ui/themed"
-import ListPagamento from "./ItemListPagamento";
 import { useEffect, useState } from "react";
 import CardBoxPagamento from "./CardBoxPagamento";
 import { buscarTodosPagamentos, cadastrarPagamento, buscarPagamentoPorId, editarPagamento, excluirPagamento } from "../../service/api/requests/pagamentoRequest";

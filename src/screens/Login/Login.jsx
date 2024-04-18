@@ -25,8 +25,8 @@ export default function Login() {
                 nome: 'Douglas',
                 sobrenome: 'Kuerten',
                 //tipoAcesso: 'ACESSO_ADMIN',
-                tipoAcesso: 'ACESSO_GESTAO',
-                //tipoAcesso: 'ACESSO_ALUNO',
+                //tipoAcesso: 'ACESSO_GESTAO',
+                tipoAcesso: 'ACESSO_ALUNO',
                 associacaoId: 1
             },
             token: 'exampleToken',
