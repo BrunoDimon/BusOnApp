@@ -11,10 +11,22 @@ import { useSelector } from 'react-redux';
 import { DialogProvider } from './components/dialog/DialogContext';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { validateToken } from './service/api/requests/autenticacaoRequests';
 
 export default function AppContainer() {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const theme = useSelector(state => state.theme.theme);
+
+    useEffect(() => {
+        console.log('Inciou aplicação')
+        const validarTokenAcessoAtual = async () => {
+            if (isAuthenticated) {
+                await validateToken();
+            }
+        }
+        validarTokenAcessoAtual();
+    }, [])
+
     return (
         <GluestackUIProvider colorMode={theme} config={config}  >
             <SafeAreaView flex={1}>
