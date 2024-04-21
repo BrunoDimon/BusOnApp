@@ -12,7 +12,7 @@ export const Button = ({ label, onPress, variant, isLoading, isDisabled, icon, a
             {
                 label &&
                 (
-                    <ButtonText maxFontSizeMultiplier={1.4} opacity={isLoading ? 0 : 1} mx={isLoading ? -5 : 0}>
+                    <ButtonText maxFontSizeMultiplier={1.4} opacity={isLoading ? 0 : 1}>
                         {label}
                     </ButtonText>
                 )

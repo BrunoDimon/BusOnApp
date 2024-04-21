@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import authReducer from './authSlice';
 import themeReducer from './themeSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from '../service/api/api';
 
 
 
@@ -14,7 +15,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage, // Onde irá armazenar
-    whitelist: ['theme'], // Reducers que você deseja persistir
+    whitelist: ['theme', 'auth'], // Reducers que você deseja persistir
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -25,5 +26,14 @@ export const store = configureStore({
         serializableCheck: false,
     }),
 });
+store.subscribe(() => {
+    const state = store.getState();
+    const { token } = state.auth;
 
+    if (token) {
+        api.defaults.headers.common['Authorization'] = `${token}`;
+    } else {
+        delete api.defaults.headers.common['Authorization'];
+    }
+});
 export const persistor = persistStore(store);

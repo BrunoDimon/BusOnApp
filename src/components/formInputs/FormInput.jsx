@@ -19,7 +19,7 @@ export const FormInput = ({ label, erro, inputValue, inputOnChangeText, isDisabl
             {children}
             <FormControlError>
                 <FormControlErrorIcon as={AlertCircleIcon} />
-                <FormControlErrorText>
+                <FormControlErrorText flex={1}>
                     {erro}
                 </FormControlErrorText>
             </FormControlError>

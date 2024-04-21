@@ -19,8 +19,8 @@ export const FormCursos = ({ onClose, dadosEdicao }) => {
     const [instituicoes, setInstituicoes] = useState([])
     const [inputValues, setInputValues] = useState({
         nome: dadosEdicao?.nome || null,
-        situacao: dadosEdicao?.situacao || null,
-        instituicao_id: dadosEdicao?.instituicao_id || null,
+        situacao: dadosEdicao?.situacao || "ATIVO",
+        instituicaoId: dadosEdicao?.instituicaoId || null,
     });
 
     const eModoEdicao = dadosEdicao ? true : false
@@ -37,8 +37,8 @@ export const FormCursos = ({ onClose, dadosEdicao }) => {
     const validarFormulario = () => {
         let errors = {};
 
-        if (inputValues.instituicao_id == null || inputValues.instituicao_id == '') {
-            errors.instituicao_id = "Instituição é obrigatório"
+        if (inputValues.instituicaoId == null || inputValues.instituicaoId == '') {
+            errors.instituicaoId = "Instituição é obrigatório"
         }
         if (inputValues.nome == null || inputValues.nome == '') {
             errors.nome = "Nome é obrigatório"
@@ -108,7 +108,7 @@ export const FormCursos = ({ onClose, dadosEdicao }) => {
                     </ModalCloseButton>
                 </ModalHeader>
                 <ModalBody >
-                    <InputSelect label={'Instituição'} erro={errors.instituicao_id} selectValues={instituicoes} inputOnChange={(value) => handleChangeInputValues('instituicao_id', value)} isRequired={true} inputValue={instituicoes.find(v => v.value === inputValues.instituicao_id)?.label} isLoading={isLoadingInstituicoes} />
+                    <InputSelect label={'Instituição'} erro={errors.instituicaoId} selectValues={instituicoes} inputOnChange={(value) => handleChangeInputValues('instituicaoId', value)} isRequired={true} inputValue={instituicoes.find(v => v.value === inputValues.instituicaoId)?.label} isLoading={isLoadingInstituicoes} />
                     <InputText label={'Nome'} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} />
                     <InputSelect label={'Situação'} erro={errors.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={AtivoInativoEnum[inputValues.situacao]} />
                 </ModalBody>

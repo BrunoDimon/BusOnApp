@@ -1,5 +1,5 @@
 import { Modal, ModalBackdrop, ModalHeader, ModalBody, Heading, Icon, CloseIcon, Input, InputField, ModalCloseButton, ModalContent, ModalFooter, useToast } from "@gluestack-ui/themed"
-import { cadastrarInstituicao, editarInstituicao } from "../../service/api/requests/instituicaoRequests";
+import { cadastrarAssociacao, editarAssociacao } from "../../service/api/requests/associacaoRequests";
 import ToastConfig from "../../components/toasts/ToastConfig"
 import { useEffect, useRef, useState } from "react"
 import { InputText } from "../../components/formInputs/InputText";
@@ -7,17 +7,19 @@ import { InputSelect } from "../../components/formInputs/InputSelect";
 import { Button } from "../../components/buttons/Button";
 import AtivoInativoEnum from "../../enums/AtivoInativoEnum";
 import { useSelector } from "react-redux";
+import { InputNumber } from "../../components/formInputs/InputNumber";
 
 
-export const FormInstituicao = ({ onClose, dadosEdicao }) => {
+export const FormAssociacao = ({ onClose, dadosEdicao }) => {
     const toast = useToast()
     const ref = useRef(null)
     const userInfos = useSelector(state => state.auth.user);
     const [inputValues, setInputValues] = useState({
+        cnpj: dadosEdicao?.cnpj || null,
         nome: dadosEdicao?.nome || null,
         endereco: dadosEdicao?.endereco || null,
         situacao: dadosEdicao?.situacao || 'ATIVO',
-        associacaoId: dadosEdicao?.associacaoId || userInfos.associacaoId
+        pixApiId: dadosEdicao?.pixApiId || null
     });
 
     const eModoEdicao = dadosEdicao ? true : false
@@ -59,9 +61,9 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
         try {
             if (validarFormulario()) {
                 if (!eModoEdicao) {
-                    await cadastrarInstituicao(inputValues);
+                    await cadastrarAssociacao(inputValues);
                 } else {
-                    await editarInstituicao(dadosEdicao.id, inputValues);
+                    await editarAssociacao(dadosEdicao.id, inputValues);
                 }
                 toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao cadastrar!', (v) => toast.close(v)));
                 onClose(true);
@@ -79,12 +81,13 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
             <ModalBackdrop />
             <ModalContent>
                 <ModalHeader>
-                    <Heading size="xl" maxFontSizeMultiplier={1.3}>{!eModoEdicao ? 'Cadastro Instituição' : 'Edição Instituição'}</Heading>
+                    <Heading size="xl" maxFontSizeMultiplier={1.3}>{!eModoEdicao ? 'Cadastro Associação' : 'Edição Associação'}</Heading>
                     <ModalCloseButton>
                         <Icon as={CloseIcon} />
                     </ModalCloseButton>
                 </ModalHeader>
                 <ModalBody>
+                    <InputNumber label={'CNPJ'} erro={errors.cnpj} inputOnChange={(value) => handleChangeInputValues('cnpj', value)} inputValue={inputValues.cnpj} />
                     <InputText label={'Nome'} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} />
                     <InputText label={'Endereço'} erro={errors.endereco} inputOnChange={(value) => handleChangeInputValues('endereco', value)} isRequired={true} inputValue={inputValues.endereco} />
                     <InputSelect label={'Situação'} erro={errors.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={AtivoInativoEnum[inputValues.situacao]} />

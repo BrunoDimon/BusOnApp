@@ -44,7 +44,7 @@ export default function CardBoxPagamento({ id, usuario, dataVencimento, dataPaga
                 </Box>
             </Box >
             {
-                userInfo.tipoAcesso == 'ACESSO_GESTAO' || userInfo.tipoAcesso == 'ACESSO_ADMIN' || userInfo.tipoAcesso == 'ACESSO_ALUNO' &&
+                userInfo.tipoAcesso == 'GESTAO' || userInfo.tipoAcesso == 'ADMIN' || userInfo.tipoAcesso == 'ALUNO' &&
                 (
                     <ButtonDotsDropdownMenu titulo={'id' + '-' + 'nome'} opcoesMenu={
                         [{

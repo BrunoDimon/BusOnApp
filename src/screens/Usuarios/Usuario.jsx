@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useToast, Box, FlatList, HStack, Avatar, Heading, Text } from '@gluestack-ui/themed';
 import { Button } from '../../components/buttons/Button';
-import { buscarTodosAlunos, excluirAluno, buscarAlunoPorId } from '../../service/api/requests/alunosRequests'
+import { buscarTodosAlunos, excluirAluno, buscarAlunoPorId } from '../../service/api/requests/usuarioRequests'
 import ButtonDotsDropdownMenu from '../../components/buttons/ButtonDotsDropdownMenu';
 import { Card } from '@gluestack-ui/themed';
 import Situacao from '../../components/Situacao';
 import AtivoInativoEnum from '../../enums/AtivoInativoEnum';
-import { FormAluno } from './FormAluno';
+import { FormAluno } from './FormUsuario';
 import { useDialog } from '../../components/dialog/DialogContext';
 import ToastConfig from '../../components/toasts/ToastConfig';
+import DaysCircle from '../../components/DaysCircle';
+import { VStack } from '@gluestack-ui/themed';
 
-export default function Alunos() {
+export default function Usuario() {
     const toast = useToast();
 
     const [alunos, setAlunos] = useState([]);
@@ -49,7 +51,7 @@ export default function Alunos() {
                 nome: response.data.nome,
                 email: response.data.email,
                 telefone: response.data.telefone,
-                associacao_id: response.data.associacaoId,
+                associacaoId: response.data.associacaoId,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);
@@ -62,18 +64,16 @@ export default function Alunos() {
 
     const renderItem = ({ item }) => (
         <Card bg={'white'} flexDirection="col" px={12} mb={10} mx={15} borderLeftWidth={10} borderColor={'$yellow400'} borderRadius={'$xl'} hardShadow='5'>
-            <Box justifyContent="space-between" flexDirection="col">
-                <HStack justifyContent='space-between' my={12}>
-                    <HStack alignItems='center' gap={12}>
-                        <Avatar></Avatar>
-                        <Box>
-                            <Heading color={'$textDark700'}>{item.nome}</Heading>
-                            {item.endereco && (
-                                <Text color={'$textDark700'}>{item.endereco}</Text>
-                            )}
-                        </Box>
-                    </HStack>
-                    <Box alignItems='flex-end' justifyContent='space-between'>
+            <HStack flex={1} justifyContent='space-between' my={12} gap={10}>
+                <VStack flex={1}>
+                    <HStack justifyContent='space-between'>
+                        <HStack flex={1} gap={10} alignItems='center' mb={5}>
+                            <Avatar></Avatar>
+                            <VStack flex={1}>
+                                <Heading numberOfLines={1} color={'$textDark700'}>{item.nome}</Heading>
+                                <Text numberOfLines={1} color={'$textDark700'}>{`${item?.curso?.nome || ''} - ${item?.curso?.instituicao?.nome || ''}`}</Text>
+                            </VStack>
+                        </HStack>
                         <ButtonDotsDropdownMenu titulo={item.id + '-' + item.nome} opcoesMenu={[
                             {
                                 onPress: () => acaoEditarAluno(item.id),
@@ -90,12 +90,20 @@ export default function Alunos() {
                                 label: 'Excluir',
                             },
                         ]} />
+                    </HStack>
+                    <HStack alignItems='center' justifyContent='space-between'>
                         <Situacao situacao={AtivoInativoEnum[item.situacao]} pr={10} />
-                    </Box>
-                </HStack>
-            </Box>
+                        <DaysCircle daysActive={item.diasUsoTransporte} />
+                    </HStack>
+                </VStack>
+            </HStack>
+
         </Card>
     );
+
+    /*     {item.associacao && (
+            <Text color={'$textDark700'}>{item.associacao.nome}</Text>
+        )} */
 
     useEffect(() => {
         buscarAlunos();

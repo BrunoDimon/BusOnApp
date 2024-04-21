@@ -1,32 +1,38 @@
 import { useState } from 'react';
-import { Center, Button, Heading, Box, Text, Image, ButtonText, Toast, VStack, ToastTitle, useToast, Input, InputField, InputSlot, InputIcon, Pressable, HStack, Divider, KeyboardAvoidingView, ScrollView } from "@gluestack-ui/themed";
+import { Center, Heading, Box, Text, Image, Toast, VStack, ToastTitle, useToast, Input, InputField, InputSlot, InputIcon, Pressable, HStack, Divider, KeyboardAvoidingView, ScrollView } from "@gluestack-ui/themed";
 import { useColorMode } from "@gluestack-ui/themed"
 import Label from '../../components/Label';
 import { EyeIcon, EyeOffIcon } from 'lucide-react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/authSlice';
-import { Path } from 'react-native-svg';
+import { loginRequest } from '../../service/api/requests/autenticacaoRequests';
+import ToastConfig from '../../components/toasts/ToastConfig';
+import { Button } from '../../components/buttons/Button';
+import { InputSelect } from '../../components/formInputs/InputSelect';
+import TipoAcessoUsuarioEnum from '../../enums/TipoAcessoUsuarioEnum';
 
 
 export default function Login() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const toast = useToast()
     const colorMode = useColorMode();
+
     const theme = useSelector(state => state.theme.theme);
 
     const logo = theme === "light" ? require('../../../assets/busOnFontePreta.png') : require('../../../assets/busOnFonteBranca.png');
     const draw = require('../../../assets/school-bus-predios-dark.png');
     const dispatch = useDispatch();
 
-    const handleLogin = () => {
+    const acaoLoginSemBackEnd = () => {
         const userData = {
             user: {
                 nome: 'Douglas',
-                sobrenome: 'Kuerten',
-                //tipoAcesso: 'ACESSO_ADMIN',
-                tipoAcesso: 'ACESSO_GESTAO',
-                //tipoAcesso: 'ACESSO_ALUNO',
+                //tipoAcesso: 'ADMIN',
+                tipoAcesso: 'GESTAO',
+                //tipoAcesso: 'ALUNO',
                 associacaoId: 1
             },
             token: 'exampleToken',
@@ -34,6 +40,33 @@ export default function Login() {
         };
         dispatch(login(userData));
     };
+
+    const acaoLogin = async () => {
+        setIsLoading(true);
+        await loginRequest(email, password)
+            .then(response => {
+                // Nesse caso os dados estão sendo setados globalmente dentro do autenticacaoRequests
+                console.log('Sucesso no login')
+            }).catch(error => {
+                console.log(error.response.data)
+                toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+            })
+        setIsLoading(false)
+    };
+
+    const temporarioSetarValoresLogin = (value) => {
+        console.log(value)
+        if (value === 'ADMIN') {
+            setEmail('usuario@admin.com')
+            setPassword('admin')
+        } else if (value === 'GESTAO') {
+            setEmail('usuario@gestao.com')
+            setPassword('gestao')
+        } else if (value === 'ALUNO') {
+            setEmail('usuario@aluno.com')
+            setPassword('aluno')
+        }
+    }
 
     return (
         <Box flex={1} sx={{ _dark: { bg: '$secondary900', }, _light: { bg: '$light100', }, }}>
@@ -62,7 +95,7 @@ export default function Login() {
                     <Box flex={1.2} my={10}>
                         <Label label={"E-mail"} >
                             <Input h={50} borderRadius={'$xl'}>
-                                <InputField onChangeText={value => setUsername(value)} value={username} type={'text'} />
+                                <InputField onChangeText={value => setEmail(value)} value={email} type={'email'} />
                             </Input>
                         </Label>
 
@@ -83,13 +116,17 @@ export default function Login() {
                                     Esqueceu a senha?
                                 </Text>
                             </Pressable>
-                            <Button size='xl' borderRadius={'$xl'} onPress={handleLogin}>
-                                <ButtonText maxFontSizeMultiplier={1.5}>
-                                    Entrar
-                                </ButtonText>
-                            </Button>
+                            <Button label={'Entrar'} onPress={acaoLogin} isLoading={isLoading} />
                         </HStack>
                     </Box>
+                    <Divider mb={15} />
+                    <Center mb={15}>
+                        <Heading>Temporário para Devs</Heading>
+                    </Center>
+                    <Box flex={1} my={10}>
+                        <InputSelect label={'Setar valores login'} selectValues={TipoAcessoUsuarioEnum} typeSelectValues={'ENUM'} inputOnChange={(v) => temporarioSetarValoresLogin(v)} erro={'Funcionalidade serve apenas para não precisar digitar o login durante a fase de desenvolvimento, após isso será removido.\n\nObs: Cadastrar os usuários através do Insomnia, existe 3 rotas prontas com os 3 tipos de acesso que serão iguais aos que estão sendo setados aqui no front'} />
+                    </Box>
+                    <Button label={'Entrar sem autenticar'} onPress={acaoLoginSemBackEnd} isLoading={isLoading} />
                 </ScrollView>
             </Box>
         </Box >

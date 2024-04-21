@@ -5,17 +5,17 @@ export default routesMenu = [
         routes: [
             {
                 name: 'ia-chat',
-                accessRequired: ['ACESSO_ADMIN', 'ACESSO_GESTAO', 'ACESSO_ALUNO'],
+                accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
             },
             {
                 name: 'ia-chat',
                 label: 'IA Chat',
                 iconName: 'robot-outline',
-                accessRequired: ['ACESSO_ADMIN', 'ACESSO_GESTAO', 'ACESSO_ALUNO'],
+                accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
             },
             {
                 name: 'ia-chat',
-                accessRequired: ['ACESSO_ADMIN', 'ACESSO_GESTAO', 'ACESSO_ALUNO'],
+                accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
             },
         ]
     },
@@ -26,19 +26,19 @@ export default routesMenu = [
                 name: 'mensalidade',
                 label: 'Mensalidade',
                 iconName: 'currency-usd',
-                accessRequired: ['ACESSO_ALUNO'],
+                accessRequired: ['ALUNO'],
             },
             {
                 name: 'historico-pagamentos',
                 label: 'Histórico',
                 iconName: 'clipboard-text-clock-outline',
-                accessRequired: ['ACESSO_ALUNO'],
+                accessRequired: ['ALUNO'],
             },
             {
                 name: 'meus-dados',
                 label: 'Meus Dados',
                 iconName: 'card-account-details-outline',
-                accessRequired: ['ACESSO_ALUNO'],
+                accessRequired: ['ALUNO'],
             },
 
         ]
@@ -50,25 +50,43 @@ export default routesMenu = [
                 name: 'alunos',
                 label: 'Alunos',
                 iconName: 'account-group-outline',
-                accessRequired: ['ACESSO_GESTAO'],
+                accessRequired: ['GESTAO'],
             },
             {
                 name: 'instituicoes',
                 label: 'Instituições',
                 iconName: 'town-hall',
-                accessRequired: ['ACESSO_GESTAO'],
+                accessRequired: ['GESTAO'],
             },
             {
                 name: 'cursos',
                 label: 'Cursos',
                 iconName: 'school-outline',
-                accessRequired: ['ACESSO_GESTAO'],
+                accessRequired: ['GESTAO'],
             },
             {
                 name: 'parametros',
                 label: 'Parâmetros',
                 iconName: 'content-save-cog-outline',
-                accessRequired: ['ACESSO_GESTAO'],
+                accessRequired: ['GESTAO'],
+            },
+
+        ]
+    },
+    {
+        category: 'Administração APP',
+        routes: [
+            {
+                name: 'associacao',
+                label: 'Associações',
+                iconName: 'bus-multiple',
+                accessRequired: ['ADMIN'],
+            },
+            {
+                name: 'usuario',
+                label: 'Usuários',
+                iconName: 'account-group-outline',
+                accessRequired: ['ADMIN'],
             },
 
         ]

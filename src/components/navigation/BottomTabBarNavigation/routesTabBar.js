@@ -1,29 +1,29 @@
 export default routesTabBar = [
     {
-        tipoAcesso: 'ACESSO_ADMIN',
+        tipoAcesso: 'ADMIN',
         routes: [
-            /*            {
-                           name: 'pagamentos',
-                           label: 'Pagamentos',
-                           iconName: 'receipt',
-                           isMainRoute: false,
-                       }, */
+            {
+                name: 'associacao',
+                label: 'Associações',
+                iconName: 'bus-multiple',
+                isMainRoute: false,
+            },
             {
                 name: 'inicio',
                 label: 'Início',
                 iconName: 'home-outline',
                 isMainRoute: true,
             },
-            /*             {
-                            name: 'alunos',
-                            label: 'Alunos',
-                            iconName: 'card-account-details-outline',
-                            isMainRoute: false,
-                        } */
+            {
+                name: 'usuario',
+                label: 'Usuários',
+                iconName: 'account-group-outline',
+                isMainRoute: false,
+            },
         ]
     },
     {
-        tipoAcesso: 'ACESSO_GESTAO',
+        tipoAcesso: 'GESTAO',
         routes: [
             {
                 name: 'pagamentos',
@@ -46,7 +46,7 @@ export default routesTabBar = [
         ]
     },
     {
-        tipoAcesso: 'ACESSO_ALUNO',
+        tipoAcesso: 'ALUNO',
         routes: [
             {
                 name: 'historico-pagamentos',

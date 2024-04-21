@@ -5,9 +5,9 @@ import { InputText } from "../../components/formInputs/InputText";
 import { InputSelect } from "../../components/formInputs/InputSelect";
 import AtivoInativoEnum from "../../enums/AtivoInativoEnum";
 import { useSelector } from "react-redux";
-import { cadastrarAlunos } from "../../service/api/requests/alunosRequests";
+import { cadastrarAlunos } from "../../service/api/requests/usuarioRequests";
 
-export const FormAluno = ({ onClose, dadosEdicao }) => {
+export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const toast = useToast()
     const ref = useRef(null)
     const userInfos = useSelector(state => state.auth.user);
