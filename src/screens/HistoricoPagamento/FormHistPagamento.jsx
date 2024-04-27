@@ -1,5 +1,6 @@
-import { Heading, ModalContent, useToast, Button, ButtonText, ModalCloseButton, Icon, CloseIcon, Modal, ModalBackdrop, ModalHeader, ModalBody, ModalFooter, ScrollView } from "@gluestack-ui/themed"
+import { Heading, ModalContent, useToast, ModalCloseButton, Icon, CloseIcon, Modal, ModalBackdrop, ModalHeader, ModalBody, ModalFooter, ScrollView } from "@gluestack-ui/themed"
 import { useEffect, useRef, useState } from "react"
+import { Button } from "../../components/buttons/Button";
 import { cadastrarPagamento, editarPagamento } from "../../service/api/requests/pagamentoRequest"
 import { InputSelect } from "../../components/formInputs/InputSelect"
 import { InputNumber } from "../../components/formInputs/InputNumber"
@@ -8,6 +9,7 @@ import SituacaoPagamentoEnum from "../../enums/SituacaoPagamentoEnum"
 import { buscarTodosUsuarios } from "../../service/api/requests/usuarioRequests"
 import { InputText } from "../../components/formInputs/InputText"
 import TipoPagamentoEnum from "../../enums/TipoPagamentoEnum"
+import ToastConfig from "../../components/toasts/ToastConfig";
 
 export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
     const toast = useToast();
@@ -16,14 +18,14 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
     const [usuarios, setUsuarios] = useState([]);
     const [inputValues, setInputValues] = useState({
         txid: dadosEdicao?.txid || null,
-        copia_cola: dadosEdicao?.copia_cola || null,
-        usuario: dadosEdicao?.usuario || null,
+        copiaCola: dadosEdicao?.copiaCola || null,
+        usuarioId: dadosEdicao?.usuarioId || null,
         tipo: dadosEdicao?.tipo || null,
         valor: dadosEdicao?.valor || null,
         multa: dadosEdicao?.multa || null,
-        data_pagamento: dadosEdicao?.data_pagamento || null,
-        data_vencimento: dadosEdicao?.data_vencimento || null,
-        situacao: dadosEdicao?.situacao || null
+        dataPagamento: dadosEdicao?.dataPagamento || new Date(),
+        dataVencimento: dadosEdicao?.dataVencimento || null,
+        situacao: dadosEdicao?.situacao || 'ABERTO'
 
     });
     const [reconsultarRegistros, setReconsultarRegistros] = useState(false);
@@ -70,11 +72,10 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
         buscarUsuarios();
     }, []);
 
-
     return (
         <Modal isOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
             <ModalBackdrop />
-            <ModalContent>
+            <ModalContent maxHeight={'$3/4'}>
                 <ModalHeader justifyContent="center">
                     <Heading size="xl" color="$textDark800">Cadastro de Pagamento</Heading>
                     <ModalCloseButton>
@@ -83,26 +84,17 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
                 </ModalHeader>
                 <ModalBody>
                     <ScrollView>
-                        <InputText label={'txid'} inputOnChange={(value) => handleChangeInputValues('txid', value)} isRequired={true} inputValue={inputValues.txid} />
-                        <InputText label={'copia cola'} inputOnChange={(value) => handleChangeInputValues('copia_cola', value)} isRequired={true} inputValue={inputValues.copia_cola} />
-                        <InputSelect label={'Usuario'} selectValues={usuarios} inputOnChange={(value) => handleChangeInputValues('usuario', value)} isRequired={true} inputValue={usuarios.find(v => v.value === inputValues.usuario)?.label} isLoading={isLoadingUsuarios} />
+                        <InputSelect label={'Usuario'} selectValues={usuarios} inputOnChange={(value) => handleChangeInputValues('usuarioId', value)} isRequired={true} inputValue={inputValues.usuarioId} isLoading={isLoadingUsuarios} />
                         <InputNumber label={'Valor'} inputOnChange={(value) => handleChangeInputValues('valor', value)} isRequired={true} inputValue={inputValues.valor} />
-                        <InputNumber label={'Multa'} inputOnChange={(value) => handleChangeInputValues('multa', value)} isRequired={true} inputValue={inputValues.multa} />
-                        <InputSelect label={'Forma de Pagamento'} selectValues={TipoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('tipo', value)} isRequired={true} inputValue={TipoPagamentoEnum[inputValues.tipo]} />
-                        <InputDate la bel={'Data Pagamento'} inputOnChange={(value) => handleChangeInputValues('data_pagamento', value)} isRequire={true} inputValue={inputValues.data_pagamento} />
-                        <InputDate la bel={'Data Vencimento'} inputOnChange={(value) => handleChangeInputValues('data_vencimento', value)} isRequire={true} inputValue={inputValues.data_vencimento} />
-                        <InputSelect label={'Situação'} selectValues={SituacaoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={SituacaoPagamentoEnum[inputValues.situacao]} />
+                        <InputNumber label={'Multa'} inputOnChange={(value) => handleChangeInputValues('multa', value)} isRequired={false} inputValue={inputValues.multa} />
+                        <InputSelect label={'Forma de Pagamento'} selectValues={TipoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('tipo', value)} isRequired={true} inputValue={inputValues.tipo} />
+                        <InputDate label={'Data Pagamento'} inputOnChange={(value) => handleChangeInputValues('dataPagamento', value)} isRequire={true} inputValue={inputValues.dataPagamento} />
+                        <InputSelect label={'Situação'} selectValues={SituacaoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} />
                     </ScrollView>
                 </ModalBody>
                 <ModalFooter justifyContent="space-between">
-                    <Button size='xl' borderRadius={'$xl'} variant="outline">
-                        <ButtonText>Cancelar</ButtonText>
-                    </Button>
-                    <Button size='xl' borderRadius={'$xl'} onPress={() => handleOnPressSave()}>
-                        <ButtonText>
-                            Salvar
-                        </ButtonText>
-                    </Button>
+                    <Button label={"Cancelar"} variant={"outline"} action={"secondary"} onPress={() => onClose()} />
+                    <Button label={"Salvar"} onPress={() => handleOnPressSave()} />
                 </ModalFooter>
             </ModalContent>
 

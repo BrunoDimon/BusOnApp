@@ -39,12 +39,18 @@ export default HistoricoPagamentos = ({ navigation }) => {
 
     const handleEditarPagamento = async (id) => {
         await buscarPagamentoPorId(id).then((response) => {
+            console.log('usuarioId é esse: ', response.data.usuarioId)
             const dados = {
                 id: response.data.id,
-                usuario: response.data.usuario_id,
-                dataVencimento: response.data.data_vencimento,
-                dataPagamento: response.data.data_pagamento,
+                txid: response.data.txid,
+                copiaCola: response.data.copiaCola,
+                usuarioId: response.data.usuarioId,
+                tipo: response.data.tipo,
                 valor: response.data.valor,
+                multa: response.data.multa,
+                dataVencimento: response.data.dataVencimento,
+                dataPagamento: response.data.dataPagamento,
+                situacao: response.data.situacao,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);
@@ -55,9 +61,12 @@ export default HistoricoPagamentos = ({ navigation }) => {
         })
     }
 
-    const handleFormClose = () => {
+    const handleFormClose = (reconsultarRegistro) => {
         setDadosFormEdicao(null);
         setFormIsOpen(false);
+        if (reconsultarRegistro) {
+            buscarPagamentos()
+        }
     }
 
 
