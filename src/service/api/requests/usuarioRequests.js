@@ -1,20 +1,20 @@
 import { api } from '../api';
 
-export const buscarTodosAlunos = async (filtros) => {
+export const buscarTodosUsuarios = async (filtros) => {
     return request = await api.get('/usuario?filters=' + JSON.stringify(filtros));
 };
 
-export const buscarAlunosPorId = async (id) => {
+export const buscarUsuarioPorId = async (id) => {
     return request = await api.get('/usuario/' + String(id));
 }
-export const excluirAlunos = async (id) => {
+export const excluirUsuario = async (id) => {
     return request = await api.delete('/usuario/' + String(id));
 }
 
-export const cadastrarAlunos = async (data) => {
+export const cadastrarUsuario = async (data) => {
     return request = await api.post('/usuario', data);
 }
 
-export const editarAlunos = async (id, data) => {
+export const editarUsuario = async (id, data) => {
     return request = await api.put('/usuario/' + String(id), data);
 }

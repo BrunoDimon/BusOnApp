@@ -32,6 +32,9 @@ export const loginRequest = async (email, senha) => {
         })
 }
 
+
+
+
 export const validateToken = async () => {
     await api.post('/autenticacao/validar-token')
         .then(response => {

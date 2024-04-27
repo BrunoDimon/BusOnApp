@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useToast, Box, FlatList, HStack, Avatar, Heading, Text } from '@gluestack-ui/themed';
 import { Button } from '../../components/buttons/Button';
-import { buscarTodosAlunos, excluirAluno, buscarAlunoPorId } from '../../service/api/requests/usuarioRequests'
+import { buscarTodosUsuarios, excluirAluno, buscarAlunoPorId, excluirUsuario, buscarUsuarioPorId } from '../../service/api/requests/usuarioRequests'
 import ButtonDotsDropdownMenu from '../../components/buttons/ButtonDotsDropdownMenu';
 import { Card } from '@gluestack-ui/themed';
 import Situacao from '../../components/Situacao';
 import AtivoInativoEnum from '../../enums/AtivoInativoEnum';
-import { FormAluno } from './FormUsuario';
+import { FormUsuario } from './FormUsuario';
 import { useDialog } from '../../components/dialog/DialogContext';
 import ToastConfig from '../../components/toasts/ToastConfig';
 import DaysCircle from '../../components/DaysCircle';
@@ -21,11 +21,11 @@ export default function Usuario() {
     const [formIsOpen, setFormIsOpen] = useState(false);
     const { openDialog } = useDialog();
 
-    const buscarAlunos = async () => {
+    const buscarUsuarios = async () => {
         console.log('Executou reload');
         try {
             setListIsRefreshing(true);
-            const response = await buscarTodosAlunos();
+            const response = await buscarTodosUsuarios();
             setAlunos(response.data);
         } catch (error) {
             console.error('Erro ao buscar alunos:', error.response.data);
@@ -34,24 +34,31 @@ export default function Usuario() {
         }
     };
 
-    const acaoExcluirAluno = async (id) => {
+    const acaoExcluirUsuario = async (id) => {
         try {
-            await excluirAluno(id);
-            buscarAlunos();
+            await excluirUsuario(id);
+            buscarUsuarios();
             toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao deletar!', (v) => toast.close(v)));
         } catch (error) {
             toast.show(ToastConfig('error', 'Erro ao deletar!', error.response.data.message, (v) => toast.close(v)));
         }
     };
 
-    const acaoEditarAlunos = async (id) => {
-        await buscarAlunosPorId(id).then((response) => {
+    const acaoEditarUsuario = async (id) => {
+        await buscarUsuarioPorId(id).then((response) => {
+            console.log(response.data)
             const dados = {
+                associacaoId: response.data.associacaoId,
                 id: response.data.id,
                 nome: response.data.nome,
                 email: response.data.email,
                 telefone: response.data.telefone,
-                associacaoId: response.data.associacaoId,
+                endereco: response.data.endereco,
+                cursoId: response.data.cursoId,
+                tipoAcesso: response.data.tipoAcesso,
+                situacao: response.data.situacao,
+                diasUsoTransporte: response.data.diasUsoTransporte,
+                senha: response.data.senha,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);
@@ -76,14 +83,14 @@ export default function Usuario() {
                         </HStack>
                         <ButtonDotsDropdownMenu titulo={item.id + '-' + item.nome} opcoesMenu={[
                             {
-                                onPress: () => acaoEditarAluno(item.id),
+                                onPress: () => acaoEditarUsuario(item.id),
                                 nomeIcone: 'pencil-outline',
                                 corIcone: '#005db4',
                                 label: 'Editar',
                             },
                             {
                                 onPress: () => {
-                                    openDialog('EXCLUIR', { onPress: () => acaoExcluirAluno(item.id) })
+                                    openDialog('EXCLUIR', { onPress: () => acaoExcluirUsuario(item.id) })
                                 },
                                 nomeIcone: 'trash-can-outline',
                                 corIcone: '#dc2626',
@@ -106,21 +113,21 @@ export default function Usuario() {
         )} */
 
     useEffect(() => {
-        buscarAlunos();
+        buscarUsuarios();
     }, []);
 
     const handleFormClose = (reconsultarRegistros) => {
         setDadosFormEdicao(null);
         setFormIsOpen(false);
         if (reconsultarRegistros) {
-            buscarAlunos();
+            buscarUsuarios();
         }
     };
 
     return (
         <Box flex={1}>
             {
-                formIsOpen && <FormAluno onClose={(v) => handleFormClose(v)} dadosEdicao={dadosFormEdicao} />
+                formIsOpen && <FormUsuario onClose={(v) => handleFormClose(v)} dadosEdicao={dadosFormEdicao} />
             }
             <HStack mx={15} mt={5} gap={5} justifyContent='space-between'>
                 <Button label={'Filtros'} variant={'outline'} action={'secondary'} />
@@ -134,7 +141,7 @@ export default function Usuario() {
                     initialNumToRender={8}
                     windowSize={4}
                     refreshing={listIsRefreshing}
-                    onRefresh={buscarAlunos}
+                    onRefresh={buscarUsuarios}
                 />
             </Box>
         </Box>

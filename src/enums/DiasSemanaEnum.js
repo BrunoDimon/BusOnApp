@@ -1,0 +1,9 @@
+export default DiasSemanaEnum = {
+    SEGUNDA: "Segunda-Feira",
+    TERCA: "Terça-Feira",
+    QUARTA: "Quarta-Feira",
+    QUINTA: "Quinta-Feira",
+    SEXTA: "Sexta-Feira",
+    SABADO: "Sábado",
+    DOMINGO: "Domingo",
+}
