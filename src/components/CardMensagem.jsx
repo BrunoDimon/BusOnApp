@@ -2,7 +2,7 @@ import { Text, Card, Box } from "@gluestack-ui/themed";
 
 export default CardMensagem = ({ mensagem, enviadoDe, ...props }) => {
   return (
-    <Box {...props}>
+    <Box alignItems={enviadoDe == 'IA' ? 'flex-start' : 'flex-end'}>
       <Text fontSize={12} px={10}>{enviadoDe}</Text>
       <Card
         size="md"

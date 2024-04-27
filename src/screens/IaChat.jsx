@@ -11,10 +11,26 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import CardMensagem from "../components/CardMensagem";
+import { enviarMensagem } from "../service/api/requests/chatRequests";
+import { useState } from "react";
 
-const { height } = Dimensions.get("window");
 
 export default IaChat = () => {
+  const [inputChat, setInputChat] = useState();
+  const [mensagens, setMensagens] = useState([]);
+
+  async function enviarMensagemChat(mensagem) {
+      setMensagens(mensagens => [...mensagens, {
+        mensagem: mensagem,
+        enviadoDe: "Você"
+      }]);
+      const data = await enviarMensagem(mensagem);
+      setMensagens(mensagens => [...mensagens, {
+        mensagem: data,
+        enviadoDe: "IA"
+      }]);
+  }
+
   return (
     <Box flex={1}>
       <Box flex={1}
@@ -31,38 +47,7 @@ export default IaChat = () => {
       >
         <Box flex={1} borderRadius={30}>
           <ScrollView >
-            <CardMensagem
-              mensagem="Quais os alunos que estão com a mensalidade atrasada?"
-              enviadoDe="Você"
-              alignItems="flex-end"
-            />
-            <CardMensagem
-              mensagem="Estão com a mensalidade atrasada os seguintes alunos: Thiago Dimon Miranda e Douglas Kuerten"
-              enviadoDe="IA"
-              mt={5}
-            />
-            <CardMensagem
-              mensagem="Quais os alunos que estão com a mensalidade atrasada?"
-              enviadoDe="Você"
-              mt={5}
-              alignItems="flex-end"
-            />
-            <CardMensagem
-              mensagem="Estão com a mensalidade atrasada os seguintes alunos: Thiago Dimon Miranda e Douglas Kuerten"
-              enviadoDe="IA"
-              mt={5}
-            />
-            <CardMensagem
-              mensagem="Quais os alunos que estão com a mensalidade atrasada?"
-              enviadoDe="Você"
-              mt={5}
-              alignItems="flex-end"
-            />
-            <CardMensagem
-              mensagem="Estão com a mensalidade atrasada os seguintes alunos: Thiago Dimon Miranda e Douglas Kuerten"
-              enviadoDe="IA"
-              mt={5}
-            />
+            {mensagens?.map(mensagem => <CardMensagem mensagem={mensagem.mensagem} enviadoDe={mensagem.enviadoDe}/>)}
           </ScrollView>
         </Box>
         <Box flexGrow={0}>
@@ -73,8 +58,8 @@ export default IaChat = () => {
             mt={10}
             borderRadius={18}
           >
-            <InputField placeholder="Faça uma pergunta para a IA..." />
-            <Button h={'$full'} px={8} bg={'transparent'} >
+            <InputField placeholder="Faça uma pergunta para a IA..." onChangeText={(v) => setInputChat(v)} value={inputChat} />
+            <Button h={'$full'} px={8} bg={'transparent'} onPress={() => enviarMensagemChat(inputChat)} >
               <MaterialCommunityIcons
                 name="send-circle-outline"
                 size={30}
