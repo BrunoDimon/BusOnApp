@@ -60,7 +60,6 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
                 isDisabled: value.situacao !== 'ATIVO'
             }));
             setUsuarios(valoresSelect);
-            console.log(valoresSelect);
         } catch (error) {
             console.error('Erro ao buscar usuários:', error.response.data);
         } finally {

@@ -26,7 +26,6 @@ export default function Instituicao() {
     const [filtersIsOpen, setFiltersIsOpen] = useState(false);
 
     const buscarInstituicoes = async () => {
-        console.log('Executou reload')
         try {
             setListIsRefreshing(true);
             const response = await buscarTodasInstituicoes(filtros);

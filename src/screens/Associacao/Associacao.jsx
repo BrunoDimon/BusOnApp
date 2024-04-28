@@ -26,7 +26,6 @@ export const Associacao = () => {
     const [filtersIsOpen, setFiltersIsOpen] = useState(false);
 
     const buscarAssociacoes = async () => {
-        console.log('Executou reload')
         try {
             setListIsRefreshing(true);
             const response = await buscarTodasAssociacoes(filtros);

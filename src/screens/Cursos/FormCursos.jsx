@@ -110,7 +110,7 @@ export const FormCursos = ({ onClose, dadosEdicao }) => {
                 <ModalBody >
                     <InputSelect label={'Instituição'} erro={errors.instituicaoId} selectValues={instituicoes} inputOnChange={(value) => handleChangeInputValues('instituicaoId', value)} isRequired={true} inputValue={instituicoes.find(v => v.value === inputValues.instituicaoId)?.label} isLoading={isLoadingInstituicoes} />
                     <InputText label={'Nome'} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} />
-                    <InputSelect label={'Situação'} erro={errors.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={AtivoInativoEnum[inputValues.situacao]} />
+                    <InputSelect label={'Situação'} erro={errors.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} />
                 </ModalBody>
                 <ModalFooter gap={10}>
                     <Button label={'Cancelar'} variant={'outline'} action={'secondary'} onPress={() => onClose()} />

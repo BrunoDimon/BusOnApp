@@ -55,7 +55,6 @@ export default function Login() {
     };
 
     const temporarioSetarValoresLogin = (value) => {
-        console.log(value)
         if (value === 'ADMIN') {
             setEmail('usuario@admin.com')
             setPassword('admin')

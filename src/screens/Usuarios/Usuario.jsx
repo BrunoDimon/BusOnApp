@@ -11,6 +11,7 @@ import { useDialog } from '../../components/dialog/DialogContext';
 import ToastConfig from '../../components/toasts/ToastConfig';
 import DaysCircle from '../../components/DaysCircle';
 import { VStack } from '@gluestack-ui/themed';
+import { useSelector } from 'react-redux';
 
 export default function Usuario() {
     const toast = useToast();
@@ -21,11 +22,19 @@ export default function Usuario() {
     const [formIsOpen, setFormIsOpen] = useState(false);
     const { openDialog } = useDialog();
 
+    const userInfos = useSelector(state => state.auth.user);
+    const eUsuarioAdmin = userInfos.tipoAcesso == "ADMIN";
+
     const buscarUsuarios = async () => {
-        console.log('Executou reload');
+        const whereClause =
+            eUsuarioAdmin
+                ?
+                { notEquals: { tipoAcesso: 'ALUNO' } }
+                :
+                { equals: { associacaoId: userInfos.associacaoId }, notEquals: { tipoAcesso: 'ADMIN' } }
         try {
             setListIsRefreshing(true);
-            const response = await buscarTodosUsuarios();
+            const response = await buscarTodosUsuarios(whereClause);
             setAlunos(response.data);
         } catch (error) {
             console.error('Erro ao buscar alunos:', error.response.data);
@@ -36,6 +45,10 @@ export default function Usuario() {
 
     const acaoExcluirUsuario = async (id) => {
         try {
+            if (userInfos.id == id) {
+                toast.show(ToastConfig('error', 'Erro ao deletar!', 'Não é possivel excluir o próprio usuário!', (v) => toast.close(v)));
+                return
+            }
             await excluirUsuario(id);
             buscarUsuarios();
             toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao deletar!', (v) => toast.close(v)));
@@ -46,19 +59,20 @@ export default function Usuario() {
 
     const acaoEditarUsuario = async (id) => {
         await buscarUsuarioPorId(id).then((response) => {
-            console.log(response.data)
             const dados = {
-                associacaoId: response.data.associacaoId,
-                id: response.data.id,
-                nome: response.data.nome,
-                email: response.data.email,
-                telefone: response.data.telefone,
-                endereco: response.data.endereco,
-                cursoId: response.data.cursoId,
-                tipoAcesso: response.data.tipoAcesso,
-                situacao: response.data.situacao,
-                diasUsoTransporte: response.data.diasUsoTransporte,
-                senha: response.data.senha,
+                associacaoId: response.data.associacao.id,
+                id: response.data?.id,
+                nome: response.data?.nome,
+                email: response.data?.email,
+                telefone: response.data?.telefone,
+                endereco: response.data?.endereco,
+                matricula: response.data?.matricula,
+                cursoId: response.data?.curso?.id,
+                instituicaoId: response.data.curso?.instituicao?.id,
+                tipoAcesso: response.data?.tipoAcesso,
+                situacao: response.data?.situacao,
+                diasUsoTransporte: response.data?.diasUsoTransporte,
+                senha: response.data?.senha,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);
@@ -100,7 +114,14 @@ export default function Usuario() {
                     </HStack>
                     <HStack alignItems='center' justifyContent='space-between'>
                         <Situacao situacao={AtivoInativoEnum[item.situacao]} pr={10} />
-                        <DaysCircle daysActive={item.diasUsoTransporte} />
+                        {
+
+                            userInfos.tipoAcesso != 'ADMIN'
+                                ?
+                                <DaysCircle daysActive={item.diasUsoTransporte} />
+                                :
+                                <Text>{item.associacao?.nome}</Text>
+                        }
                     </HStack>
                 </VStack>
             </HStack>

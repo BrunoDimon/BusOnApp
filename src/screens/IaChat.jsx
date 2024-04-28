@@ -7,19 +7,27 @@ import {
   InputField,
   Button,
   ScrollView,
+  Spinner,
+  HStack,
+  VStack,
 } from "@gluestack-ui/themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import CardMensagem from "../components/CardMensagem";
 import { enviarMensagem } from "../service/api/requests/chatRequests";
 import { useState } from "react";
+import { Text } from "@gluestack-ui/themed";
 
 
 export default IaChat = () => {
   const [inputChat, setInputChat] = useState();
   const [mensagens, setMensagens] = useState([]);
+  const [awaitResponse, setAwaitResponse] = useState(false);
 
   async function enviarMensagemChat(mensagem) {
+    if (mensagem) {
+      setAwaitResponse(true);
+      setInputChat(null);
       setMensagens(mensagens => [...mensagens, {
         mensagem: mensagem,
         enviadoDe: "Você"
@@ -29,6 +37,8 @@ export default IaChat = () => {
         mensagem: data,
         enviadoDe: "IA"
       }]);
+      setAwaitResponse(false);
+    }
   }
 
   return (
@@ -47,10 +57,23 @@ export default IaChat = () => {
       >
         <Box flex={1} borderRadius={30}>
           <ScrollView >
-            {mensagens?.map(mensagem => <CardMensagem mensagem={mensagem.mensagem} enviadoDe={mensagem.enviadoDe}/>)}
+            {mensagens?.map((mensagem, index) => {
+              return (
+                <CardMensagem key={index} mensagem={mensagem.mensagem} enviadoDe={mensagem.enviadoDe} />)
+            })
+            }
           </ScrollView>
         </Box>
         <Box flexGrow={0}>
+          {awaitResponse &&
+            (
+              <VStack alignItems="center">
+                <Spinner />
+                <Text>Buscando resposta...</Text>
+              </VStack>
+            )
+          }
+
           <Input
             variant="outline"
             size="md"
@@ -59,11 +82,11 @@ export default IaChat = () => {
             borderRadius={18}
           >
             <InputField placeholder="Faça uma pergunta para a IA..." onChangeText={(v) => setInputChat(v)} value={inputChat} />
-            <Button h={'$full'} px={8} bg={'transparent'} onPress={() => enviarMensagemChat(inputChat)} >
+            <Button isDisabled={awaitResponse || !inputChat} h={'$full'} px={8} bg={'transparent'} onPress={() => enviarMensagemChat(inputChat)} >
               <MaterialCommunityIcons
                 name="send-circle-outline"
                 size={30}
-                color="#c1c1c1"
+                color={"#ffd000"}
               />
             </Button>
           </Input>

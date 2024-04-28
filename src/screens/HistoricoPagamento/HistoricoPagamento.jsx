@@ -39,7 +39,6 @@ export default HistoricoPagamentos = ({ navigation }) => {
 
     const handleEditarPagamento = async (id) => {
         await buscarPagamentoPorId(id).then((response) => {
-            console.log('usuarioId é esse: ', response.data.usuarioId)
             const dados = {
                 id: response.data.id,
                 txid: response.data.txid,

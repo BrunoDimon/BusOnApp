@@ -5,24 +5,28 @@ import { InputText } from "../../components/formInputs/InputText";
 import { InputSelect } from "../../components/formInputs/InputSelect";
 import AtivoInativoEnum from "../../enums/AtivoInativoEnum";
 import { useSelector } from "react-redux";
-import { cadastrarUsuario } from "../../service/api/requests/usuarioRequests";
+import { cadastrarUsuario, editarUsuario } from "../../service/api/requests/usuarioRequests";
 import TipoAcessoUsuarioEnum from "../../enums/TipoAcessoUsuarioEnum";
 import { InputCheckbox } from "../../components/formInputs/InputCheckbox";
 import DiasSemanaEnum from "../../enums/DiasSemanaEnum";
 import { buscarTodasInstituicoes } from "../../service/api/requests/instituicaoRequests";
 import { buscarTodosCursos } from "../../service/api/requests/cursoRequests";
 import { buscarTodasAssociacoes } from "../../service/api/requests/associacaoRequests";
+import ToastConfig from "../../components/toasts/ToastConfig";
 
 export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const toast = useToast()
     const ref = useRef(null)
     const userInfos = useSelector(state => state.auth.user);
+    const eUsuarioAdmin = userInfos.tipoAcesso == "ADMIN";
+
     const [inputValues, setInputValues] = useState({
         associacaoId: dadosEdicao?.associacaoId || userInfos.associacaoId,
         nome: dadosEdicao?.nome || null,
         email: dadosEdicao?.email || null,
         telefone: dadosEdicao?.telefone || null,
         endereco: dadosEdicao?.endereco || null,
+        matricula: dadosEdicao?.matricula || null,
         instituicaoId: dadosEdicao?.instituicaoId || null,
         cursoId: dadosEdicao?.cursoId || null,
         tipoAcesso: dadosEdicao?.tipoAcesso || "ALUNO",
@@ -111,6 +115,9 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const validarFormulario = () => {
         let errors = {};
 
+        if (!eUsuarioAdmin && !inputValues.associacaoId) {
+            errors.associacaoId = "Assosiação é obrigatória";
+        }
         if (!inputValues.nome) {
             errors.nome = "Nome é obrigatório";
         }
@@ -119,6 +126,12 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
         }
         if (!inputValues.telefone) {
             errors.telefone = "Telefone é obrigatório";
+        }
+        if (!inputValues.tipoAcesso) {
+            errors.tipoAcesso = "Tipo acesso é obrigatório";
+        }
+        if (!inputValues.situacao) {
+            errors.situacao = "Situação é obrigatório";
         }
 
         setErrors(errors);
@@ -130,12 +143,12 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
         try {
             if (validarFormulario()) {
                 if (!eModoEdicao) {
-                    handleChangeInputValues("senha", inputValues.nome + inputValues.telefone)
                     await cadastrarUsuario(inputValues);
+                    toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao cadastrar!', (v) => toast.close(v)));
                 } else {
                     await editarUsuario(dadosEdicao.id, inputValues);
+                    toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao editar!', (v) => toast.close(v)));
                 }
-                toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao cadastrar!', (v) => toast.close(v)));
                 onClose(true);
             } else {
                 toast.show(ToastConfig('error', 'Erro', 'Campos Inválidos', (v) => toast.close(v)));
@@ -145,6 +158,13 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
             toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
         }
     }
+
+    const tipoAcessoValores =
+        eUsuarioAdmin
+            ?
+            TipoAcessoUsuarioEnum
+            :
+            { GESTAO: 'Gestor', ALUNO: 'Aluno' }
 
 
     return (
@@ -159,14 +179,15 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                 </ModalHeader>
                 <ModalBody >
                     <ScrollView >
-                        <InputSelect label={"Associação"} inputOnChange={(value) => handleChangeInputValues("associacaoId", value)} inputValue={inputValues.associacaoId} selectValues={associacoes} isRequired={true} isDisabled={userInfos.tipoAcesso != "ADMIN"} />
+                        <InputSelect label={"Associação"} erro={errors.associacaoId} inputOnChange={(value) => handleChangeInputValues("associacaoId", value)} inputValue={inputValues.associacaoId} selectValues={associacoes} isRequired={!eUsuarioAdmin} isDisabled={!eUsuarioAdmin} />
                         <InputText label={"Nome Completo"} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues("nome", value)} isRequired={true} inputValue={inputValues.nome} />
                         <InputText label={"E-mail"} erro={errors.email} inputOnChange={(value) => handleChangeInputValues("email", value)} isRequired={true} inputValue={inputValues.email} />
                         <InputText label={"Telefone"} erro={errors.telefone} inputOnChange={(value) => handleChangeInputValues("telefone", value)} isRequired={true} inputValue={inputValues.telefone} />
-                        <InputText label={"Endereço"} erro={errors.endereco} inputOnChange={(value) => handleChangeInputValues("endereco", value)} isRequired={true} inputValue={inputValues.endereco} />
+                        <InputText label={"Endereço"} erro={errors.endereco} inputOnChange={(value) => handleChangeInputValues("endereco", value)} inputValue={inputValues.endereco} />
+                        <InputText label={"Matricula"} erro={errors.matricula} inputOnChange={(value) => handleChangeInputValues("matricula", value)} inputValue={inputValues.matricula} />
                         <InputSelect label={"Instituição"} inputOnChange={(value) => handleChangeInputValues("instituicaoId", value)} inputValue={inputValues.instituicaoId} selectValues={instituicoes} />
                         <InputSelect label={"Curso"} inputOnChange={(value) => handleChangeInputValues("cursoId", value)} inputValue={inputValues.cursoId} selectValues={cursos} isDisabled={!inputValues.instituicaoId} />
-                        <InputSelect label={"Tipo Acesso"} inputOnChange={(value) => handleChangeInputValues("tipoAcesso", value)} inputValue={inputValues.tipoAcesso} selectValues={userInfos.tipoAcesso == 'ADMIN' ? TipoAcessoUsuarioEnum : { GESTOR: 'Gestor', ALUNO: 'Aluno' }} typeSelectValues={'ENUM'} isRequired={true} />
+                        <InputSelect label={"Tipo Acesso"} inputOnChange={(value) => handleChangeInputValues("tipoAcesso", value)} inputValue={inputValues.tipoAcesso} selectValues={tipoAcessoValores} typeSelectValues={'ENUM'} isRequired={true} />
                         <InputSelect label={"Situação"} inputOnChange={(value) => handleChangeInputValues("situacao", value)} inputValue={inputValues.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} isRequired={true} />
                         <InputCheckbox label={"Dias Uso Transporte"} inputOnChange={(value) => handleChangeInputValues("diasUsoTransporte", value)} checkboxValues={DiasSemanaEnum} typeCheckboxValues={'ENUM'} inputValue={inputValues.diasUsoTransporte} />
                     </ScrollView>

@@ -82,7 +82,6 @@ export default Configuracoes = () => {
 
         setErrors(errors);
         const isValid = (Object.keys(errors).length === 0);
-        console.log(isValid)
         return isValid;
     }
     useEffect(() => {
