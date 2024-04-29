@@ -37,7 +37,7 @@ export default Inicio = ({ navigation }) => {
             </Box >
             <Center my={10}>
                 <Text>Texto Temporário</Text>
-                <Heading>{userInfos.tipoAcesso}</Heading>
+                <Heading>{userInfos?.tipoAcesso}</Heading>
             </Center>
             <ScrollView>
                 <Box gap={15} pb={20}>

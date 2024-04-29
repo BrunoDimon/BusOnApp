@@ -18,3 +18,7 @@ export const cadastrarUsuario = async (data) => {
 export const editarUsuario = async (id, data) => {
     return request = await api.put('/usuario/' + String(id), data);
 }
+
+export const editarSenhaUsuario = async (id, data) => {
+    return request = await api.put('/usuario/atualizar-senha/' + String(id), data);
+}

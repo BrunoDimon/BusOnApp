@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useToast, Box, FlatList, HStack, Avatar, Heading, Text } from '@gluestack-ui/themed';
+import { Box, FlatList, HStack, Avatar, Heading, Text, ModalBackdrop } from '@gluestack-ui/themed';
 import { Button } from '../../components/buttons/Button';
 import { buscarTodosUsuarios, excluirAluno, buscarAlunoPorId, excluirUsuario, buscarUsuarioPorId } from '../../service/api/requests/usuarioRequests'
 import ButtonDotsDropdownMenu from '../../components/buttons/ButtonDotsDropdownMenu';
@@ -8,13 +8,13 @@ import Situacao from '../../components/Situacao';
 import AtivoInativoEnum from '../../enums/AtivoInativoEnum';
 import { FormUsuario } from './FormUsuario';
 import { useDialog } from '../../components/dialog/DialogContext';
-import ToastConfig from '../../components/toasts/ToastConfig';
 import DaysCircle from '../../components/DaysCircle';
 import { VStack } from '@gluestack-ui/themed';
 import { useSelector } from 'react-redux';
+import { useToast } from 'react-native-toast-notifications';
 
 export default function Usuario() {
-    const toast = useToast();
+    const globalToast = useToast();
 
     const [alunos, setAlunos] = useState([]);
     const [dadosFormEdicao, setDadosFormEdicao] = useState(null);
@@ -38,6 +38,7 @@ export default function Usuario() {
             setAlunos(response.data);
         } catch (error) {
             console.error('Erro ao buscar alunos:', error.response.data);
+            globalToast.show("Erro ao buscar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         } finally {
             setListIsRefreshing(false);
         }
@@ -46,14 +47,14 @@ export default function Usuario() {
     const acaoExcluirUsuario = async (id) => {
         try {
             if (userInfos.id == id) {
-                toast.show(ToastConfig('error', 'Erro ao deletar!', 'Não é possivel excluir o próprio usuário!', (v) => toast.close(v)));
+                globalToast.show("Erro ao deletar", { data: { messageDescription: 'Não é possivel excluir o próprio usuário!' }, type: 'warning' })
                 return
             }
             await excluirUsuario(id);
             buscarUsuarios();
-            toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao deletar!', (v) => toast.close(v)));
+            globalToast.show("Sucesso", { data: { messageDescription: 'Usuário excluído com sucesso!' }, type: 'success' })
         } catch (error) {
-            toast.show(ToastConfig('error', 'Erro ao deletar!', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao deletar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     };
 
@@ -79,7 +80,7 @@ export default function Usuario() {
         }).catch((error) => {
             setDadosFormEdicao(null);
             console.error(error.response.data)
-            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao editar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         })
     }
 
@@ -144,7 +145,6 @@ export default function Usuario() {
             buscarUsuarios();
         }
     };
-
     return (
         <Box flex={1}>
             {
@@ -152,7 +152,7 @@ export default function Usuario() {
             }
             <HStack mx={15} mt={5} gap={5} justifyContent='space-between'>
                 <Button label={'Filtros'} variant={'outline'} action={'secondary'} />
-                <Button label={'Cadastrar Aluno'} onPress={() => setFormIsOpen(true)} />
+                <Button label={'Cadastrar Aluno'} isLoading={formIsOpen} onPress={() => setFormIsOpen(true)} />
             </HStack>
             <Box flex={1} pt={10}>
                 <FlatList
@@ -165,6 +165,6 @@ export default function Usuario() {
                     onRefresh={buscarUsuarios}
                 />
             </Box>
-        </Box>
+        </Box >
     );
 }

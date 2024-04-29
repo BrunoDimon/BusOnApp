@@ -1,4 +1,4 @@
-import { Modal, ModalBackdrop, ModalHeader, ModalBody, Heading, Icon, CloseIcon, Input, InputField, ModalCloseButton, ModalContent, ModalFooter, useToast, ScrollView } from "@gluestack-ui/themed";
+import { Modal, ModalBackdrop, ModalHeader, ModalBody, Heading, Icon, CloseIcon, Input, InputField, ModalCloseButton, ModalContent, ModalFooter, ScrollView } from "@gluestack-ui/themed";
 import { Button } from "../../components/buttons/Button";
 import { useEffect, useRef, useState } from "react"
 import { InputText } from "../../components/formInputs/InputText";
@@ -12,10 +12,11 @@ import DiasSemanaEnum from "../../enums/DiasSemanaEnum";
 import { buscarTodasInstituicoes } from "../../service/api/requests/instituicaoRequests";
 import { buscarTodosCursos } from "../../service/api/requests/cursoRequests";
 import { buscarTodasAssociacoes } from "../../service/api/requests/associacaoRequests";
-import ToastConfig from "../../components/toasts/ToastConfig";
+import { useToast, Toast, ToastProvider } from "react-native-toast-notifications";
+import ToastAlert from "../../components/toasts/ToastAlert";
 
 export const FormUsuario = ({ onClose, dadosEdicao }) => {
-    const toast = useToast()
+    const globalToast = useToast();
     const ref = useRef(null)
     const userInfos = useSelector(state => state.auth.user);
     const eUsuarioAdmin = userInfos.tipoAcesso == "ADMIN";
@@ -49,10 +50,10 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const eModoEdicao = dadosEdicao ? true : false
 
     const handleChangeInputValues = (fieldName, value) => {
-        setInputValues({
-            ...inputValues,
+        setInputValues(prevState => ({
+            ...prevState,
             [fieldName]: value,
-        });
+        }));
     };
 
     const buscarAssociacoes = async () => {
@@ -144,18 +145,19 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
             if (validarFormulario()) {
                 if (!eModoEdicao) {
                     await cadastrarUsuario(inputValues);
-                    toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao cadastrar!', (v) => toast.close(v)));
+                    onClose(true);
+                    globalToast.show("Sucesso", { data: { messageDescription: 'Usuário cadastrado com sucesso!' }, type: 'success' })
                 } else {
                     await editarUsuario(dadosEdicao.id, inputValues);
-                    toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao editar!', (v) => toast.close(v)));
+                    onClose(true);
+                    globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
                 }
-                onClose(true);
             } else {
-                toast.show(ToastConfig('error', 'Erro', 'Campos Inválidos', (v) => toast.close(v)));
+                Toast.show("Erro", { data: { messageDescription: 'Falha ao realizar a operação. Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error.response.data);
-            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+            Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 
@@ -168,7 +170,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
 
 
     return (
-        <Modal isOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
+        <Modal useRNModal={true} defaultIsOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
             <ModalBackdrop />
             <ModalContent maxHeight={'$3/4'}>
                 <ModalHeader>
@@ -197,6 +199,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                     <Button label={"Salvar"} onPress={() => handleOnPressSave()} />
                 </ModalFooter>
             </ModalContent>
+            <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} />
         </Modal >
     );
 };

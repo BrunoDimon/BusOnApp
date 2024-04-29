@@ -1,18 +1,16 @@
-import { useToast, Box, FlatList, HStack, VStack, Avatar, Heading, Text } from '@gluestack-ui/themed'
-import { Button } from '../../components/buttons/Button'
+import { Avatar, Box, Card, FlatList, HStack, Heading, Text } from '@gluestack-ui/themed'
 import { useEffect, useState } from 'react'
-import { buscarAssociacaoPorId, buscarTodasAssociacoes, excluirAssociacao } from '../../service/api/requests/associacaoRequests'
-import CardBox from '../../components/CardBox'
-import ButtonDotsDropdownMenu from '../../components/buttons/ButtonDotsDropdownMenu'
-import { Card } from '@gluestack-ui/themed'
 import Situacao from '../../components/Situacao'
+import { Button } from '../../components/buttons/Button'
+import ButtonDotsDropdownMenu from '../../components/buttons/ButtonDotsDropdownMenu'
+import { useDialog } from "../../components/dialog/DialogContext"
 import AtivoInativoEnum from '../../enums/AtivoInativoEnum'
+import { buscarAssociacaoPorId, buscarTodasAssociacoes, excluirAssociacao } from '../../service/api/requests/associacaoRequests'
 import { FormAssociacao } from './FormAssociacao'
-import { useDialog } from "../../components/dialog/DialogContext";
-import ToastConfig from "../../components/toasts/ToastConfig"
+import { useToast } from "react-native-toast-notifications"
 
 export const Associacao = () => {
-    const toast = useToast()
+    const globalToast = useToast()
 
     const [associacoes, setAssociacoes] = useState([])
     const [dadosFormEdicao, setDadosFormEdicao] = useState();
@@ -32,6 +30,7 @@ export const Associacao = () => {
             setAssociacoes(response.data);
         } catch (error) {
             console.error('Erro ao buscar instituições:', error.response.data);
+            globalToast.show("Erro ao buscar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         } finally {
             setListIsRefreshing(false)
         }
@@ -41,9 +40,9 @@ export const Associacao = () => {
         try {
             await excluirAssociacao(id);
             buscarAssociacoes();
-            toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao deletar!', (v) => toast.close(v)));
+            globalToast.show("Sucesso", { data: { messageDescription: 'Usuário excluído com sucesso!' }, type: 'success' })
         } catch (error) {
-            toast.show(ToastConfig('error', 'Erro ao deletar!', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao excluir", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 
@@ -62,7 +61,7 @@ export const Associacao = () => {
         }).catch((error) => {
             setDadosFormEdicao(null);
             console.error(error.response.data)
-            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao editar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         })
     }
 
@@ -124,7 +123,7 @@ export const Associacao = () => {
             }
             <HStack mx={15} mt={5} gap={5} justifyContent='space-between'>
                 <Button label={'Filtros'} variant={'outline'} action={'secondary'} />
-                <Button label={'Cadastrar'} onPress={() => setFormIsOpen(true)} />
+                <Button label={'Cadastrar'} isLoading={formIsOpen} onPress={() => setFormIsOpen(true)} />
             </HStack>
             <Box flex={1} pt={10} >
                 <FlatList

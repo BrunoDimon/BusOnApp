@@ -1,11 +1,5 @@
-import { CheckboxLabel } from "@gluestack-ui/themed"
-import { Checkbox, CheckboxIcon, CheckboxIndicator } from "@gluestack-ui/themed"
-import { CheckboxGroup, VStack } from "@gluestack-ui/themed"
-
-import { AlertCircleIcon, FormControlErrorText, FormControlLabelText, Input, InputField } from "@gluestack-ui/themed"
-import { FormControl, FormControlError, FormControlErrorIcon, FormControlLabel, } from "@gluestack-ui/themed"
+import { Checkbox, CheckIcon, CheckboxIcon, CheckboxIndicator, CheckboxGroup, VStack, CheckboxLabel } from "@gluestack-ui/themed"
 import { FormInput } from "./FormInput"
-import { CheckIcon } from "@gluestack-ui/themed"
 
 export const InputCheckbox = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, checkboxValues = [], typeCheckboxValues, defaultValue, isLoading }) => {
     const enumToOptions = (enumObject) => {
@@ -33,9 +27,7 @@ export const InputCheckbox = ({ label, erro, inputValue, inputOnChange, isDisabl
                                 <CheckboxLabel>{value.label}</CheckboxLabel>
                             </Checkbox>
                         ))
-
                     }
-
                 </VStack>
             </CheckboxGroup>
         </FormInput>

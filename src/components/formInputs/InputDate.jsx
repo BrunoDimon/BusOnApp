@@ -11,8 +11,8 @@ export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, 
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
-        inputOnChange(selectedDate)
         setShow(false);
+        inputOnChange(selectedDate)
     };
     const handlePress = async () => {
         if (show) {

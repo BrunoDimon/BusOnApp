@@ -1,18 +1,17 @@
-import { useToast, Box, FlatList, HStack, VStack, Avatar, Heading, Text } from '@gluestack-ui/themed'
+import { Box, FlatList, HStack, VStack, Avatar, Heading, Text } from '@gluestack-ui/themed'
 import { Button } from '../../components/buttons/Button'
 import { useEffect, useState } from 'react'
 import { buscarInstituicaoPorId, buscarTodasInstituicoes, excluirInstituicao } from '../../service/api/requests/instituicaoRequests'
-import CardBox from '../../components/CardBox'
 import ButtonDotsDropdownMenu from '../../components/buttons/ButtonDotsDropdownMenu'
 import { Card } from '@gluestack-ui/themed'
 import Situacao from '../../components/Situacao'
 import AtivoInativoEnum from '../../enums/AtivoInativoEnum'
 import { FormInstituicao } from './FormInstituicao'
 import { useDialog } from "../../components/dialog/DialogContext";
-import ToastConfig from "../../components/toasts/ToastConfig"
+import { useToast } from "react-native-toast-notifications";
 
 export default function Instituicao() {
-    const toast = useToast()
+    const globalToast = useToast()
 
     const [instituicoes, setInstituicoes] = useState([])
     const [dadosFormEdicao, setDadosFormEdicao] = useState();
@@ -32,6 +31,7 @@ export default function Instituicao() {
             setInstituicoes(response.data);
         } catch (error) {
             console.error('Erro ao buscar instituições:', error.response.data);
+            globalToast.show("Erro ao buscar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         } finally {
             setListIsRefreshing(false)
         }
@@ -41,9 +41,9 @@ export default function Instituicao() {
         try {
             await excluirInstituicao(id);
             buscarInstituicoes();
-            toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao deletar!', (v) => toast.close(v)));
+            globalToast.show("Sucesso", { data: { messageDescription: 'Instituição excluída com sucesso!' }, type: 'success' })
         } catch (error) {
-            toast.show(ToastConfig('error', 'Erro ao deletar!', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao excluir", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 
@@ -61,7 +61,7 @@ export default function Instituicao() {
         }).catch((error) => {
             setDadosFormEdicao(null);
             console.error(error.response.data)
-            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao editar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         })
     }
 
@@ -123,7 +123,7 @@ export default function Instituicao() {
             }
             <HStack mx={15} mt={5} gap={5} justifyContent='space-between'>
                 <Button label={'Filtros'} variant={'outline'} action={'secondary'} />
-                <Button label={'Cadastrar'} onPress={() => setFormIsOpen(true)} />
+                <Button label={'Cadastrar'} isLoading={formIsOpen} onPress={() => setFormIsOpen(true)} />
             </HStack>
             <Box flex={1} pt={10} >
                 <FlatList

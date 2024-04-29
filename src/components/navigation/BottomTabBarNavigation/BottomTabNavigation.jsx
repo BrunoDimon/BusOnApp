@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 
 
 export default function BottomTabNavigation({ navigation: navigationDrawer }) {
-    const accessUser = useSelector(state => state.auth.user.tipoAcesso);
+    const accessUser = useSelector(state => state.auth.user?.tipoAcesso);
     const userRoutes = routes.filter(route => route.accessRequired.includes(accessUser))
     const initialRouteName = userRoutes.filter(route => route.isInitialRoute)[0]?.name
     const theme = useSelector(state => state.theme.theme);

@@ -18,6 +18,13 @@
       "supportsTablet": true,
       "requireFullScreen": true
     },
+    "locales": {
+      "pt-BR": {
+        "name": "Português",
+        "iso639": "pt",
+        "iso3166": "BR"
+      }
+    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

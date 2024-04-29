@@ -12,6 +12,8 @@ import { DialogProvider } from './components/dialog/DialogContext';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { validateToken } from './service/api/requests/autenticacaoRequests';
+import { ToastProvider, Toast } from 'react-native-toast-notifications'
+import ToastAlert from './components/toasts/ToastAlert';
 
 export default function AppContainer() {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -30,12 +32,14 @@ export default function AppContainer() {
     return (
         <GluestackUIProvider colorMode={theme} config={config}  >
             <SafeAreaView flex={1}>
-                <StatusBar translucent={true} backgroundColor={theme === 'light' ? 'transparent' : '#404040'} barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} />
-                <DialogProvider>
-                    <NavigationContainer >
-                        {isAuthenticated ? <DrawerNavigation /> : <Login />}
-                    </NavigationContainer>
-                </DialogProvider>
+                <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} >
+                    <StatusBar translucent={true} backgroundColor={theme === 'light' ? 'transparent' : '#404040'} barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} />
+                    <DialogProvider>
+                        <NavigationContainer >
+                            {isAuthenticated ? <DrawerNavigation /> : <Login />}
+                        </NavigationContainer>
+                    </DialogProvider>
+                </ToastProvider>
             </SafeAreaView>
         </GluestackUIProvider >
     );

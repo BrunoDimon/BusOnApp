@@ -1,17 +1,18 @@
-import { Box, Button, ButtonText, useToast, FlatList } from "@gluestack-ui/themed"
+import { Box, FlatList } from "@gluestack-ui/themed"
 import { useEffect, useState } from "react";
 import CardBoxPagamento from "./CardBoxPagamento";
 import { buscarTodosPagamentos, cadastrarPagamento, buscarPagamentoPorId, editarPagamento, excluirPagamento } from "../../service/api/requests/pagamentoRequest";
-import ToastConfig from "../../components/toasts/ToastConfig";
 import { FormHistPagamento } from "./FormHistPagamento";
 import { useSelector } from "react-redux";
+import { Button } from "../../components/buttons/Button";
+import { useToast } from "react-native-toast-notifications";
 
 
 export default HistoricoPagamentos = ({ navigation }) => {
     const [formIsOpen, setFormIsOpen] = useState(false);
     const [dadosFormEdicao, setDadosFormEdicao] = useState();
     const [pagamentos, setPagamentos] = useState([]);
-    const toast = useToast();
+    const globalToast = useToast();
     const userInfo = useSelector(state => state.auth.user);
     useEffect(() => {
         navigation.setOptions({ onRightButtonPress: buscarPagamentos })
@@ -23,7 +24,7 @@ export default HistoricoPagamentos = ({ navigation }) => {
             setPagamentos(dados);
         } catch (error) {
             console.error('Erro ao obter pagamentos:', error);
-            toast.show(ToastConfig('error', 'Erro ao encotrar!', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao buscar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 
@@ -31,9 +32,9 @@ export default HistoricoPagamentos = ({ navigation }) => {
         try {
             await excluirPagamento(id);
             buscarPagamentos();
-            toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao deletar!', (v) => toast.close(v)));
+            globalToast.show("Sucesso", { data: { messageDescription: 'Pagamento excluído com sucesso!' }, type: 'success' })
         } catch (error) {
-            toast.show(ToastConfig('error', 'Erro ao deletar!', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao excluir", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 
@@ -56,7 +57,7 @@ export default HistoricoPagamentos = ({ navigation }) => {
         }).catch((error) => {
             setDadosFormEdicao(null);
             console.error(error.response.data)
-            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao editar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         })
     }
 
@@ -92,17 +93,11 @@ export default HistoricoPagamentos = ({ navigation }) => {
                 formIsOpen && <FormHistPagamento onClose={(v) => handleFormClose(v)} dadosEdicao={dadosFormEdicao} />
             }
             <Box mx={20} mb={15} justifyContent="space-between" borderRadius={'$5x1'} flexDirection="row">
-                <Button size='xl' borderRadius={'$xl'} variant="outline">
-                    <ButtonText>Filtros</ButtonText>
-                </Button>
+                <Button label={'Filtros'} variant={'outline'} action={'secondary'} />
                 {
-                    userInfo.tipoAcesso == 'GESTAO' || userInfo.tipoAcesso == 'ADMIN' || userInfo.tipoAcesso == 'ALUNO' &&
+                    userInfo.tipoAcesso == 'GESTAO' &&
                     (
-                        <Button size='xl' borderRadius={'$xl'} onPress={() => setFormIsOpen(true)}>
-                            <ButtonText maxFontSizeMultiplier={1.5} >
-                                Cadastrar
-                            </ButtonText>
-                        </Button>
+                        <Button label={'Cadastrar'} isLoading={formIsOpen} onPress={() => setFormIsOpen(true)} />
                     )}
             </Box>
             <FlatList

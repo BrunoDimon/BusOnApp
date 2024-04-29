@@ -43,7 +43,7 @@ export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled
                         }
                     </SelectIcon>
                 </SelectTrigger>
-                <SelectPortal>
+                <SelectPortal useRNModal={true}>
                     <SelectBackdrop />
                     <SelectContent>
                         <SelectDragIndicatorWrapper>

@@ -1,18 +1,18 @@
-import { Box, Heading, Input, ScrollView, InputField, useToast, VStack, HStack, Divider, Modal, ModalBackdrop, Spinner } from "@gluestack-ui/themed"
+import { Box, Heading, Input, ScrollView, InputField, VStack, HStack, Divider, Modal, ModalBackdrop, Spinner } from "@gluestack-ui/themed"
 import Label from "../../components/Label"
 import { InputSelect } from "../../components/formInputs/InputSelect"
 import { InputText } from "../../components/formInputs/InputText"
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { buscarParametroDaAssociacao, cadastrarParametro, editarParametro } from "../../service/api/requests/parametroRequests"
-import ToastConfig from "../../components/toasts/ToastConfig"
 import { InputNumber } from "../../components/formInputs/InputNumber"
 import LiberadoBloqueadoEnum from "../../enums/LiberadoBloqueadoEnum"
 import { Button } from "../../components/buttons/Button"
 import { ModalContent } from "@gluestack-ui/themed"
+import { useToast } from "react-native-toast-notifications"
 
 export default Configuracoes = () => {
-    const toast = useToast()
+    const globalToast = useToast()
 
     const associacaoId = useSelector(state => state.auth.user.associacaoId);
     const [isLoadingParametros, setIsLoadingParametros] = useState(true);
@@ -96,16 +96,17 @@ export default Configuracoes = () => {
             if (validarFormulario()) {
                 if (!isEditMode) {
                     await cadastrarParametro(inputValues);
+                    setIsEditMode(true);
                 } else {
                     await editarParametro(inputValues.id, inputValues);
                 }
-                toast.show(ToastConfig('success', 'Sucesso', 'Parâmetros salvos com sucesso!', (v) => toast.close(v)));
+                globalToast.show("Sucesso", { data: { messageDescription: 'Parâmetros salvos com sucesso!' }, type: 'success' })
             } else {
-                toast.show(ToastConfig('error', 'Erro', 'Campos Inválidos', (v) => toast.close(v)));
+                globalToast.show("Erro", { data: { messageDescription: 'Falha ao realizar a operação. Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error.response.data);
-            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+            globalToast.show("Erro ao salvar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         } finally {
             setIsSaving(false)
         }
@@ -114,13 +115,13 @@ export default Configuracoes = () => {
     const buscarParametros = async () => {
         try {
             const response = await buscarParametroDaAssociacao(associacaoId);
-            console.log(response.data)
             if (response.data) {
                 setIsEditMode(true);
                 setInputValues(response.data);
             }
         } catch (error) {
             console.error('Parametros não cadastrados!', error.response.data);
+            globalToast.show("Erro ao buscar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         } finally {
             setIsLoadingParametros(false)
         }
@@ -135,7 +136,7 @@ export default Configuracoes = () => {
             {
                 isLoadingParametros &&
                 (
-                    <Modal isOpen={true}>
+                    <Modal useRNModal={true} defaultIsOpen={true} >
                         <Box flex={1} w={'$full'} bgColor={'#00000070'} justifyContent="center">
                             <Spinner size={65} />
                             <Heading textAlign="center" color={'$white'}>Buscando parâmetros...</Heading>
@@ -176,7 +177,7 @@ export default Configuracoes = () => {
 
                     <VStack flex={1} gap={15}>
                         <Heading fontSize={'$2xl'} color="#525252">Liberações</Heading>
-                        <InputSelect label="Liberar Alteração Dados Pessoais" erro={errors.liberaAlteracaoDadosPessoais} selectValues={LiberadoBloqueadoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('liberaAlteracaoDadosPessoais', value)} inputValue={LiberadoBloqueadoEnum[inputValues.liberaAlteracaoDadosPessoais]} isDisabled={isLoadingParametros} />
+                        <InputSelect label="Liberar Alteração Dados Pessoais" erro={errors.liberaAlteracaoDadosPessoais} selectValues={LiberadoBloqueadoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('liberaAlteracaoDadosPessoais', value)} inputValue={inputValues.liberaAlteracaoDadosPessoais} isRequired={true} isDisabled={isLoadingParametros} />
                     </VStack>
 
                     <Box alignSelf="flex-end">

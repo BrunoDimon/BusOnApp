@@ -1,4 +1,4 @@
-import { Heading, ModalContent, useToast, ModalCloseButton, Icon, CloseIcon, Modal, ModalBackdrop, ModalHeader, ModalBody, ModalFooter, ScrollView } from "@gluestack-ui/themed"
+import { Heading, ModalContent, ModalCloseButton, Icon, CloseIcon, Modal, ModalBackdrop, ModalHeader, ModalBody, ModalFooter, ScrollView } from "@gluestack-ui/themed"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "../../components/buttons/Button";
 import { cadastrarPagamento, editarPagamento } from "../../service/api/requests/pagamentoRequest"
@@ -9,10 +9,11 @@ import SituacaoPagamentoEnum from "../../enums/SituacaoPagamentoEnum"
 import { buscarTodosUsuarios } from "../../service/api/requests/usuarioRequests"
 import { InputText } from "../../components/formInputs/InputText"
 import TipoPagamentoEnum from "../../enums/TipoPagamentoEnum"
-import ToastConfig from "../../components/toasts/ToastConfig";
+import { useToast, Toast, ToastProvider } from "react-native-toast-notifications";
+import ToastAlert from "../../components/toasts/ToastAlert";
 
 export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
-    const toast = useToast();
+    const globalToast = useToast();
     const ref = useRef(null);
     const [isLoadingUsuarios, setIsLoadingUsuarios] = useState(false);
     const [usuarios, setUsuarios] = useState([]);
@@ -40,14 +41,16 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
         try {
             if (!eModoEdicao) {
                 await cadastrarPagamento(inputValues);
+                onClose(true);
+                globalToast.show("Sucesso", { data: { messageDescription: 'Pagamento cadastrado com sucesso!' }, type: 'success' })
             } else {
                 await editarPagamento(dadosEdicao.id, inputValues);
+                onClose(true);
+                globalToast.show("Sucesso", { data: { messageDescription: 'Pagamento alterado com sucesso!' }, type: 'success' })
             }
-            toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao cadastrar!', (v) => toast.close(v)));
-            onClose(true);
         } catch (error) {
             console.error(error);
-            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+            Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
     const buscarUsuarios = async () => {
@@ -72,7 +75,7 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
     }, []);
 
     return (
-        <Modal isOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
+        <Modal useRNModal={true} defaultIsOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
             <ModalBackdrop />
             <ModalContent maxHeight={'$3/4'}>
                 <ModalHeader justifyContent="center">
@@ -87,7 +90,7 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
                         <InputNumber label={'Valor'} inputOnChange={(value) => handleChangeInputValues('valor', value)} isRequired={true} inputValue={inputValues.valor} />
                         <InputNumber label={'Multa'} inputOnChange={(value) => handleChangeInputValues('multa', value)} isRequired={false} inputValue={inputValues.multa} />
                         <InputSelect label={'Forma de Pagamento'} selectValues={TipoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('tipo', value)} isRequired={true} inputValue={inputValues.tipo} />
-                        <InputDate label={'Data Pagamento'} inputOnChange={(value) => handleChangeInputValues('dataPagamento', value)} isRequire={true} inputValue={inputValues.dataPagamento} />
+                        <InputDate label={'Data Pagamento'} inputOnChange={(value) => handleChangeInputValues('dataPagamento', value)} isRequired={true} inputValue={inputValues.dataPagamento} />
                         <InputSelect label={'Situação'} selectValues={SituacaoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} />
                     </ScrollView>
                 </ModalBody>
@@ -96,7 +99,7 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
                     <Button label={"Salvar"} onPress={() => handleOnPressSave()} />
                 </ModalFooter>
             </ModalContent>
-
+            <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} />
         </Modal>
     )
 }

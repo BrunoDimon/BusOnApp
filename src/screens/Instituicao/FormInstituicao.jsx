@@ -1,16 +1,17 @@
-import { Modal, ModalBackdrop, ModalHeader, ModalBody, Heading, Icon, CloseIcon, Input, InputField, ModalCloseButton, ModalContent, ModalFooter, useToast } from "@gluestack-ui/themed"
+import { Modal, ModalBackdrop, ModalHeader, ModalBody, Heading, Icon, CloseIcon, Input, InputField, ModalCloseButton, ModalContent, ModalFooter } from "@gluestack-ui/themed"
 import { cadastrarInstituicao, editarInstituicao } from "../../service/api/requests/instituicaoRequests";
-import ToastConfig from "../../components/toasts/ToastConfig"
 import { useEffect, useRef, useState } from "react"
 import { InputText } from "../../components/formInputs/InputText";
 import { InputSelect } from "../../components/formInputs/InputSelect";
 import { Button } from "../../components/buttons/Button";
 import AtivoInativoEnum from "../../enums/AtivoInativoEnum";
 import { useSelector } from "react-redux";
+import { ToastProvider, useToast, Toast } from "react-native-toast-notifications";
+import ToastAlert from "../../components/toasts/ToastAlert";
 
 
 export const FormInstituicao = ({ onClose, dadosEdicao }) => {
-    const toast = useToast()
+    const globalToast = useToast();
     const ref = useRef(null)
     const userInfos = useSelector(state => state.auth.user);
     const [inputValues, setInputValues] = useState({
@@ -60,22 +61,24 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
             if (validarFormulario()) {
                 if (!eModoEdicao) {
                     await cadastrarInstituicao(inputValues);
+                    onClose(true);
+                    globalToast.show("Sucesso", { data: { messageDescription: 'Instituição cadastrada com sucesso!' }, type: 'success' })
                 } else {
                     await editarInstituicao(dadosEdicao.id, inputValues);
+                    onClose(true);
+                    globalToast.show("Sucesso", { data: { messageDescription: 'Instituição alterada com sucesso!' }, type: 'success' })
                 }
-                toast.show(ToastConfig('success', 'Sucesso', 'Sucesso ao cadastrar!', (v) => toast.close(v)));
-                onClose(true);
             } else {
-                toast.show(ToastConfig('error', 'Erro', 'Campos Inválidos', (v) => toast.close(v)));
+                Toast.show("Erro", { data: { messageDescription: 'Falha ao realizar a operação. Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error.response.data);
-            toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+            Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 
     return (
-        <Modal isOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
+        <Modal useRNModal={true} defaultIsOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
             <ModalBackdrop />
             <ModalContent>
                 <ModalHeader>
@@ -94,6 +97,7 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
                     <Button label={'Salvar'} onPress={() => handleOnPressSave()} />
                 </ModalFooter>
             </ModalContent>
+            <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} />
         </Modal>
     )
 }

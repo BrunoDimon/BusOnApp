@@ -37,6 +37,7 @@ const Dialog = memo(function Dialog({ type = 'DEFAULT', config = {}, onClose }) 
 
     return (
         <AlertDialog
+            useRNModal={true}
             isOpen={true}
             onClose={() => {
                 onClose()

@@ -1,23 +1,26 @@
+import { Box, Center, Divider, HStack, Heading, Image, Pressable, ScrollView, Text, useColorMode } from "@gluestack-ui/themed";
 import { useState } from 'react';
-import { Center, Heading, Box, Text, Image, Toast, VStack, ToastTitle, useToast, Input, InputField, InputSlot, InputIcon, Pressable, HStack, Divider, KeyboardAvoidingView, ScrollView } from "@gluestack-ui/themed";
-import { useColorMode } from "@gluestack-ui/themed"
-import Label from '../../components/Label';
-import { EyeIcon, EyeOffIcon } from 'lucide-react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../store/authSlice';
-import { loginRequest } from '../../service/api/requests/autenticacaoRequests';
-import ToastConfig from '../../components/toasts/ToastConfig';
 import { Button } from '../../components/buttons/Button';
+import { InputPassword } from '../../components/formInputs/InputPassword';
 import { InputSelect } from '../../components/formInputs/InputSelect';
+import { InputText } from '../../components/formInputs/InputText';
 import TipoAcessoUsuarioEnum from '../../enums/TipoAcessoUsuarioEnum';
+import { loginRequest } from '../../service/api/requests/autenticacaoRequests';
+import { login } from '../../store/authSlice';
+import { RedefinirSenha } from './RedefinirSenha';
+import { editarSenhaUsuario } from "../../service/api/requests/usuarioRequests";
+import { store } from "../../store/storeConfig";
+import { useToast } from "react-native-toast-notifications";
 
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const toast = useToast()
+    const [isOpenRedefinirSenha, setIsOpenRedefinirSenha] = useState(false)
+    const [dadosRedefinirSenha, setDadosRedefinirSenha] = useState({})
+    const globalToast = useToast()
     const colorMode = useColorMode();
 
     const theme = useSelector(state => state.theme.theme);
@@ -41,15 +44,37 @@ export default function Login() {
         dispatch(login(userData));
     };
 
-    const acaoLogin = async () => {
+    const acaoLogin = async (email, password) => {
         setIsLoading(true);
         await loginRequest(email, password)
             .then(response => {
-                // Nesse caso os dados estão sendo setados globalmente dentro do autenticacaoRequests
-                console.log('Sucesso no login')
+                console.log(response.data)
+                const dadosUsuario = {
+                    user: {
+                        id: response.data.id,
+                        nome: response.data.nome,
+                        email: response.data.email,
+                        telefone: response.data.telefone,
+                        endereco: response.data.endereco,
+                        cursoId: response.data.cursoId,
+                        associacaoId: response.data.associacaoId,
+                        tipoAcesso: response.data.tipoAcesso,
+                        situacao: response.data.situacao,
+                        exigirRedefinicaoSenha: response.data.exigirRedefinicaoSenha
+                    },
+                    token: response.data.accessToken,
+                    refreshToken: response.data.refreshToken
+                };
+                if (dadosUsuario.user.exigirRedefinicaoSenha) {
+                    setDadosRedefinirSenha(dadosUsuario.user)
+                    setIsOpenRedefinirSenha(true);
+                } else {
+                    store.dispatch(login(dadosUsuario));
+                    console.log('Sucesso no login')
+                }
             }).catch(error => {
                 console.log(error.response.data)
-                toast.show(ToastConfig('error', 'Erro', error.response.data.message, (v) => toast.close(v)));
+                globalToast.show("Erro no login", { data: { messageDescription: error.response.data.message }, type: 'error' })
             })
         setIsLoading(false)
     };
@@ -67,8 +92,21 @@ export default function Login() {
         }
     }
 
+    const onConfirmChangePassword = async (newPassword) => {
+        try {
+            const res = await editarSenhaUsuario(dadosRedefinirSenha.id, { senha: newPassword });
+            acaoLogin(dadosRedefinirSenha.email, newPassword)
+        } catch (error) {
+            globalToast.show("Erro na redefinição de senha", { data: { messageDescription: error.response.data.message }, type: 'error' })
+        }
+    }
+
     return (
         <Box flex={1} sx={{ _dark: { bg: '$secondary900', }, _light: { bg: '$light100', }, }}>
+            {
+                isOpenRedefinirSenha &&
+                <RedefinirSenha onClose={() => setIsOpenRedefinirSenha(false)} eExigeTrocarSenha={true} onConfirmChangePassword={(v) => onConfirmChangePassword(v)} />
+            }
             <Box flex={0.7} alignItems='center' justifyContent='flex-end'>
                 <Image
                     w={'70%'}
@@ -92,21 +130,8 @@ export default function Login() {
                         Bem vindo
                     </Heading>
                     <Box flex={1.2} my={10}>
-                        <Label label={"E-mail"} >
-                            <Input h={50} borderRadius={'$xl'}>
-                                <InputField onChangeText={value => setEmail(value)} value={email} type={'email'} />
-                            </Input>
-                        </Label>
-
-                        <Label label={"Senha"} >
-                            <Input h={50} borderRadius={'$xl'} >
-                                <InputField onChangeText={value => setPassword(value)} value={password} type={showPassword ? "text" : "password"} />
-                                <InputSlot onPress={() => setShowPassword(!showPassword)}>
-                                    <InputIcon pr="$8" pb={'$6'} size='xs' color="$yellow400">{showPassword ? <EyeIcon color='gray' /> : <EyeOffIcon color='gray' />}</InputIcon>
-                                </InputSlot>
-                            </Input>
-                        </Label>
-
+                        <InputText label={'E-mail'} inputOnChange={setEmail} inputValue={email} />
+                        <InputPassword label={'Senha'} inputOnChange={setPassword} inputValue={password} />
                     </Box>
                     <Box flex={1} my={20}>
                         <HStack flex={0} alignItems='center' justifyContent='space-between'>
@@ -115,7 +140,7 @@ export default function Login() {
                                     Esqueceu a senha?
                                 </Text>
                             </Pressable>
-                            <Button label={'Entrar'} onPress={acaoLogin} isLoading={isLoading} />
+                            <Button label={'Entrar'} onPress={() => acaoLogin(email, password)} isLoading={isLoading} />
                         </HStack>
                     </Box>
                     <Divider mb={15} />
