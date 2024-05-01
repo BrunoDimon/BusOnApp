@@ -11,12 +11,14 @@ import { InputText } from "../../components/formInputs/InputText"
 import TipoPagamentoEnum from "../../enums/TipoPagamentoEnum"
 import { useToast, Toast, ToastProvider } from "react-native-toast-notifications";
 import ToastAlert from "../../components/toasts/ToastAlert";
+import { useSelector } from 'react-redux';
 
 export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
     const ref = useRef(null);
     const [isLoadingUsuarios, setIsLoadingUsuarios] = useState(false);
     const [usuarios, setUsuarios] = useState([]);
+    const userInfos = useSelector(state => state.auth.user);
     const [inputValues, setInputValues] = useState({
         txid: dadosEdicao?.txid || null,
         copiaCola: dadosEdicao?.copiaCola || null,
@@ -56,7 +58,8 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
     const buscarUsuarios = async () => {
         try {
             setIsLoadingUsuarios(true);
-            const response = await buscarTodosUsuarios();
+            const filters = { equals: { associacaoId: userInfos.associacaoId } }
+            const response = await buscarTodosUsuarios(filters);
             const valoresSelect = response.data.map((value) => ({
                 label: value.nome,
                 value: value.id,

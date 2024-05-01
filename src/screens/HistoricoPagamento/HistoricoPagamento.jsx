@@ -11,22 +11,30 @@ import { useToast } from "react-native-toast-notifications";
 export default HistoricoPagamentos = ({ navigation }) => {
     const [formIsOpen, setFormIsOpen] = useState(false);
     const [dadosFormEdicao, setDadosFormEdicao] = useState();
+    const [listIsRefreshing, setListIsRefreshing] = useState(false);
     const [pagamentos, setPagamentos] = useState([]);
     const globalToast = useToast();
-    const userInfo = useSelector(state => state.auth.user);
+    const userInfos = useSelector(state => state.auth.user);
     useEffect(() => {
         navigation.setOptions({ onRightButtonPress: buscarPagamentos })
     }, [navigation]);
 
+    const eUsuarioGestao = userInfos.tipoAcesso == "GESTAO";
     const buscarPagamentos = async () => {
+        const filters = !eUsuarioGestao && { equals: { usuarioId: userInfos.id } }
+        const filtersAssociacao = { equals: { id: userInfos.associacaoId } }
         try {
-            const dados = await buscarTodosPagamentos();
-            setPagamentos(dados);
+            setListIsRefreshing(true);
+            const dados = await buscarTodosPagamentos(filters, filtersAssociacao);
+            setPagamentos(dados.data);
         } catch (error) {
             console.error('Erro ao obter pagamentos:', error);
             globalToast.show("Erro ao buscar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+
+        } finally {
+            setListIsRefreshing(false);
         }
-    }
+    };
 
     const handleExcluirPagamento = async (id) => {
         try {
@@ -79,8 +87,8 @@ export default HistoricoPagamentos = ({ navigation }) => {
             id={item.id}
             usuario={item.usuario_id}
             situacao={item.situacao}
-            dataVencimento={item.data_vencimento}
-            dataPagamento={item.data_pagamento}
+            dataVencimento={item.dataVencimento}
+            dataPagamento={item.dataPagamento}
             valor={item.valor}
             voidDelete={() => handleExcluirPagamento(item.id)}
             voidEdit={() => handleEditarPagamento(item.id)}
@@ -95,7 +103,7 @@ export default HistoricoPagamentos = ({ navigation }) => {
             <Box mx={20} mb={15} justifyContent="space-between" borderRadius={'$5x1'} flexDirection="row">
                 <Button label={'Filtros'} variant={'outline'} action={'secondary'} />
                 {
-                    userInfo.tipoAcesso == 'GESTAO' &&
+                    userInfos.tipoAcesso !== 'ALUNO' &&
                     (
                         <Button label={'Cadastrar'} isLoading={formIsOpen} onPress={() => setFormIsOpen(true)} />
                     )}

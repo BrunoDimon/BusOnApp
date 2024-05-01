@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //const API_URL = "http://192.168.16.101:3000/api"; //Bruno casa
-const API_URL = "http://172.17.0.1:3000/api"; //Douglas
+const API_URL = "http://192.168.16.195:3000/api"; //Douglas
 //const API_URL = "http://172.30.0.70:3000/api"; //Douglas 2
 //const API_URL = "http://172.17.0.1:3000/api"; //Douglas SATC
 

@@ -13,13 +13,14 @@ moment.locale('pt-br');
 export default function CardBoxPagamento({ id, usuario, dataVencimento, dataPagamento, valor, situacao, multa, voidDelete, voidEdit }) {
     const { openDialog } = useDialog();
     const userInfo = useSelector(state => state.auth.user);
+
     return (
         <CardBox borderLeftWidth={10} borderColor={'$yellow400'} borderRadius={'$xl'} pr={15} mb={10} h={'$2xl'} justifyContent="space-between">
             <Box flex={1} justifyContent="center" flexDIrection="col">
                 <Box flexDirection="row" gap={12} alignItems="center" mb={2} justifyContent="space-between">
                     <Avatar></Avatar>
                     <Box flex={1}>
-                        <Heading numberOfLines={1} flexWrap="wrap" textTransform="capitalize" >{moment(dataVencimento).format('MMMM')}</Heading>
+                        <Heading numberOfLines={1} flexWrap="wrap" textTransform="capitalize" >{moment(dataVencimento || dataPagamento).format('MMMM')}</Heading>
                     </Box>
                 </Box >
                 <Box justifyContent="space-between" flexDirection="row" alignItems="center">
@@ -44,9 +45,10 @@ export default function CardBoxPagamento({ id, usuario, dataVencimento, dataPaga
                 </Box>
             </Box >
             {
-                userInfo.tipoAcesso == 'GESTAO' || userInfo.tipoAcesso == 'ADMIN' || userInfo.tipoAcesso == 'ALUNO' &&
+
+                userInfo.tipoAcesso !== 'ALUNO' &&
                 (
-                    <ButtonDotsDropdownMenu titulo={'id' + '-' + 'nome'} opcoesMenu={
+                    < ButtonDotsDropdownMenu titulo={'id' + '-' + 'nome'} opcoesMenu={
                         [{
                             onPress: () => { voidEdit() },
                             nomeIcone: 'pencil-outline',

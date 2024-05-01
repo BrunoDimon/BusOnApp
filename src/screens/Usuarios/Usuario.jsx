@@ -24,7 +24,6 @@ export default function Usuario() {
 
     const userInfos = useSelector(state => state.auth.user);
     const eUsuarioAdmin = userInfos.tipoAcesso == "ADMIN";
-
     const buscarUsuarios = async () => {
         const whereClause =
             eUsuarioAdmin

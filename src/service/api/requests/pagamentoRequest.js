@@ -1,14 +1,7 @@
 import { api } from '../api';
 
-export const buscarTodosPagamentos = async () => {
-    const request = await api.get('/pagamento', {
-    }).then(response => {
-        return response
-    }).catch(error => {
-        throw error
-    });
-    return await request.data;
-
+export const buscarTodosPagamentos = async (filtros, filtrosAssociacao) => {
+    return request = await api.get('/pagamento?filters=' + JSON.stringify(filtros) + '&filtersAssociacao=' + JSON.stringify(filtrosAssociacao));
 };
 
 export const buscarPagamentoPorId = async (id) => {
