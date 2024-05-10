@@ -82,18 +82,18 @@ export default HistoricoPagamentos = ({ navigation }) => {
         buscarPagamentos();
     }, []);
 
-    const renderItem = ({ item }) => (
-        <CardBoxPagamento
-            id={item.id}
-            usuario={item.usuario_id}
-            situacao={item.situacao}
-            dataVencimento={item.dataVencimento}
-            dataPagamento={item.dataPagamento}
-            valor={item.valor}
-            voidDelete={() => handleExcluirPagamento(item.id)}
-            voidEdit={() => handleEditarPagamento(item.id)}
-        />
-    );
+    const renderItem = ({ item }) => {
+        console.log('item: ', item?.usuario?.curso?.instituicao?.nome)
+        console.log('item: ', item?.usuario?.curso?.nome)
+        return (
+
+            <CardBoxPagamento
+                dados={item}
+                voidDelete={() => handleExcluirPagamento(item.id)}
+                voidEdit={() => handleEditarPagamento(item.id)}
+            />
+        )
+    };
 
     return (
         <Box flex={1}>
