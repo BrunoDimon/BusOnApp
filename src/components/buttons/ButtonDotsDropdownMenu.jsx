@@ -21,7 +21,7 @@ export default ButtonDotsDropdownMenu = ({ dotsColor, opcoesMenu, titulo }) => {
     };
 
     return (
-        <Box position="relative" >
+        <Box position="relative">
             <Pressable onPress={toggleDropdown}>
                 <MaterialCommunityIcons name={'dots-vertical'} size={26} color={dotsColor || '#525252'} />
             </Pressable>
