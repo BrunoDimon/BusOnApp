@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { InputNumber } from "../../components/formInputs/InputNumber";
 import { useToast, Toast, ToastProvider } from "react-native-toast-notifications";
 import ToastAlert from "../../components/toasts/ToastAlert";
+import InputImage from "../../components/formInputs/InputImage";
 
 export const FormAssociacao = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
@@ -19,7 +20,8 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
         nome: dadosEdicao?.nome || null,
         endereco: dadosEdicao?.endereco || null,
         situacao: dadosEdicao?.situacao || 'ATIVO',
-        pixApiId: dadosEdicao?.pixApiId || null
+        pixApiId: dadosEdicao?.pixApiId || null,
+        logo: dadosEdicao?.logo || null,
     });
 
     const eModoEdicao = dadosEdicao ? true : false
@@ -93,6 +95,7 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
                     <InputText label={'Nome'} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} />
                     <InputText label={'Endereço'} erro={errors.endereco} inputOnChange={(value) => handleChangeInputValues('endereco', value)} isRequired={true} inputValue={inputValues.endereco} />
                     <InputSelect label={'Situação'} erro={errors.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} />
+                    <InputImage label={'Logo'} erro={errors.logo} onPickImage={(value) => handleChangeInputValues('logo', value)} imageValue={inputValues.logo} />
                 </ModalBody>
                 <ModalFooter gap={10}>
                     <Button label={'Cancelar'} variant={'outline'} action={'secondary'} onPress={() => onClose()} />

@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, FlatList, HStack, Heading, Text } from '@gluestack-ui/themed'
+import { Avatar, AvatarImage, Box, Card, FlatList, HStack, Heading, Text } from '@gluestack-ui/themed'
 import { useEffect, useState } from 'react'
 import Situacao from '../../components/Situacao'
 import { Button } from '../../components/buttons/Button'
@@ -8,6 +8,7 @@ import AtivoInativoEnum from '../../enums/AtivoInativoEnum'
 import { buscarAssociacaoPorId, buscarTodasAssociacoes, excluirAssociacao } from '../../service/api/requests/associacaoRequests'
 import { FormAssociacao } from './FormAssociacao'
 import { useToast } from "react-native-toast-notifications"
+import { AvatarFallbackText } from '@gluestack-ui/themed'
 
 export const Associacao = () => {
     const globalToast = useToast()
@@ -70,7 +71,14 @@ export const Associacao = () => {
             <Box justifyContent="space-between" flexDirection="col">
                 <HStack justifyContent='space-between' my={12}>
                     <HStack alignItems='center' gap={12} >
-                        <Avatar></Avatar>
+                        <Avatar>
+                            {
+                                item.imagem?.imagem ?
+                                    (<AvatarImage source={' null ' + item.imagem.imagem.data} alt={'logo'} />)
+                                    :
+                                    (<AvatarFallbackText>{item.nome}</AvatarFallbackText>)
+                            }
+                        </Avatar>
                         <Box>
                             <Heading color={'$textDark700'}>{item.nome}</Heading>
                             {item.endereco && (

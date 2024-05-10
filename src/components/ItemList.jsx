@@ -1,5 +1,4 @@
 import { Avatar, Box, Button, ButtonIcon, ButtonText, Card, CopyIcon, Divider, Heading, Input, InputField, InputIcon, ScrollView, Pressable, InputSlot, Text } from "@gluestack-ui/themed"
-import { EditIcon } from "lucide-react-native"
 import { useState } from "react"
 import ButtonDotsDropdownMenu from "./buttons/ButtonDotsDropdownMenu"
 

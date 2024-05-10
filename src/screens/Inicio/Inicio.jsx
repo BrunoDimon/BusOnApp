@@ -1,16 +1,11 @@
-import { Box, Heading, ScrollView, useColorMode, Text, BadgeText, BadgeIcon, Avatar, VStack, Divider, } from "@gluestack-ui/themed"
+import { Avatar, BadgeIcon, BadgeText, Box, Heading, ScrollView, Text, VStack, useColorMode } from "@gluestack-ui/themed";
 import { useDispatch, useSelector } from "react-redux";
 import routesMenu from "./routesMenu";
 
+import { Badge, CheckCircleIcon, HStack, StatusBar } from "@gluestack-ui/themed";
 import CardBox from "../../components/CardBox";
 import Label from "../../components/Label";
 import ButtonIconMenu from "./ButtonIconMenu";
-import { Image } from "@gluestack-ui/themed";
-import { Center } from "@gluestack-ui/themed";
-import { Badge } from "@gluestack-ui/themed";
-import { BadgeCheckIcon } from "lucide-react-native";
-import { HStack } from "@gluestack-ui/themed";
-import { StatusBar } from "@gluestack-ui/themed";
 
 export default Inicio = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -39,7 +34,7 @@ export default Inicio = ({ navigation }) => {
                             <Box alignSelf="flex-end">
                                 <Badge justifyContent="center" size="lg" py={5} variant="solid" bg={'$yellow200'} ml="$1">
                                     <BadgeText color={'$yellow600'}>{userInfos?.tipoAcesso}</BadgeText>
-                                    <BadgeIcon color={'$yellow600'} as={BadgeCheckIcon} ml="$1" />
+                                    <BadgeIcon color={'$yellow600'} as={CheckCircleIcon} ml="$1" />
                                 </Badge>
                             </Box>
                         </HStack>
