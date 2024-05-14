@@ -4,7 +4,7 @@
     "slug": "buson-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/iconBusOn.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splashBusOnApp.png",
@@ -29,10 +29,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.douglaskuerten.busonapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8ac301a1-8d09-4659-bce5-3fd22c59734d"
+      }
     }
   }
 }

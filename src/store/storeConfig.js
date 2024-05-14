@@ -16,6 +16,7 @@ const persistConfig = {
     key: 'root',
     storage: AsyncStorage, // Onde irá armazenar
     whitelist: ['theme', 'auth'], // Reducers que você deseja persistir
+    timeout: 5000
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
