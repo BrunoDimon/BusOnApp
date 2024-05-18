@@ -5,7 +5,7 @@ import Mensalidade from "../screens/Mensalidade/Mensalidade";
 import Inicio from "../screens/Inicio/Inicio";
 import MeusDados from "../screens/MeusDados/MeusDados";
 import Pagamentos from "../screens/Pagamentos/Pagamentos";
-import IaChat from "../screens/IaChat";
+import IaChat from "../screens/IaChat/IaChat";
 import Cursos from "../screens/Cursos/Cursos";
 import Instituicao from "../screens/Instituicao/Instituicao";
 import { Associacao } from "../screens/Associacao/Associacao";
@@ -23,9 +23,10 @@ export default routes = [
         name: 'ia-chat',
         label: 'IA Chat',
         accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
-        rigthButtonHeader: 'sync',
+        leftButtonHeader: 'arrow-left',
         component: IaChat,
         isInitialRoute: false,
+        hideTabBar: true,
     },
     {
         name: 'associacao',

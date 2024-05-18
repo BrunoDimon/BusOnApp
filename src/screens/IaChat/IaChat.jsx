@@ -1,20 +1,18 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   Box,
+  Button,
   Input,
   InputField,
-  Button,
   ScrollView,
-  Spinner,
-  VStack,
+  VStack
 } from "@gluestack-ui/themed";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import CardMensagem from "../components/CardMensagem";
-import { enviarMensagem } from "../service/api/requests/chatRequests";
-import { useState, useRef, useEffect } from "react";
-import { Text } from "@gluestack-ui/themed";
-import { TypingAnimation } from "react-native-typing-animation";
+import { useEffect, useRef, useState } from "react";
+import CardMensagem from "../../components/CardMensagem";
+import { enviarMensagem } from "../../service/api/requests/chatRequests";
+import TypingIndicator from "./TypingIndicator";
 
-export default IaChat = () => {
+export default IaChat = ({ navigation }) => {
   const [inputChat, setInputChat] = useState();
   const [mensagens, setMensagens] = useState([]);
   const [awaitResponse, setAwaitResponse] = useState(false);
@@ -23,6 +21,10 @@ export default IaChat = () => {
   useEffect(() => {
     scrollViewRef.current.scrollToEnd({ animated: true });
   }, [mensagens]);
+
+  useEffect(() => {
+    navigation.setOptions({ onLeftButtonPress: navigation.goBack })
+  }, [navigation]);
 
   async function enviarMensagemChat(mensagem) {
     if (mensagem) {
@@ -78,15 +80,7 @@ export default IaChat = () => {
         <Box flexGrow={0}>
           {awaitResponse && (
             <VStack alignItems="flex-start">
-              <TypingAnimation
-                dotColor="#ffdc72"
-                dotMargin={6}
-                dotAmplitude={6}
-                dotSpeed={0.18}
-                dotRadius={3}
-                dotX={20}
-                dotY={-14}
-              />
+              <TypingIndicator isTyping={awaitResponse}/>
             </VStack>
           )}
 

@@ -6,11 +6,12 @@ export default HeaderBar = ({ options, navigationDrawer }) => {
     const theme = useSelector(state => state.theme.theme);
     const rotaAtual = useRoute();
     const eRotaInicio = rotaAtual.name == 'inicio';
+    console.log('options ', options)
     return (
         <Box flex={0} bg={eRotaInicio ? '$yellow500' : 'transparent'}>
             <Box $dark-bg={eRotaInicio ? 'transparent' : '$backgroundDark900'} $light-bg={eRotaInicio ? 'transparent' : '$white'} flex={0} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'} px={20} py={12} gap={15} hardShadow={rotaAtual.name != 'inicio' && '5'} borderRadius={'$full'} mx={'$4'} my={'$2'}>
-                <Pressable onPress={() => navigationDrawer.openDrawer()} >
-                    <MaterialCommunityIcons name={'menu'} size={30} color={eRotaInicio ? 'white' : theme === 'light' ? '#525252' : 'white'} />
+                <Pressable onPress={() => options.onLeftButtonPress ? options.onLeftButtonPress() :  navigationDrawer.openDrawer()} >
+                    <MaterialCommunityIcons name={options.leftButtonHeader || 'menu'} size={30} color={eRotaInicio ? 'white' : theme === 'light' ? '#525252' : 'white'} />
                 </Pressable>
                 <Heading size={'xl'} $dark-color={"$white"} $light-color={eRotaInicio ? 'white' : '#525252'} maxFontSizeMultiplier={1.25} lineHeight={'$xl'}>{options.label}</Heading>
 

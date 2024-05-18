@@ -42,6 +42,8 @@ export default function BottomTabNavigation({ navigation: navigationDrawer }) {
                             visibleOnBottomTabNavigation: route.visibleOnBottomTabNavigation,
                             label: route.label,
                             rigthButtonHeader: route.rigthButtonHeader,
+                            leftButtonHeader: route.leftButtonHeader,
+                            hideTabBar: route.hideTabBar,
                         }}
                     />
                 ))

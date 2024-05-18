@@ -7,7 +7,7 @@ import Login from '../../../screens/Login/Login';
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import BottomTabNavigation from '../BottomTabBarNavigation/BottomTabNavigation';
 import { useSelector } from 'react-redux';
-import IaChat from '../../../screens/IaChat';
+import IaChat from '../../../screens/IaChat/IaChat';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Drawer = createDrawerNavigator();

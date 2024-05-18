@@ -29,10 +29,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/iconBusOn.png",
         "backgroundColor": "#000000"
-      }
+      },
+      "package": "com.douglaskuerten.busonapp"
     },
     "web": {
       "favicon": "./assets/iconBusOn.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8ac301a1-8d09-4659-bce5-3fd22c59734d"
+      }
     }
   }
 }
