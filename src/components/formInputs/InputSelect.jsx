@@ -29,7 +29,7 @@ export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled
             <Select onValueChange={(v) => inputOnChange(v)} selectedValue={currentValue} defaultValue={defaultValue}>
                 <SelectTrigger h={50} borderRadius={'$xl'} pr={23}>
                     <SelectInput placeholder={isLoading ? "Buscando..." : "Selecionar"} />
-                    <SelectIcon h={'$full'}>
+                    <SelectIcon>
                         {
                             isLoading
                                 ?
@@ -38,7 +38,7 @@ export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled
                                 )
                                 :
                                 (
-                                    <Icon h={'$full'} as={ChevronDownIcon} size={'lg'} />
+                                    <Icon as={ChevronDownIcon} size={20} />
                                 )
                         }
                     </SelectIcon>

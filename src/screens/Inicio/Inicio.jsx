@@ -43,7 +43,7 @@ export default Inicio = ({ navigation }) => {
                     </VStack>
                 </HStack>
             </Box>
-            <ScrollView mt={-65} onScroll={(v) => console.log(v.nativeEvent.contentOffset.y)}>
+            <ScrollView mt={-65} >
                 <Box gap={15} pb={20}>
                     {
                         userRoutes.map((category, indexCategory) => (
