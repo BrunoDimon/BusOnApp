@@ -12,7 +12,7 @@ export const FormInput = ({ label, erro, inputValue, inputOnChangeText, isDisabl
             flex={1}
         >
             <FormControlLabel>
-                <FormControlLabelText mr={5} color="$textDark800" size="xl" lineHeight="$xl" fontWeight="$semibold" maxFontSizeMultiplier={1.2}>
+                <FormControlLabelText mr={5} color={isDisabled ? "$textDark500" : "$textDark800"} size="xl" lineHeight="$xl" fontWeight="$semibold" maxFontSizeMultiplier={1.2}>
                     {label}
                 </FormControlLabelText>
             </FormControlLabel>
