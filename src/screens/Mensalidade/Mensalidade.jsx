@@ -49,38 +49,37 @@ export default Mensalidade = () => {
 
     return (
         <Box flex={1} >
-            <ScrollView flex={1} >
-                <Box flex={1} bg={'$white'} mx={20} borderRadius={'$3xl'}>
-                    <Box justifyContent="flex-start" alignItems="center" gap={15} p={15}>
-                        <Heading fontSize={'$2xl'} color="#525252">
-                            Janeiro
-                        </Heading>
-                        <Box w={'$full'}>
-                            <Label label={"Copiar Chave PIX"} >
-                                <Input h={50} borderRadius={'$xl'} isReadOnly >
-                                    <InputField type={'text'} onChangeText={value => setChavePixGerada(value)} value={chavePixGerada} />
-                                    <InputSlot onPress={copyToClipboard}>
-                                        <InputIcon pr="$8" pb={'$5'} size='xs' ><CopyIcon size='22' color='gray' /></InputIcon>
-                                    </InputSlot>
-                                </Input>
-                            </Label>
-                        </Box>
-                        <Box flex={1} pt={10} >
-
-                            <FlatList
-                                data={pagamentos}
-                                renderItem={renderItem}
-                                keyExtractor={item => item.id}
-                                initialNumToRender={8}
-                                windowSize={4}
-                                refreshing={listIsRefreshing}
-                                onRefresh={() => buscarCursos()}
-
-                            />
-                        </Box>
+            <Box flex={0} bg={'$white'} mx={20} borderRadius={'$3xl'}>
+                <Box justifyContent="flex-start" alignItems="center" gap={15} p={15}>
+                    <Heading fontSize={'$2xl'} color="#525252">
+                        Janeiro
+                    </Heading>
+                    <Box w={'$full'}>
+                        <Label label={"Copiar Chave PIX"} >
+                            <Input h={50} borderRadius={'$xl'} isReadOnly >
+                                <InputField type={'text'} onChangeText={value => setChavePixGerada(value)} value={chavePixGerada} />
+                                <InputSlot onPress={copyToClipboard}>
+                                    <InputIcon pr="$8" pb={'$5'} size='xs' ><CopyIcon size='22' color='gray' /></InputIcon>
+                                </InputSlot>
+                            </Input>
+                        </Label>
                     </Box>
-                </Box >
-            </ScrollView>
+
+                </Box>
+            </Box >
+            <Box flex={1} pt={10} mx={15}>
+
+                <FlatList
+                    data={pagamentos}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                    initialNumToRender={8}
+                    windowSize={4}
+                    refreshing={listIsRefreshing}
+                    onRefresh={() => buscarPagamentos()}
+
+                />
+            </Box>
         </Box>
 
     )

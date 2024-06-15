@@ -11,7 +11,7 @@ export const CardBoxMensalidade = ({ dados }) => {
 
     return (
         <Pressable w={'$full'} onPress={() => setExibirDetalhesFatura(!exibirDetalhesFatura)}>
-            <Card bg={'$light100'} flexDirection="col" w={'$full'} p={12} borderLeftWidth={10} borderColor={'$yellow400'} borderRadius={'$xl'} gap={12} >
+            <Card bg={'$white'} flexDirection="col" w={'$full'} p={12} borderLeftWidth={10} borderColor={'$yellow400'} borderRadius={'$xl'} gap={12} >
                 <Box justifyContent="space-between" flexDirection="row">
                     <Box flexDirection="row" gap={12}>
                         <Avatar></Avatar>
@@ -33,7 +33,7 @@ export const CardBoxMensalidade = ({ dados }) => {
                             <Text mt={5} fontWeight="$bold" fontSize={'$2xl'}>Total:</Text>
                         </Box>
                         <Box flexDirection="col" alignItems="flex-end">
-                            <Text>{moment(dados.dataVencimento).format('MMMM')}</Text>
+                            <Text>{moment(dados.dataVencimento).format('DD/MM/YYYY')}</Text>
                             <Text mt={5} fontWeight="$bold" fontSize={'$2xl'}>R$ {dados.valor}</Text>
                         </Box>
                     </Box>
