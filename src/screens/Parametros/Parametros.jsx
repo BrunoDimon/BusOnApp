@@ -29,9 +29,8 @@ export default Configuracoes = () => {
         valor6: null,
         valorMulta: null,
         diaVencimento: null,
-        diaAberturaPagamentos: null,
         diasToleranciaMulta: null,
-        liberaAlteracaoDadosPessoais: null,
+        liberaAlteracaoDadosPessoais: 'BLOQUEADO',
     });
 
     const handleChangeInputValues = (fieldName, value) => {
@@ -69,9 +68,6 @@ export default Configuracoes = () => {
         }
         if (inputValues.diaVencimento == null || inputValues.diaVencimento == '') {
             errors.diaVencimento = "Obrigatório"
-        }
-        if (inputValues.diaAberturaPagamentos == null || inputValues.diaAberturaPagamentos == '') {
-            errors.diaAberturaPagamentos = "Obrigatório"
         }
         if (inputValues.diasToleranciaMulta == null || inputValues.diasToleranciaMulta == '') {
             errors.diasToleranciaMulta = "Obrigatório"
@@ -120,8 +116,8 @@ export default Configuracoes = () => {
                 setInputValues(response.data);
             }
         } catch (error) {
-            console.error('Parametros não cadastrados!', error.response.data);
-            globalToast.show("Erro ao buscar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+            console.error(error.response.data.title, error.response.data);
+            globalToast.show(error.response.data.title, { data: { messageDescription: error.response.data.message }, type: 'warning' })
         } finally {
             setIsLoadingParametros(false)
         }
@@ -150,27 +146,26 @@ export default Configuracoes = () => {
                     <VStack flex={1} gap={15}>
                         <Heading fontSize={'$2xl'} color="#525252">Valores</Heading>
                         <HStack flex={1} gap={15}>
-                            <InputNumber label={'Valor 1 dia'} erro={errors.valor1} inputOnChange={(value) => handleChangeInputValues('valor1', value)} inputValue={inputValues.valor1} isDisabled={isLoadingParametros} />
-                            <InputNumber label={'Valor 2 dia'} erro={errors.valor2} inputOnChange={(value) => handleChangeInputValues('valor2', value)} inputValue={inputValues.valor2} isDisabled={isLoadingParametros} />
+                            <InputNumber label={'Valor 1 dia'} erro={errors.valor1} inputOnChange={(value) => handleChangeInputValues('valor1', value)} inputValue={inputValues.valor1} isDisabled={isLoadingParametros} isRequired={true} />
+                            <InputNumber label={'Valor 2 dia'} erro={errors.valor2} inputOnChange={(value) => handleChangeInputValues('valor2', value)} inputValue={inputValues.valor2} isDisabled={isLoadingParametros} isRequired={true} />
                         </HStack>
                         <HStack flex={1} gap={15} >
-                            <InputNumber label={'Valor 3 dia'} erro={errors.valor3} inputOnChange={(value) => handleChangeInputValues('valor3', value)} inputValue={inputValues.valor3} isDisabled={isLoadingParametros} />
-                            <InputNumber label={'Valor 4 dia'} erro={errors.valor4} inputOnChange={(value) => handleChangeInputValues('valor4', value)} inputValue={inputValues.valor4} isDisabled={isLoadingParametros} />
+                            <InputNumber label={'Valor 3 dia'} erro={errors.valor3} inputOnChange={(value) => handleChangeInputValues('valor3', value)} inputValue={inputValues.valor3} isDisabled={isLoadingParametros} isRequired={true} />
+                            <InputNumber label={'Valor 4 dia'} erro={errors.valor4} inputOnChange={(value) => handleChangeInputValues('valor4', value)} inputValue={inputValues.valor4} isDisabled={isLoadingParametros} isRequired={true} />
                         </HStack>
                         <HStack flex={1} gap={15} >
-                            <InputNumber label={'Valor 5 dia'} erro={errors.valor5} inputOnChange={(value) => handleChangeInputValues('valor5', value)} inputValue={inputValues.valor5} isDisabled={isLoadingParametros} />
-                            <InputNumber label={'Valor 6 dia'} erro={errors.valor6} inputOnChange={(value) => handleChangeInputValues('valor6', value)} inputValue={inputValues.valor6} isDisabled={isLoadingParametros} />
+                            <InputNumber label={'Valor 5 dia'} erro={errors.valor5} inputOnChange={(value) => handleChangeInputValues('valor5', value)} inputValue={inputValues.valor5} isDisabled={isLoadingParametros} isRequired={true} />
+                            <InputNumber label={'Valor 6 dia'} erro={errors.valor6} inputOnChange={(value) => handleChangeInputValues('valor6', value)} inputValue={inputValues.valor6} isDisabled={isLoadingParametros} isRequired={true} />
                         </HStack>
                     </VStack>
-                    <InputNumber label={'Valor Multa'} erro={errors.valorMulta} inputOnChange={(value) => handleChangeInputValues('valorMulta', value)} inputValue={inputValues.valorMulta} isDisabled={isLoadingParametros} />
+                    <InputNumber label={'Valor Multa'} erro={errors.valorMulta} inputOnChange={(value) => handleChangeInputValues('valorMulta', value)} inputValue={inputValues.valorMulta} isDisabled={isLoadingParametros} isRequired={true} />
 
                     <Divider bg="$backgroundDark800" />
 
                     <VStack flex={1} gap={15}>
                         <Heading fontSize={'$2xl'} color="#525252">Datas Mensalidade</Heading>
-                        <InputNumber label={'Dia de Abertura dos Pagamentos'} erro={errors.diaAberturaPagamentos} inputOnChange={(value) => handleChangeInputValues('diaAberturaPagamentos', value)} inputValue={inputValues.diaAberturaPagamentos} isDisabled={isLoadingParametros} />
-                        <InputNumber label={'Dia Vencimento'} erro={errors.diaVencimento} inputOnChange={(value) => handleChangeInputValues('diaVencimento', value)} inputValue={inputValues.diaVencimento} isDisabled={isLoadingParametros} />
-                        <InputNumber label={'Dia Tolêrancia Multa'} erro={errors.diasToleranciaMulta} inputOnChange={(value) => handleChangeInputValues('diasToleranciaMulta', value)} inputValue={inputValues.diasToleranciaMulta} isDisabled={isLoadingParametros} />
+                        <InputNumber label={'Dia Vencimento'} erro={errors.diaVencimento} inputOnChange={(value) => handleChangeInputValues('diaVencimento', value)} inputValue={inputValues.diaVencimento} isDisabled={isLoadingParametros} isRequired={true} />
+                        <InputNumber label={'Dia Tolêrancia Multa'} erro={errors.diasToleranciaMulta} inputOnChange={(value) => handleChangeInputValues('diasToleranciaMulta', value)} inputValue={inputValues.diasToleranciaMulta} isDisabled={isLoadingParametros} isRequired={true} />
                     </VStack>
 
                     <Divider bg="$backgroundDark800" />
