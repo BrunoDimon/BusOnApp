@@ -98,7 +98,7 @@ export default Configuracoes = () => {
                 }
                 globalToast.show("Sucesso", { data: { messageDescription: 'Parâmetros salvos com sucesso!' }, type: 'success' })
             } else {
-                globalToast.show("Erro", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
+                globalToast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error.response.data);

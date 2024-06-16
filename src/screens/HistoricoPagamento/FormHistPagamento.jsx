@@ -14,6 +14,7 @@ import ToastAlert from "../../components/toasts/ToastAlert";
 import { useSelector } from 'react-redux';
 
 export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
+    const [errors, setErrors] = useState({});
     const globalToast = useToast();
     const ref = useRef(null);
     const [isLoadingUsuarios, setIsLoadingUsuarios] = useState(false);
@@ -33,22 +34,50 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
     });
     const [reconsultarRegistros, setReconsultarRegistros] = useState(false);
     const eModoEdicao = dadosEdicao ? true : false
+
     const handleChangeInputValues = (fieldName, value) => {
         setInputValues({
             ...inputValues,
             [fieldName]: value,
         });
     };
+    const validarFormulario = () => {
+        let errors = {};
+
+        if (inputValues.usuarioId == null || inputValues.usuarioId == '') {
+            errors.usuarioId = "Usuário é obrigatório"
+        }
+        if (inputValues.valor == null || inputValues.valor == '') {
+            errors.valor = "Valor é obrigatório"
+        }
+        if (inputValues.tipo == null || inputValues.tipo == '') {
+            errors.tipo = "Forma Pagamento é obrigatório"
+        }
+        if (inputValues.dataPagamento == null || inputValues.dataPagamento == '') {
+            errors.dataPagamento = "Data Pagamento é obrigatório"
+        }
+        if (inputValues.situacao == null || inputValues.situacao == '') {
+            errors.situacao = "Situação é obrigatório"
+        }
+        setErrors(errors);
+        const isValid = (Object.keys(errors).length === 0);
+        return isValid;
+    }
+
     const handleOnPressSave = async () => {
         try {
-            if (!eModoEdicao) {
-                await cadastrarPagamento(inputValues);
-                onClose(true);
-                globalToast.show("Sucesso", { data: { messageDescription: 'Pagamento cadastrado com sucesso!' }, type: 'success' })
+            if (validarFormulario()) {
+                if (!eModoEdicao) {
+                    await cadastrarPagamento(inputValues);
+                    onClose(true);
+                    globalToast.show("Sucesso", { data: { messageDescription: 'Pagamento cadastrado com sucesso!' }, type: 'success' })
+                } else {
+                    await editarPagamento(dadosEdicao.id, inputValues);
+                    onClose(true);
+                    globalToast.show("Sucesso", { data: { messageDescription: 'Pagamento alterado com sucesso!' }, type: 'success' })
+                }
             } else {
-                await editarPagamento(dadosEdicao.id, inputValues);
-                onClose(true);
-                globalToast.show("Sucesso", { data: { messageDescription: 'Pagamento alterado com sucesso!' }, type: 'success' })
+                Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error);
@@ -81,7 +110,7 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
         <Modal useRNModal={true} defaultIsOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
             <ModalBackdrop />
             <ModalContent maxHeight={'$3/4'}>
-                <ModalHeader justifyContent="center">
+                <ModalHeader>
                     <Heading size="xl" color="$textDark800">Cadastro de Pagamento</Heading>
                     <ModalCloseButton>
                         <Icon as={CloseIcon} />
@@ -89,12 +118,12 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
                 </ModalHeader>
                 <ModalBody>
                     <ScrollView>
-                        <InputSelect label={'Usuario'} selectValues={usuarios} inputOnChange={(value) => handleChangeInputValues('usuarioId', value)} isRequired={true} inputValue={inputValues.usuarioId} isLoading={isLoadingUsuarios} />
-                        <InputNumber label={'Valor'} inputOnChange={(value) => handleChangeInputValues('valor', value)} isRequired={true} inputValue={inputValues.valor} />
-                        <InputNumber label={'Multa'} inputOnChange={(value) => handleChangeInputValues('multa', value)} isRequired={false} inputValue={inputValues.multa} />
-                        <InputSelect label={'Forma de Pagamento'} selectValues={TipoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('tipo', value)} isRequired={true} inputValue={inputValues.tipo} />
-                        <InputDate label={'Data Pagamento'} inputOnChange={(value) => handleChangeInputValues('dataPagamento', value)} isRequired={true} inputValue={inputValues.dataPagamento} />
-                        <InputSelect label={'Situação'} selectValues={SituacaoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} />
+                        <InputSelect label={'Usuario'} selectValues={usuarios} inputOnChange={(value) => handleChangeInputValues('usuarioId', value)} isRequired={true} inputValue={inputValues.usuarioId} isLoading={isLoadingUsuarios} erro={errors.usuarioId} />
+                        <InputNumber label={'Valor'} inputOnChange={(value) => handleChangeInputValues('valor', value)} isRequired={true} inputValue={inputValues.valor} erro={errors.valor} />
+                        <InputNumber label={'Multa'} inputOnChange={(value) => handleChangeInputValues('multa', value)} isRequired={false} inputValue={inputValues.multa} erro={errors.multa} />
+                        <InputSelect label={'Forma de Pagamento'} selectValues={TipoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('tipo', value)} isRequired={true} inputValue={inputValues.tipo} erro={errors.tipo} />
+                        <InputDate label={'Data Pagamento'} inputOnChange={(value) => handleChangeInputValues('dataPagamento', value)} isRequired={true} inputValue={inputValues.dataPagamento} erro={errors.dataPagamento} />
+                        <InputSelect label={'Situação'} selectValues={SituacaoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} erro={errors.situacao} />
                     </ScrollView>
                 </ModalBody>
                 <ModalFooter justifyContent="space-between">

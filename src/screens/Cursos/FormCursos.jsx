@@ -71,7 +71,7 @@ export const FormCursos = ({ onClose, dadosEdicao }) => {
                     globalToast.show("Sucesso", { data: { messageDescription: 'Curso alterado com sucesso!' }, type: 'success' })
                 }
             } else {
-                Toast.show("Erro", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
+                Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error.response.data);

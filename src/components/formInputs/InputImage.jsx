@@ -43,7 +43,7 @@ export default function InputImage({ label, erro, imageValue, onPickImage, isDis
                             ?
                             (<Button maxWidth={45} px={0} py={8} maxHeight={45} variant={'outline'} action={'secondary'} flex={1} icon={TrashIcon} onPress={() => onPickImage(null)} />)
                             :
-                            (<Button maxWidth={45} px={0} py={8} maxHeight={45} variant={'outline'} action={'secondary'} icon={AddIcon} onPress={pickImage} />)
+                            (<Button maxWidth={45} px={0} py={8} maxHeight={45} variant={'outline'} action={'secondary'} flex={1} icon={AddIcon} onPress={pickImage} />)
                     }
                 </HStack>
             </Center>

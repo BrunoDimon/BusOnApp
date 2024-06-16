@@ -2,6 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   Box,
   Button,
+  Center,
   Input,
   InputField,
   ScrollView,
@@ -11,11 +12,17 @@ import { useEffect, useRef, useState } from "react";
 import CardMensagem from "../../components/CardMensagem";
 import { enviarMensagem } from "../../service/api/requests/chatRequests";
 import TypingIndicator from "./TypingIndicator";
+import { Image } from "@gluestack-ui/themed";
+import { useSelector } from "react-redux";
 
 export default IaChat = ({ navigation }) => {
   const [inputChat, setInputChat] = useState();
   const [mensagens, setMensagens] = useState([]);
   const [awaitResponse, setAwaitResponse] = useState(false);
+  const theme = useSelector(state => state.theme.theme);
+
+  const logo = theme === "light" ? require('../../../assets/busOnFontePreta.png') : require('../../../assets/busOnFonteBranca.png');
+  const draw = require('../../../assets/school-bus-predios-dark.png');
 
   const scrollViewRef = useRef();
   useEffect(() => {
@@ -65,6 +72,24 @@ export default IaChat = ({ navigation }) => {
         justifyContent={"space-between"}
       >
         <Box flex={1} borderRadius={30}>
+          <Box flex={1} h={'$full'} w={'$full'} position="absolute" opacity={0.2}>
+            <Box flex={0.7} alignItems='center' justifyContent='flex-end'>
+              <Image
+                w={'70%'}
+                source={logo}
+                alt='Logo'
+              />
+            </Box>
+            <Box flex={1.5} alignItems="center">
+              <Image
+                h={'85%'}
+                w={'85%'}
+                resizeMode='contain'
+                source={draw}
+                alt='SubLogo'
+              />
+            </Box>
+          </Box>
           <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false}>
             {mensagens?.map((mensagem, index) => {
               return (
@@ -80,7 +105,7 @@ export default IaChat = ({ navigation }) => {
         <Box flexGrow={0}>
           {awaitResponse && (
             <VStack alignItems="flex-start">
-              <TypingIndicator isTyping={awaitResponse}/>
+              <TypingIndicator isTyping={awaitResponse} />
             </VStack>
           )}
 
