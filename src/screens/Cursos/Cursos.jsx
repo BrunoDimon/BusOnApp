@@ -117,8 +117,7 @@ export default function Cursos() {
             {
                 formIsOpen && <FormCursos onClose={(v) => handleFormClose(v)} dadosEdicao={dadosFormEdicao} />
             }
-            <HStack mx={15} mt={5} gap={5} justifyContent='space-between'>
-                <Button label={'Filtros'} variant={'outline'} action={'secondary'} />
+            <HStack mx={15} mt={5} gap={5} justifyContent='flex-end'>
                 <Button label={'Cadastrar'} isLoading={formIsOpen} onPress={() => setFormIsOpen(true)} />
             </HStack>
             <Box flex={1} pt={10} >

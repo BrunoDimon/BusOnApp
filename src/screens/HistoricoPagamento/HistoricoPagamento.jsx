@@ -95,8 +95,7 @@ export default HistoricoPagamentos = ({ navigation }) => {
             {
                 formIsOpen && <FormHistPagamento onClose={(v) => handleFormClose(v)} dadosEdicao={dadosFormEdicao} />
             }
-            <Box mx={20} mb={15} justifyContent="space-between" borderRadius={'$5x1'} flexDirection="row">
-                <Button label={'Filtros'} variant={'outline'} action={'secondary'} />
+            <Box mx={20} mb={15} justifyContent="flex-end" borderRadius={'$5x1'} flexDirection="row">
                 {
                     userInfos.tipoAcesso !== 'ALUNO' &&
                     (

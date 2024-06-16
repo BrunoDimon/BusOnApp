@@ -27,7 +27,7 @@ export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, 
                     {inputValue ? moment(inputValue).format('DD/MM/yyyy') : 'dd/mm/yyyy'}
                 </ButtonText>
                 <ButtonIcon size={'lg'}>
-                    <Icon as={CalendarDaysIcon} color={"$secondary400"} size="lg" />
+                    <Icon as={CalendarDaysIcon} color={"$secondary400"} size="20" />
                 </ButtonIcon>
             </Button>
 

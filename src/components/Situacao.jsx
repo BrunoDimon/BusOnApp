@@ -17,8 +17,8 @@ export default function Situacao({ cor, situacao, ...props }) {
     const color = cor ? initialColor[cor] : initialColorSituation[situacao?.toLowerCase()];
     return (
         <Box flexDirection="row" gap={5} h={20} alignItems="center" {...props}>
-            <Box bg={color} h={10} aspectRatio={'1/1'} borderRadius={'$full'}></Box>
-            <Text lineHeight={'$xs'} color={color} fontWeight="$extrabold" >{situacao}</Text>
+            <Box bg={color} h={12} aspectRatio={'1/1'} borderRadius={'$full'}></Box>
+            <Text fontSize={'$lg'} lineHeight={'$lg'} color={color} fontWeight="$extrabold" >{situacao}</Text>
         </Box>
     )
 }

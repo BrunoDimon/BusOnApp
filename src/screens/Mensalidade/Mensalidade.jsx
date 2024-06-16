@@ -77,7 +77,6 @@ export default Mensalidade = () => {
                     windowSize={4}
                     refreshing={listIsRefreshing}
                     onRefresh={() => buscarPagamentos()}
-
                 />
             </Box>
         </Box>

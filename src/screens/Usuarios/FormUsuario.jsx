@@ -153,7 +153,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                     globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
                 }
             } else {
-                Toast.show("Erro", { data: { messageDescription: 'Falha ao realizar a operação. Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
+                Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error.response.data);
@@ -164,9 +164,9 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const tipoAcessoValores =
         eUsuarioAdmin
             ?
-            TipoAcessoUsuarioEnum
+            { ADMIN: 'Administrador', GESTAO: 'Gestor' }
             :
-            { GESTAO: 'Gestor', ALUNO: 'Aluno' }
+            { ALUNO: 'Aluno', GESTAO: 'Gestor' }
 
 
     return (
