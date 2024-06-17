@@ -3,7 +3,6 @@ import Parametros from "../screens/Parametros/Parametros";
 import HistoricoPagamento from "../screens/HistoricoPagamento/HistoricoPagamento";
 import Inicio from "../screens/Inicio/Inicio";
 import MeusDados from "../screens/MeusDados/MeusDados";
-import Pagamentos from "../screens/Pagamentos/Pagamentos";
 import IaChat from "../screens/IaChat/IaChat";
 import Cursos from "../screens/Cursos/Cursos";
 import Instituicao from "../screens/Instituicao/Instituicao";
@@ -60,13 +59,6 @@ export default routes = [
         accessRequired: ['GESTAO'],
         rigthButtonHeader: 'sync',
         component: Parametros
-    },
-    {
-        name: 'pagamentos',
-        label: 'Pagamentos',
-        accessRequired: ['ALUNO'],
-        rigthButtonHeader: 'sync',
-        component: Pagamentos
     },
     {
         name: 'alunos',
