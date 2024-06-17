@@ -1,7 +1,6 @@
 import Usuario from "../screens/Usuarios/Usuario";
 import Parametros from "../screens/Parametros/Parametros";
 import HistoricoPagamento from "../screens/HistoricoPagamento/HistoricoPagamento";
-import Mensalidade from "../screens/Mensalidade/Mensalidade";
 import Inicio from "../screens/Inicio/Inicio";
 import MeusDados from "../screens/MeusDados/MeusDados";
 import Pagamentos from "../screens/Pagamentos/Pagamentos";
@@ -48,13 +47,6 @@ export default routes = [
         accessRequired: ['ALUNO', 'GESTAO'],
         rigthButtonHeader: 'sync',
         component: HistoricoPagamento
-    },
-    {
-        name: 'mensalidade',
-        label: 'Mensalidade',
-        accessRequired: ['ALUNO'],
-        rigthButtonHeader: 'sync',
-        component: Mensalidade
     },
     {
         name: 'meus-dados',

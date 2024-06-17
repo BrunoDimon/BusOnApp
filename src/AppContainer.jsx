@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { validateToken } from './service/api/requests/autenticacaoRequests';
 import { ToastProvider, Toast } from 'react-native-toast-notifications'
 import ToastAlert from './components/toasts/ToastAlert';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 export default function AppContainer({ navigation }) {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -30,14 +31,16 @@ export default function AppContainer({ navigation }) {
     return (
         <GluestackUIProvider colorMode={theme} config={config}  >
             <SafeAreaView flex={1} backgroundColor={theme == 'dark' ? '#404040' : '#F1F1F1'}>
-                <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} >
-                    <DialogProvider>
-                        <NavigationContainer >
-                            <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} />
-                            {isAuthenticated ? <DrawerNavigation /> : <Login />}
-                        </NavigationContainer>
-                    </DialogProvider>
-                </ToastProvider>
+                <RootSiblingParent>
+                    <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} >
+                        <DialogProvider>
+                            <NavigationContainer >
+                                <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} />
+                                {isAuthenticated ? <DrawerNavigation /> : <Login />}
+                            </NavigationContainer>
+                        </DialogProvider>
+                    </ToastProvider>
+                </RootSiblingParent>
             </SafeAreaView>
         </GluestackUIProvider >
     );

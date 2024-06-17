@@ -1,17 +1,28 @@
 import axios from 'axios';
+import { Toast } from 'react-native-toast-notifications';
 
-//const API_URL = "http://192.168.16.101:3000/api"; //Bruno casa
-const API_URL = "http://192.168.16.109:3000/api"; //Douglas
-//const API_URL = "http://172.30.0.70:3000/api"; //Douglas 2
-//const API_URL = "http://10.32.7.167:3000/api"; //Douglas SATC
-//const API_URL = "http://192.168.0.16:3000/api"; //Douglas Casa Laura
-//const API_URL = "http://192.168.0.108:3000/api"; //Douglas Casa Laura
-
-// pegar IPV4 no cmd ipconfig toda vez que trocar de internet 
-
-export const api = axios.create({
-    baseURL: API_URL,
+console.log(process.env.EXPO_PUBLIC_BACK_END_API_URL)
+const api = axios.create({
+    baseURL: process.env.EXPO_PUBLIC_BACK_END_API_URL,
     paramsSerializer: {
         indexes: null
     },
 })
+
+api.interceptors.response.use(
+    response => {
+        return response;
+    },
+    error => {
+        if (error.request && !error.response) {
+            Toast.show("Erro no servidor", { data: { messageDescription: 'Nenhuma resposta recebida. Tente novamente mais tarde ou contate o administrador.' }, type: 'error' })
+
+            console.error('Erro na requisição: Nenhuma resposta recebida', error.request);
+        }
+        return Promise.reject(error);
+    }
+);
+
+export {
+    api
+}

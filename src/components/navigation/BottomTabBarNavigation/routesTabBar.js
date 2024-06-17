@@ -61,9 +61,9 @@ export default routesTabBar = [
                 isMainRoute: true,
             },
             {
-                name: 'mensalidade',
-                label: 'Mensalidade',
-                iconName: 'currency-usd',
+                name: 'meus-dados',
+                label: 'Meus Dados',
+                iconName: 'card-account-details-outline',
                 isMainRoute: false,
             }
         ]

@@ -74,9 +74,10 @@ export default function Login() {
                 }
             }).catch(error => {
                 console.log(error.response.data)
-                globalToast.show("Erro no login", { data: { messageDescription: error.response.data.message }, type: 'error' })
+                globalToast.show('Falha na Autenticação', { data: { messageDescription: error.response.data.message }, type: 'warning' })
+            }).finally(() => {
+                setIsLoading(false)
             })
-        setIsLoading(false)
     };
 
     const temporarioSetarValoresLogin = (value) => {

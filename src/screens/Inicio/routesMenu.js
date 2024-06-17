@@ -65,12 +65,6 @@ export default routesMenu = [
         category: 'Pagamentos',
         routes: [
             {
-                name: 'mensalidade',
-                label: 'Mensalidade',
-                iconName: 'currency-usd',
-                accessRequired: ['ALUNO'],
-            },
-            {
                 name: 'historico-pagamentos',
                 label: 'Histórico',
                 iconName: 'clipboard-text-clock-outline',

@@ -20,7 +20,6 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
         nome: dadosEdicao?.nome || null,
         endereco: dadosEdicao?.endereco || null,
         situacao: dadosEdicao?.situacao || 'ATIVO',
-        pixApiId: dadosEdicao?.pixApiId || null,
         logo: dadosEdicao?.logo || null,
     });
 
