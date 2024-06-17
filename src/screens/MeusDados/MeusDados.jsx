@@ -16,7 +16,7 @@ import { Heading } from "@gluestack-ui/themed"
 import { buscarParametroDaAssociacao } from "../../service/api/requests/parametroRequests"
 import { useToast } from "react-native-toast-notifications"
 
-export default MeusDados = () => {
+export default MeusDados = ({ navigation }) => {
     const globalToast = useToast()
 
     const usuarioId = useSelector(state => state.auth.user.id);
@@ -86,7 +86,12 @@ export default MeusDados = () => {
         }
     };
 
+    useEffect(() => {
+        navigation.setOptions({ onRightButtonPress: buscarDadosUsuario })
+    }, [navigation]);
+
     const buscarDadosUsuario = async () => {
+        setIsLoadingDadosUsuario(true);
         try {
             const response = await buscarUsuarioPorId(usuarioId);
             const dadosUsuario = response.data;
@@ -131,6 +136,7 @@ export default MeusDados = () => {
         buscarInstituicoes();
         buscarDadosUsuario();
     }, []);
+
     useEffect(() => {
         buscarCursos();
     }, [inputValues.instituicaoId]);

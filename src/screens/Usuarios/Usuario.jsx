@@ -13,7 +13,7 @@ import { VStack } from '@gluestack-ui/themed';
 import { useSelector } from 'react-redux';
 import { useToast } from 'react-native-toast-notifications';
 
-export default function Usuario() {
+export default function Usuario({ navigation }) {
     const globalToast = useToast();
 
     const [alunos, setAlunos] = useState([]);
@@ -24,6 +24,11 @@ export default function Usuario() {
 
     const userInfos = useSelector(state => state.auth.user);
     const eUsuarioAdmin = userInfos.tipoAcesso == "ADMIN";
+
+    useEffect(() => {
+        navigation.setOptions({ onRightButtonPress: buscarUsuarios })
+    }, [navigation]);
+
     const buscarUsuarios = async () => {
         const whereClause =
             eUsuarioAdmin
@@ -128,10 +133,6 @@ export default function Usuario() {
 
         </Card>
     );
-
-    /*     {item.associacao && (
-            <Text color={'$textDark700'}>{item.associacao.nome}</Text>
-        )} */
 
     useEffect(() => {
         buscarUsuarios();

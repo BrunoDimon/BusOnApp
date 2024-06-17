@@ -10,7 +10,7 @@ import { FormInstituicao } from './FormInstituicao'
 import { useDialog } from "../../components/dialog/DialogContext";
 import { useToast } from "react-native-toast-notifications";
 
-export default function Instituicao() {
+export default function Instituicao({ navigation }) {
     const globalToast = useToast()
 
     const [instituicoes, setInstituicoes] = useState([])
@@ -23,6 +23,10 @@ export default function Instituicao() {
     const [listIsRefreshing, setListIsRefreshing] = useState(false);
     const [formIsOpen, setFormIsOpen] = useState(false);
     const [filtersIsOpen, setFiltersIsOpen] = useState(false);
+
+    useEffect(() => {
+        navigation.setOptions({ onRightButtonPress: buscarInstituicoes })
+    }, [navigation]);
 
     const buscarInstituicoes = async () => {
         try {

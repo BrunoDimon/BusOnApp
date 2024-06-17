@@ -10,7 +10,7 @@ import { FormAssociacao } from './FormAssociacao'
 import { useToast } from "react-native-toast-notifications"
 import { AvatarFallbackText } from '@gluestack-ui/themed'
 
-export const Associacao = () => {
+export const Associacao = ({ navigation }) => {
     const globalToast = useToast()
 
     const [associacoes, setAssociacoes] = useState([])
@@ -23,6 +23,10 @@ export const Associacao = () => {
     const [listIsRefreshing, setListIsRefreshing] = useState(false);
     const [formIsOpen, setFormIsOpen] = useState(false);
     const [filtersIsOpen, setFiltersIsOpen] = useState(false);
+
+    useEffect(() => {
+        navigation.setOptions({ onRightButtonPress: buscarAssociacoes })
+    }, [navigation]);
 
     const buscarAssociacoes = async () => {
         try {

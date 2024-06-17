@@ -14,7 +14,6 @@ export default routes = [
         name: 'inicio',
         label: 'Inicio',
         accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
-        rigthButtonHeader: 'sync',
         component: Inicio,
         isInitialRoute: false,
     },

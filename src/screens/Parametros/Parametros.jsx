@@ -11,7 +11,7 @@ import { Button } from "../../components/buttons/Button"
 import { ModalContent } from "@gluestack-ui/themed"
 import { useToast } from "react-native-toast-notifications"
 
-export default Configuracoes = () => {
+export default Configuracoes = ({ navigation }) => {
     const globalToast = useToast()
 
     const associacaoId = useSelector(state => state.auth.user.associacaoId);
@@ -108,7 +108,12 @@ export default Configuracoes = () => {
         }
     }
 
+    useEffect(() => {
+        navigation.setOptions({ onRightButtonPress: buscarParametros })
+    }, [navigation]);
+
     const buscarParametros = async () => {
+        setIsLoadingParametros(true);
         try {
             const response = await buscarParametroDaAssociacao(associacaoId);
             if (response.data) {

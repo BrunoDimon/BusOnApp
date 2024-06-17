@@ -15,6 +15,7 @@ export default HistoricoPagamentos = ({ navigation }) => {
     const [pagamentos, setPagamentos] = useState([]);
     const globalToast = useToast();
     const userInfos = useSelector(state => state.auth.user);
+
     useEffect(() => {
         navigation.setOptions({ onRightButtonPress: buscarPagamentos })
     }, [navigation]);
@@ -23,9 +24,10 @@ export default HistoricoPagamentos = ({ navigation }) => {
     const buscarPagamentos = async () => {
         const filters = !eUsuarioGestao && { equals: { usuarioId: userInfos.id } }
         const filtersAssociacao = { equals: { id: userInfos.associacaoId } }
+        const ordenacao = { field: 'id', direction: 'ASC' }
         try {
             setListIsRefreshing(true);
-            const dados = await buscarTodosPagamentos(filters, filtersAssociacao);
+            const dados = await buscarTodosPagamentos(filters, filtersAssociacao, ordenacao);
             setPagamentos(dados.data);
         } catch (error) {
             console.error('Erro ao obter pagamentos:', error);
@@ -106,8 +108,13 @@ export default HistoricoPagamentos = ({ navigation }) => {
                 data={pagamentos}
                 renderItem={renderItem}
                 keyExtractor={item => item.id.toString()}
+                initialNumToRender={8}
+                windowSize={4}
+                refreshing={listIsRefreshing}
+                onRefresh={() => buscarPagamentos()}
             />
         </Box >
 
     )
 }
+

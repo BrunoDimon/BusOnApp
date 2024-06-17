@@ -10,7 +10,7 @@ import { FormCursos } from './FormCursos'
 import { useDialog } from "../../components/dialog/DialogContext";
 import { useToast } from 'react-native-toast-notifications'
 
-export default function Cursos() {
+export default function Cursos({ navigation }) {
     const globalToast = useToast()
 
     const [cursos, setCursos] = useState([])
@@ -23,6 +23,10 @@ export default function Cursos() {
     const [listIsRefreshing, setListIsRefreshing] = useState(false);
     const [formIsOpen, setFormIsOpen] = useState(false);
     const [filtersIsOpen, setFiltersIsOpen] = useState(false);
+
+    useEffect(() => {
+        navigation.setOptions({ onRightButtonPress: buscarCursos })
+    }, [navigation]);
 
     const buscarCursos = async () => {
         try {

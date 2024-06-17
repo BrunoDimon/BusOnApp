@@ -18,7 +18,7 @@ export default HeaderBar = ({ options, navigationDrawer }) => {
                     options.rigthButtonHeader
                         ?
                         (
-                            <Pressable onPress={() => options.onRightButtonPress} >
+                            <Pressable onPress={() => options.onRightButtonPress && options.onRightButtonPress()} >
                                 <MaterialCommunityIcons name={options.rigthButtonHeader} size={30} color={eRotaInicio ? 'white' : theme === 'light' ? '#525252' : 'white'} />
                             </Pressable>
                         )
