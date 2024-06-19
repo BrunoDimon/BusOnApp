@@ -1,4 +1,4 @@
-import { Box, FlatList, HStack, VStack, Avatar, Heading, Text } from '@gluestack-ui/themed'
+import { Box, FlatList, HStack, VStack, Avatar, Heading, Text, AvatarImage, AvatarFallbackText } from '@gluestack-ui/themed'
 import { Button } from '../../components/buttons/Button'
 import { useEffect, useState } from 'react'
 import { buscarInstituicaoPorId, buscarTodasInstituicoes, excluirInstituicao } from '../../service/api/requests/instituicaoRequests'
@@ -58,7 +58,8 @@ export default function Instituicao({ navigation }) {
                 nome: response.data.nome,
                 endereco: response.data.endereco,
                 situacao: response.data.situacao,
-                associacao_id: response.data.associacaoId,
+                associacaoId: response.data.associacaoId,
+                logo: response.data?.logoUrl,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);
@@ -74,7 +75,14 @@ export default function Instituicao({ navigation }) {
             <Box justifyContent="space-between" flexDirection="col">
                 <HStack justifyContent='space-between' my={12}>
                     <HStack alignItems='center' gap={12} >
-                        <Avatar></Avatar>
+                        <Avatar>
+                            {
+                                item.logoUrl ?
+                                    (<AvatarImage source={process.env.EXPO_PUBLIC_FILES_API_URL + item.logoUrl} alt={'logo'} />)
+                                    :
+                                    (<AvatarFallbackText>{item.nome}</AvatarFallbackText>)
+                            }
+                        </Avatar>
                         <Box>
                             <Heading color={'$textDark700'}>{item.nome}</Heading>
                             {item.endereco && (

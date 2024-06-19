@@ -20,9 +20,8 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
         nome: dadosEdicao?.nome || null,
         endereco: dadosEdicao?.endereco || null,
         situacao: dadosEdicao?.situacao || 'ATIVO',
-        logo: dadosEdicao?.logo || null,
+        logo: dadosEdicao?.logo && process.env.EXPO_PUBLIC_FILES_API_URL + dadosEdicao?.logo || null,
     });
-
     const eModoEdicao = dadosEdicao ? true : false
 
     const handleChangeInputValues = (fieldName, value) => {
@@ -61,12 +60,26 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
     const handleOnPressSave = async () => {
         try {
             if (validarFormulario()) {
+                const formData = new FormData();
+                formData.append('data', JSON.stringify({
+                    cnpj: inputValues.cnpj,
+                    nome: inputValues.nome,
+                    endereco: inputValues.endereco,
+                    situacao: inputValues.situacao,
+                }));
+                if (inputValues.logo) {
+                    formData.append('logo', {
+                        uri: inputValues.logo,
+                        name: `${inputValues.nome}.jpg`,
+                        type: 'image/jpeg'
+                    });
+                }
                 if (!eModoEdicao) {
-                    await cadastrarAssociacao(inputValues);
+                    await cadastrarAssociacao(formData);
                     onClose(true);
                     globalToast.show("Sucesso", { data: { messageDescription: 'Associação cadastrada com sucesso!' }, type: 'success' })
                 } else {
-                    await editarAssociacao(dadosEdicao.id, inputValues);
+                    await editarAssociacao(dadosEdicao.id, formData);
                     onClose(true);
                     globalToast.show("Sucesso", { data: { messageDescription: 'Associação alterada com sucesso!' }, type: 'success' })
                 }

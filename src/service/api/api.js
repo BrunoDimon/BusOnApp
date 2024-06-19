@@ -5,7 +5,7 @@ const api = axios.create({
     baseURL: process.env.EXPO_PUBLIC_BACK_END_API_URL,
     paramsSerializer: {
         indexes: null
-    },
+    }
 })
 
 api.interceptors.response.use(

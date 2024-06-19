@@ -10,19 +10,13 @@ import { TrashIcon } from '@gluestack-ui/themed';
 
 export default function InputImage({ label, erro, imageValue, onPickImage, isDisabled, isInvalid, isReadOnly, isRequired }) {
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 4],
             quality: 1,
-            base64: true,
         });
-
-        //console.log(result)
-
         if (!result.canceled) {
-            onPickImage(result.assets[0].base64);
+            onPickImage(result.assets[0].uri);
         }
     };
 
@@ -32,7 +26,7 @@ export default function InputImage({ label, erro, imageValue, onPickImage, isDis
                 {
                     imageValue
                         ?
-                        (<Image flex={1} aspectRatio={'1/1'} m={10} source={"data:image/jpeg;base64," + imageValue} alt='imagem-logo' />)
+                        (<Image flex={1} aspectRatio={'1/1'} m={10} source={{ uri: imageValue }} alt='imagem-logo' />)
                         :
                         (<MaterialCommunityIcons name={'tooltip-image-outline'} size={80} color={'#B1B1B1'} />)
                 }

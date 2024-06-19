@@ -1,4 +1,5 @@
-import { login, logout } from "../../../store/authSlice";
+import { login, logout, refreshUser } from "../../../store/authSlice";
+import { store } from "../../../store/storeConfig";
 import { api } from "../api";
 
 export const loginRequest = async (email, senha) => {
@@ -14,6 +15,8 @@ export const loginRequest = async (email, senha) => {
 export const validateToken = async () => {
     await api.post('/autenticacao/validar-token')
         .then(response => {
+            const dadosUsuario = response.data.user
+            store.dispatch(refreshUser(dadosUsuario));
             console.log(response.data.message)
         })
         .catch(error => {

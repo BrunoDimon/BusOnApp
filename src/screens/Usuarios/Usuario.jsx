@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, FlatList, HStack, Avatar, Heading, Text, ModalBackdrop } from '@gluestack-ui/themed';
+import { Box, FlatList, HStack, Avatar, Heading, Text, ModalBackdrop, AvatarFallbackText, AvatarImage } from '@gluestack-ui/themed';
 import { Button } from '../../components/buttons/Button';
 import { buscarTodosUsuarios, excluirAluno, buscarAlunoPorId, excluirUsuario, buscarUsuarioPorId } from '../../service/api/requests/usuarioRequests'
 import ButtonDotsDropdownMenu from '../../components/buttons/ButtonDotsDropdownMenu';
@@ -64,8 +64,9 @@ export default function Usuario({ navigation }) {
 
     const acaoEditarUsuario = async (id) => {
         await buscarUsuarioPorId(id).then((response) => {
+            console.log(response.data)
             const dados = {
-                associacaoId: response.data.associacao.id,
+                associacaoId: response.data?.associacao?.id,
                 id: response.data?.id,
                 nome: response.data?.nome,
                 email: response.data?.email,
@@ -78,6 +79,7 @@ export default function Usuario({ navigation }) {
                 situacao: response.data?.situacao,
                 diasUsoTransporte: response.data?.diasUsoTransporte,
                 senha: response.data?.senha,
+                foto: response.data?.fotoUrl,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);
@@ -94,7 +96,14 @@ export default function Usuario({ navigation }) {
                 <VStack flex={1}>
                     <HStack justifyContent='space-between'>
                         <HStack flex={1} gap={10} alignItems='center' mb={5}>
-                            <Avatar></Avatar>
+                            <Avatar>
+                                {
+                                    item.fotoUrl ?
+                                        (<AvatarImage source={process.env.EXPO_PUBLIC_FILES_API_URL + item.fotoUrl} alt={'foto'} />)
+                                        :
+                                        (<AvatarFallbackText>{item.nome}</AvatarFallbackText>)
+                                }
+                            </Avatar>
                             <VStack flex={1}>
                                 <Heading numberOfLines={1} color={'$textDark700'}>{item.nome}</Heading>
                                 <Text numberOfLines={1} color={'$textDark700'}>{`${item?.curso?.nome || ''} - ${item?.curso?.instituicao?.nome || ''}`}</Text>

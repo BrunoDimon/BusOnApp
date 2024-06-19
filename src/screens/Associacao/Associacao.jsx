@@ -59,7 +59,7 @@ export const Associacao = ({ navigation }) => {
                 nome: response.data.nome,
                 endereco: response.data.endereco,
                 situacao: response.data.situacao,
-                pixApiId: response.data.pixApiId,
+                logo: response.data.logoUrl,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);
@@ -77,8 +77,9 @@ export const Associacao = ({ navigation }) => {
                     <HStack alignItems='center' gap={12} >
                         <Avatar>
                             {
-                                item.imagem?.imagem ?
-                                    (<AvatarImage source={' null ' + item.imagem.imagem.data} alt={'logo'} />)
+                                item.logoUrl ?
+                                    (<AvatarImage source={process.env.EXPO_PUBLIC_FILES_API_URL
+                                        + item.logoUrl} alt={'logo'} />)
                                     :
                                     (<AvatarFallbackText>{item.nome}</AvatarFallbackText>)
                             }

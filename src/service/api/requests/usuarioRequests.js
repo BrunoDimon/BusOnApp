@@ -12,11 +12,19 @@ export const excluirUsuario = async (id) => {
 }
 
 export const cadastrarUsuario = async (data) => {
-    return request = await api.post('/usuario', data);
+    return request = await api.post('/usuario', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
 }
 
 export const editarUsuario = async (id, data) => {
-    return request = await api.put('/usuario/' + String(id), data);
+    return request = await api.put('/usuario/' + String(id), data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
 }
 
 export const editarSenhaUsuario = async (id, data) => {

@@ -12,9 +12,17 @@ export const excluirInstituicao = async (id) => {
 }
 
 export const cadastrarInstituicao = async (data) => {
-    return request = await api.post('/instituicao', data);
+    return request = await api.post('/instituicao', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
 }
 
 export const editarInstituicao = async (id, data) => {
-    return request = await api.put('/instituicao/' + String(id), data);
+    return request = await api.put('/instituicao/' + String(id), data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
 }

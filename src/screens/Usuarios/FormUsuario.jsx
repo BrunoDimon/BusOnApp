@@ -14,6 +14,8 @@ import { buscarTodosCursos } from "../../service/api/requests/cursoRequests";
 import { buscarTodasAssociacoes } from "../../service/api/requests/associacaoRequests";
 import { useToast, Toast, ToastProvider } from "react-native-toast-notifications";
 import ToastAlert from "../../components/toasts/ToastAlert";
+import InputImage from "../../components/formInputs/InputImage";
+import { InputNumber } from "../../components/formInputs/InputNumber";
 
 export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
@@ -22,7 +24,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const eUsuarioAdmin = userInfos.tipoAcesso == "ADMIN";
 
     const [inputValues, setInputValues] = useState({
-        associacaoId: dadosEdicao?.associacaoId || userInfos.associacaoId,
+        associacaoId: dadosEdicao?.associacaoId || userInfos?.associacaoId,
         nome: dadosEdicao?.nome || null,
         email: dadosEdicao?.email || null,
         telefone: dadosEdicao?.telefone || null,
@@ -33,7 +35,8 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
         tipoAcesso: dadosEdicao?.tipoAcesso || "ALUNO",
         situacao: dadosEdicao?.situacao || "ATIVO",
         diasUsoTransporte: dadosEdicao?.diasUsoTransporte || [],
-        senha: null
+        senha: null,
+        foto: dadosEdicao?.foto && process.env.EXPO_PUBLIC_FILES_API_URL + dadosEdicao?.foto || null,
     });
 
     const [associacoes, setAssociacoes] = useState([]);
@@ -143,12 +146,34 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const handleOnPressSave = async () => {
         try {
             if (validarFormulario()) {
+                const formData = new FormData();
+                formData.append('data', JSON.stringify({
+                    associacaoId: inputValues?.associacaoId,
+                    nome: inputValues?.nome,
+                    email: inputValues?.email,
+                    telefone: inputValues?.telefone,
+                    endereco: inputValues?.endereco,
+                    matricula: inputValues?.matricula,
+                    instituicaoId: inputValues?.instituicaoId,
+                    cursoId: inputValues?.cursoId,
+                    tipoAcesso: inputValues?.tipoAcesso,
+                    situacao: inputValues?.situacao,
+                    diasUsoTransporte: inputValues?.diasUsoTransporte,
+                    senha: inputValues?.senha
+                }));
+                if (inputValues.foto) {
+                    formData.append('foto', {
+                        uri: inputValues.foto,
+                        name: `${inputValues.nome}.jpg`,
+                        type: 'image/jpeg'
+                    });
+                }
                 if (!eModoEdicao) {
-                    await cadastrarUsuario(inputValues);
+                    await cadastrarUsuario(formData);
                     onClose(true);
                     globalToast.show("Sucesso", { data: { messageDescription: 'Usuário cadastrado com sucesso!' }, type: 'success' })
                 } else {
-                    await editarUsuario(dadosEdicao.id, inputValues);
+                    await editarUsuario(dadosEdicao.id, formData);
                     onClose(true);
                     globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
                 }
@@ -183,8 +208,9 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                     <ScrollView >
                         <InputSelect label={"Associação"} erro={errors.associacaoId} inputOnChange={(value) => handleChangeInputValues("associacaoId", value)} inputValue={inputValues.associacaoId} selectValues={associacoes} isRequired={!eUsuarioAdmin} isDisabled={!eUsuarioAdmin} />
                         <InputText label={"Nome Completo"} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues("nome", value)} isRequired={true} inputValue={inputValues.nome} />
+                        <InputImage label={'Foto'} erro={errors.foto} onPickImage={(value) => handleChangeInputValues('foto', value)} imageValue={inputValues.foto} />
                         <InputText label={"E-mail"} erro={errors.email} inputOnChange={(value) => handleChangeInputValues("email", value)} isRequired={true} inputValue={inputValues.email} />
-                        <InputText label={"Telefone"} erro={errors.telefone} inputOnChange={(value) => handleChangeInputValues("telefone", value)} isRequired={true} inputValue={inputValues.telefone} />
+                        <InputNumber label={"Telefone"} erro={errors.telefone} inputOnChange={(value) => handleChangeInputValues("telefone", value)} isRequired={true} inputValue={inputValues.telefone} />
                         <InputText label={"Endereço"} erro={errors.endereco} inputOnChange={(value) => handleChangeInputValues("endereco", value)} inputValue={inputValues.endereco} />
                         <InputText label={"Matricula"} erro={errors.matricula} inputOnChange={(value) => handleChangeInputValues("matricula", value)} inputValue={inputValues.matricula} />
                         <InputSelect label={"Instituição"} inputOnChange={(value) => handleChangeInputValues("instituicaoId", value)} inputValue={inputValues.instituicaoId} selectValues={instituicoes} />

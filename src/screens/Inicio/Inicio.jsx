@@ -1,4 +1,4 @@
-import { Avatar, BadgeIcon, BadgeText, Box, Heading, ScrollView, Text, VStack, useColorMode } from "@gluestack-ui/themed";
+import { Avatar, AvatarFallbackText, AvatarImage, BadgeIcon, BadgeText, Box, Heading, ScrollView, Text, VStack, useColorMode } from "@gluestack-ui/themed";
 import { useDispatch, useSelector } from "react-redux";
 import routesMenu from "./routesMenu";
 
@@ -6,10 +6,12 @@ import { Badge, CheckCircleIcon, HStack, StatusBar } from "@gluestack-ui/themed"
 import CardBox from "../../components/CardBox";
 import Label from "../../components/Label";
 import ButtonIconMenu from "./ButtonIconMenu";
+import { store } from "../../store/storeConfig";
 
 export default Inicio = ({ navigation }) => {
     const dispatch = useDispatch();
     const userInfos = useSelector(state => state.auth.user);
+    console.log(userInfos)
     const userRoutes = routesMenu.map(category => {
         const filteredRoutes = category.routes.filter(route => route.accessRequired.includes(userInfos?.tipoAcesso));
         return {
@@ -19,15 +21,20 @@ export default Inicio = ({ navigation }) => {
     }).filter(category => category.routes.length > 0);
 
     const colorMode = useColorMode();
-    const logo = colorMode === "light" ? require('../../../assets/busOnFontePreta.png') : require('../../../assets/busOnFonteBranca.png');
-    const draw = require('../../../assets/school-bus-predios-dark.png');
 
     return (
         <Box flex={1}>
             <StatusBar translucent={true} backgroundColor={'#FFC100'} barStyle={'light-content'} /* barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} */ />
             <Box py={25} pb={85} px={12} bg={'$yellow500'}>
                 <HStack alignItems="center" gap={12}>
-                    <Avatar bg={'$yellow600'} size={'xl'}></Avatar>
+                    <Avatar bg={'$yellow600'} size={'xl'}>
+                        {
+                            userInfos?.fotoUrl ?
+                                (<AvatarImage source={process.env.EXPO_PUBLIC_FILES_API_URL + userInfos?.fotoUrl} alt={'foto'} />)
+                                :
+                                (<AvatarFallbackText>{userInfos?.nome}</AvatarFallbackText>)
+                        }
+                    </Avatar>
                     <VStack flex={1}>
                         <HStack justifyContent="space-between" alignItems="center" gap={10}>
                             <Heading color={'$white'} flex={1} numberOfLines={1} size={'lg'} >{userInfos?.nome}</Heading>

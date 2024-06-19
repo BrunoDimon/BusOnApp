@@ -8,6 +8,7 @@ import AtivoInativoEnum from "../../enums/AtivoInativoEnum";
 import { useSelector } from "react-redux";
 import { ToastProvider, useToast, Toast } from "react-native-toast-notifications";
 import ToastAlert from "../../components/toasts/ToastAlert";
+import InputImage from "../../components/formInputs/InputImage";
 
 
 export const FormInstituicao = ({ onClose, dadosEdicao }) => {
@@ -18,7 +19,8 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
         nome: dadosEdicao?.nome || null,
         endereco: dadosEdicao?.endereco || null,
         situacao: dadosEdicao?.situacao || 'ATIVO',
-        associacaoId: dadosEdicao?.associacaoId || userInfos.associacaoId
+        associacaoId: dadosEdicao?.associacaoId || userInfos.associacaoId,
+        logo: dadosEdicao?.logo && process.env.EXPO_PUBLIC_FILES_API_URL + dadosEdicao?.logo || null,
     });
 
     const eModoEdicao = dadosEdicao ? true : false
@@ -59,12 +61,26 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
     const handleOnPressSave = async () => {
         try {
             if (validarFormulario()) {
+                const formData = new FormData();
+                formData.append('data', JSON.stringify({
+                    nome: inputValues.nome,
+                    endereco: inputValues.endereco,
+                    situacao: inputValues.situacao,
+                    associacaoId: inputValues.associacaoId,
+                }));
+                if (inputValues.logo) {
+                    formData.append('logo', {
+                        uri: inputValues.logo,
+                        name: `${inputValues.nome}.jpg`,
+                        type: 'image/jpeg'
+                    });
+                }
                 if (!eModoEdicao) {
-                    await cadastrarInstituicao(inputValues);
+                    await cadastrarInstituicao(formData);
                     onClose(true);
                     globalToast.show("Sucesso", { data: { messageDescription: 'Instituição cadastrada com sucesso!' }, type: 'success' })
                 } else {
-                    await editarInstituicao(dadosEdicao.id, inputValues);
+                    await editarInstituicao(dadosEdicao.id, formData);
                     onClose(true);
                     globalToast.show("Sucesso", { data: { messageDescription: 'Instituição alterada com sucesso!' }, type: 'success' })
                 }
@@ -91,6 +107,7 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
                     <InputText label={'Nome'} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} />
                     <InputText label={'Endereço'} erro={errors.endereco} inputOnChange={(value) => handleChangeInputValues('endereco', value)} isRequired={true} inputValue={inputValues.endereco} />
                     <InputSelect label={'Situação'} erro={errors.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} />
+                    <InputImage label={'Logo'} erro={errors.logo} onPickImage={(value) => handleChangeInputValues('logo', value)} imageValue={inputValues.logo} />
                 </ModalBody>
                 <ModalFooter gap={10}>
                     <Button label={'Cancelar'} variant={'outline'} action={'secondary'} onPress={() => onClose()} />

@@ -48,7 +48,6 @@ export default function Login() {
         setIsLoading(true);
         await loginRequest(email, password)
             .then(response => {
-                console.log(response.data)
                 const dadosUsuario = {
                     user: {
                         id: response.data.id,
@@ -60,7 +59,8 @@ export default function Login() {
                         associacaoId: response.data.associacaoId,
                         tipoAcesso: response.data.tipoAcesso,
                         situacao: response.data.situacao,
-                        exigirRedefinicaoSenha: response.data.exigirRedefinicaoSenha
+                        exigirRedefinicaoSenha: response.data.exigirRedefinicaoSenha,
+                        fotoUrl: response.data?.fotoUrl
                     },
                     token: response.data.accessToken,
                     refreshToken: response.data.refreshToken
@@ -82,6 +82,9 @@ export default function Login() {
 
     const temporarioSetarValoresLogin = (value) => {
         if (value === 'ADMIN') {
+            setEmail('admin@admin.com')
+            setPassword('admin')
+        } else if (value === 'ADMIN_INSOMNIA') {
             setEmail('usuario@admin.com')
             setPassword('admin')
         } else if (value === 'GESTAO') {
