@@ -1,24 +1,24 @@
 import { Avatar, Box, Card, CopyIcon, Divider, Heading, Input, InputField, InputIcon, ScrollView, Pressable, InputSlot, Text } from "@gluestack-ui/themed"
 const initialColor = {
     amarelo: '$yellow500',
-    verde: '#37AB00',
-    vermelho: '#DB0000'
+    verde: '$success400',
+    vermelho: '$error500'
 };
 const initialColorSituation = {
     aberto: '$yellow500',
-    pago: '#37AB00',
-    atrasado: '#DB0000',
-    ativo: '#37AB00',
-    inativo: '#DB0000'
+    pago: '$success400',
+    atrasado: '$error500',
+    ativo: '$success400',
+    inativo: '$error500'
 };
 
 export default function Situacao({ cor, situacao, ...props }) {
 
     const color = cor ? initialColor[cor] : initialColorSituation[situacao?.toLowerCase()];
     return (
-        <Box flexDirection="row" gap={5} h={20} alignItems="center" {...props}>
+        <Box flex={1} flexDirection="row" gap={5} alignItems="center"  {...props}>
             <Box bg={color} h={12} aspectRatio={'1/1'} borderRadius={'$full'}></Box>
-            <Text fontSize={'$lg'} lineHeight={'$lg'} color={color} fontWeight="$extrabold" >{situacao}</Text>
+            <Text fontSize={'$lg'} color={color} fontWeight="$extrabold" >{situacao}</Text>
         </Box>
     )
 }

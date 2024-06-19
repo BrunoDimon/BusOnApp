@@ -23,11 +23,11 @@ export default ButtonDotsDropdownMenu = ({ dotsColor, opcoesMenu, titulo }) => {
     return (
         <Box position="relative">
             <Pressable onPress={toggleDropdown}>
-                <MaterialCommunityIcons name={'dots-vertical'} size={26} color={dotsColor || '#525252'} />
+                <MaterialCommunityIcons name={'dots-vertical'} size={30} color={dotsColor || (theme === 'light' ? '#525252' : '#f1f1f1')} />
             </Pressable>
             {isDropdownOpen &&
                 (
-                    <Actionsheet isOpen={isDropdownOpen} onClose={closeDropdown}>
+                    <Actionsheet useRNModal={true} isOpen={isDropdownOpen} onClose={closeDropdown}>
                         <ActionsheetBackdrop />
                         <ActionsheetContent>
                             <ActionsheetDragIndicatorWrapper>
@@ -52,7 +52,7 @@ export default ButtonDotsDropdownMenu = ({ dotsColor, opcoesMenu, titulo }) => {
                                             <ActionsheetIcon height={30} w={30} >
                                                 <MaterialCommunityIcons name={value.nomeIcone} size={24} color={value.corIcone} />
                                             </ActionsheetIcon>
-                                            <ActionsheetItemText lineHeight={'$xl'} fontSize={'$xl'} maxFontSizeMultiplier={1.3}>{value.label}</ActionsheetItemText>
+                                            <ActionsheetItemText height={30} lineHeight={'$xl'} fontSize={'$xl'} maxFontSizeMultiplier={1.3} fontWeight={'$medium'}>{value.label}</ActionsheetItemText>
                                         </ActionsheetItem>
                                     )
                                 })

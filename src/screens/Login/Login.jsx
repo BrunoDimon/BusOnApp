@@ -29,21 +29,6 @@ export default function Login() {
     const draw = require('../../../assets/school-bus-predios-dark.png');
     const dispatch = useDispatch();
 
-    const acaoLoginSemBackEnd = () => {
-        const userData = {
-            user: {
-                nome: 'Douglas',
-                //tipoAcesso: 'ADMIN',
-                tipoAcesso: 'GESTAO',
-                //tipoAcesso: 'ALUNO',
-                associacaoId: 1
-            },
-            token: 'exampleToken',
-            refreshToken: 'exampleRefreshToken'
-        };
-        dispatch(login(userData));
-    };
-
     const acaoLogin = async (email, password) => {
         setIsLoading(true);
         await loginRequest(email, password)
@@ -56,7 +41,10 @@ export default function Login() {
                         telefone: response.data.telefone,
                         endereco: response.data.endereco,
                         cursoId: response.data.cursoId,
+                        cursoNome: response.data.cursoNome,
+                        instituicaoNome: response.data.instituicaoNome,
                         associacaoId: response.data.associacaoId,
+                        associacaoNome: response.data.associacaoNome,
                         tipoAcesso: response.data.tipoAcesso,
                         situacao: response.data.situacao,
                         exigirRedefinicaoSenha: response.data.exigirRedefinicaoSenha,
@@ -66,7 +54,7 @@ export default function Login() {
                     refreshToken: response.data.refreshToken
                 };
                 if (dadosUsuario.user.exigirRedefinicaoSenha) {
-                    setDadosRedefinirSenha(dadosUsuario.user)
+                    setDadosRedefinirSenha({ ...dadosUsuario.user, senhaAntiga: password })
                     setIsOpenRedefinirSenha(true);
                 } else {
                     store.dispatch(login(dadosUsuario));
@@ -80,26 +68,9 @@ export default function Login() {
             })
     };
 
-    const temporarioSetarValoresLogin = (value) => {
-        if (value === 'ADMIN') {
-            setEmail('admin@admin.com')
-            setPassword('admin')
-        } else if (value === 'ADMIN_INSOMNIA') {
-            setEmail('usuario@admin.com')
-            setPassword('admin')
-        } else if (value === 'GESTAO') {
-            setEmail('usuario@gestao.com')
-            setPassword('gestao')
-        } else if (value === 'ALUNO') {
-            setEmail('usuario@aluno.com')
-            setPassword('aluno')
-        }
-    }
-
-    const onConfirmChangePassword = async (newPassword) => {
+    const onConfirmChangePassword = async (senhaNova) => {
         try {
-            const res = await editarSenhaUsuario(dadosRedefinirSenha.id, { senha: newPassword });
-            acaoLogin(dadosRedefinirSenha.email, newPassword)
+            acaoLogin(dadosRedefinirSenha.email, senhaNova)
         } catch (error) {
             globalToast.show("Erro na redefinição de senha", { data: { messageDescription: error.response.data.message }, type: 'error' })
         }
@@ -109,7 +80,7 @@ export default function Login() {
         <Box flex={1} sx={{ _dark: { bg: '$secondary900', }, _light: { bg: '$light100', }, }}>
             {
                 isOpenRedefinirSenha &&
-                <RedefinirSenha onClose={() => setIsOpenRedefinirSenha(false)} eExigeTrocarSenha={true} onConfirmChangePassword={(v) => onConfirmChangePassword(v)} />
+                <RedefinirSenha onClose={() => setIsOpenRedefinirSenha(false)} eExigeTrocarSenha={true} onConfirmChangePassword={(v) => onConfirmChangePassword(v)} dadosEdicao={dadosRedefinirSenha} />
             }
             <Box flex={0.7} alignItems='center' justifyContent='flex-end'>
                 <Image
@@ -147,14 +118,6 @@ export default function Login() {
                             <Button label={'Entrar'} onPress={() => acaoLogin(email, password)} isLoading={isLoading} />
                         </HStack>
                     </Box>
-                    <Divider mb={15} />
-                    <Center mb={15}>
-                        <Heading>Temporário para Devs</Heading>
-                    </Center>
-                    <Box flex={1} my={10}>
-                        <InputSelect label={'Setar valores login'} selectValues={TipoAcessoUsuarioEnum} typeSelectValues={'ENUM'} inputOnChange={(v) => temporarioSetarValoresLogin(v)} erro={'Funcionalidade serve apenas para não precisar digitar o login durante a fase de desenvolvimento, após isso será removido.\n\nObs: Cadastrar os usuários através do Insomnia, existe 3 rotas prontas com os 3 tipos de acesso que serão iguais aos que estão sendo setados aqui no front'} />
-                    </Box>
-                    <Button label={'Entrar sem autenticar'} onPress={acaoLoginSemBackEnd} isLoading={isLoading} />
                 </ScrollView>
             </Box>
         </Box >

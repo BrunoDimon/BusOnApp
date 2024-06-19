@@ -64,7 +64,6 @@ export default function Usuario({ navigation }) {
 
     const acaoEditarUsuario = async (id) => {
         await buscarUsuarioPorId(id).then((response) => {
-            console.log(response.data)
             const dados = {
                 associacaoId: response.data?.associacao?.id,
                 id: response.data?.id,
@@ -91,7 +90,7 @@ export default function Usuario({ navigation }) {
     }
 
     const renderItem = ({ item }) => (
-        <Card bg={'white'} flexDirection="col" px={12} mb={10} mx={15} borderLeftWidth={10} borderColor={'$yellow400'} borderRadius={'$xl'} hardShadow='5'>
+        <Card bg='$white' $dark-bg="$backgroundDark925" flexDirection="col" px={12} mb={10} mx={15} borderLeftWidth={10} borderColor={'$yellow500'} borderRadius={'$xl'} hardShadow='5'>
             <HStack flex={1} justifyContent='space-between' my={12} gap={10}>
                 <VStack flex={1}>
                     <HStack justifyContent='space-between'>
@@ -105,8 +104,8 @@ export default function Usuario({ navigation }) {
                                 }
                             </Avatar>
                             <VStack flex={1}>
-                                <Heading numberOfLines={1} color={'$textDark700'}>{item.nome}</Heading>
-                                <Text numberOfLines={1} color={'$textDark700'}>{`${item?.curso?.nome || ''} - ${item?.curso?.instituicao?.nome || ''}`}</Text>
+                                <Heading numberOfLines={1} color={'$textDark700'} $dark-color={'$textLight100'}>{item.nome}</Heading>
+                                <Text numberOfLines={1} color={'$textDark700'} $dark-color={'$textLight100'}>{`${item?.curso?.nome || ''} - ${item?.curso?.instituicao?.nome || ''}`}</Text>
                             </VStack>
                         </HStack>
                         <ButtonDotsDropdownMenu titulo={item.id + '-' + item.nome} opcoesMenu={[
@@ -129,7 +128,6 @@ export default function Usuario({ navigation }) {
                     <HStack alignItems='center' justifyContent='space-between'>
                         <Situacao situacao={AtivoInativoEnum[item.situacao]} pr={10} />
                         {
-
                             userInfos.tipoAcesso != 'ADMIN'
                                 ?
                                 <DaysCircle daysActive={item.diasUsoTransporte} />

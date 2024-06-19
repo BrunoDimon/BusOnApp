@@ -15,6 +15,7 @@ import { buscarUsuarioPorId, editarUsuario } from "../../service/api/requests/us
 import { Heading } from "@gluestack-ui/themed"
 import { buscarParametroDaAssociacao } from "../../service/api/requests/parametroRequests"
 import { useToast } from "react-native-toast-notifications"
+import InputImage from "../../components/formInputs/InputImage"
 
 export default MeusDados = ({ navigation }) => {
     const globalToast = useToast()
@@ -33,6 +34,7 @@ export default MeusDados = ({ navigation }) => {
         instituicaoId: null,
         cursoId: null,
         diasUsoTransporte: [],
+        foto: null,
     });
     const handleChangeInputValues = (fieldName, value) => {
         setInputValues({
@@ -105,6 +107,7 @@ export default MeusDados = ({ navigation }) => {
                     instituicaoId: dadosUsuario.curso?.instituicao?.id,
                     cursoId: dadosUsuario.curso?.id,
                     diasUsoTransporte: dadosUsuario.diasUsoTransporte,
+                    foto: dadosUsuario.fotoUrl && process.env.EXPO_PUBLIC_FILES_API_URL + dadosUsuario.fotoUrl || null,
                 };
                 setInputValues(data);
             }
@@ -127,7 +130,7 @@ export default MeusDados = ({ navigation }) => {
             }
         } catch (error) {
             console.error('Parametros da associação não foram encontrados!', error.response.data);
-            globalToast.show("Erro ao buscar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+            globalToast.show(error.response.data.title, { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     };
 
@@ -163,15 +166,35 @@ export default MeusDados = ({ navigation }) => {
         try {
             setIsSaving(true);
             if (validarFormulario()) {
-                await editarUsuario(usuarioId, inputValues);
-                globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
-
+                const formData = new FormData();
+                formData.append('data', JSON.stringify({
+                    nome: inputValues?.nome,
+                    email: inputValues?.email,
+                    telefone: inputValues?.telefone,
+                    endereco: inputValues?.endereco,
+                    matricula: inputValues?.matricula,
+                    cursoId: inputValues?.cursoId,
+                    diasUsoTransporte: inputValues?.diasUsoTransporte
+                }));
+                if (inputValues.foto) {
+                    formData.append('foto', {
+                        uri: inputValues.foto,
+                        name: `${inputValues.nome}.jpg`,
+                        type: 'image/jpeg'
+                    });
+                }
+                await editarUsuario(usuarioId, formData)
+                    .then(() => {
+                        globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
+                    }).catch((error) => {
+                        globalToast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+                    });
             } else {
-                Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
+                globalToast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error.response.data);
-            Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+            globalToast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         } finally {
             setIsSaving(false)
         }
@@ -190,10 +213,11 @@ export default MeusDados = ({ navigation }) => {
                     </Modal>
                 )
             }
-            <Box flex={1} bg={'$white'} mx={'$4'} mt={'$2'} mb={'$4'} borderRadius={'$3xl'}>
+            <Box flex={1} bg={'$white'} $dark-bg="$backgroundDark925" mx={'$4'} mt={'$2'} mb={'$4'} borderRadius={'$3xl'}>
                 <ScrollView flex={1} >
                     <Box justifyContent="flex-start" alignItems="center" gap={15} p={15}>
                         <Box w={'$full'}>
+                            <InputImage label={'Foto'} erro={errors.foto} onPickImage={(value) => handleChangeInputValues('foto', value)} imageValue={inputValues.foto} />
                             <InputText label={'Nome Completo'} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputText label={'E-mail'} inputOnChange={(value) => handleChangeInputValues('email', value)} isRequired={true} inputValue={inputValues.email} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputText label={'Telefone'} inputOnChange={(value) => handleChangeInputValues('telefone', value)} isRequired={true} inputValue={inputValues.telefone} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
@@ -202,8 +226,6 @@ export default MeusDados = ({ navigation }) => {
                             <InputSelect label={"Instituição"} inputOnChange={(value) => handleChangeInputValues("instituicaoId", value)} inputValue={inputValues.instituicaoId} selectValues={instituicoes} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputSelect label={"Curso"} inputOnChange={(value) => handleChangeInputValues("cursoId", value)} inputValue={inputValues.cursoId} selectValues={cursos} isDisabled={!inputValues.instituicaoId || isDisabledDadosUsuarios} />
                             <InputCheckbox label={"Dias Uso Transporte"} inputOnChange={(value) => handleChangeInputValues("diasUsoTransporte", value)} checkboxValues={DiasSemanaEnum} typeCheckboxValues={'ENUM'} inputValue={inputValues.diasUsoTransporte} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
-
-
                             <Button label={'Salvar'} onPress={() => acaoSalvar()} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} isLoading={isSaving} />
                         </Box>
                     </Box>

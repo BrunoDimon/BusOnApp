@@ -22,8 +22,8 @@ export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, 
     }
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Button variant="outline" borderColor="$secondary200" h={50} borderRadius={'$xl'} onPress={handlePress} justifyContent="space-between" >
-                <ButtonText color={inputValue ? "black" : "gray"} fontWeight={"$normal"}>
+            <Button variant="outline" borderColor="$secondary200" $dark-borderColor={'$trueGray600'} h={50} borderRadius={'$xl'} onPress={handlePress} justifyContent="space-between" >
+                <ButtonText color={inputValue ? "black" : "gray"} $dark-color={inputValue ? "$textLight100" : "gray"} fontWeight={"$normal"}>
                     {inputValue ? moment(inputValue).format('DD/MM/yyyy') : 'dd/mm/yyyy'}
                 </ButtonText>
                 <ButtonIcon size={'lg'}>

@@ -17,7 +17,6 @@ export const validateToken = async () => {
         .then(response => {
             const dadosUsuario = response.data.user
             store.dispatch(refreshUser(dadosUsuario));
-            console.log(response.data.message)
         })
         .catch(error => {
             store.dispatch(logout());

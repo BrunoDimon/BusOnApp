@@ -27,7 +27,7 @@ export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled || isLoading} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
             <Select onValueChange={(v) => inputOnChange(v)} selectedValue={currentValue} defaultValue={defaultValue}>
-                <SelectTrigger h={50} borderRadius={'$xl'} pr={23}>
+                <SelectTrigger h={50} borderRadius={'$xl'} $dark-borderColor={'$trueGray600'} pr={23}>
                     <SelectInput placeholder={isLoading ? "Buscando..." : "Selecionar"} />
                     <SelectIcon>
                         {

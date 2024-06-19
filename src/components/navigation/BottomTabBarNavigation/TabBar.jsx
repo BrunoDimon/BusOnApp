@@ -42,13 +42,13 @@ export default TabBar = ({ state, navigation, descriptors }) => {
     })
     // Verifica se a tabBar deve ser ocultada com base no foco e na altura do teclado
     const isTabBarVisible = (isFocused && keyboardHeight === 0);
-    
+
     if (!isTabBarVisible || hideTabBar) {
         return null; // Oculta a tabBar se o teclado estiver ativo
     }
 
     return (
-        <Box $dark-bg="$backgroundDark800" $light-bg="#f1f1f1" w={'$full'} h={85}>
+        <Box $dark-bg="$backgroundDark950" $light-bg="#f1f1f1" w={'$full'} h={85}>
             <Box $dark-bg="$backgroundDark900" $light-bg="$white" w={'$full'} hardShadow={'5'} h={85} borderTopEndRadius={35} borderTopStartRadius={35} flexDirection="row" justifyContent="space-between" overflow="hidden">
                 {
                     routes[0].routes.map((route, index) => {

@@ -10,15 +10,18 @@ import { InputPassword } from "../../components/formInputs/InputPassword";
 import { Text } from "@gluestack-ui/themed";
 import { useToast, Toast, ToastProvider } from "react-native-toast-notifications";
 import ToastAlert from "../../components/toasts/ToastAlert";
+import { editarSenhaUsuario } from "../../service/api/requests/usuarioRequests";
 
 export const RedefinirSenha = ({ onClose, dadosEdicao, eExigeTrocarSenha, onConfirmChangePassword }) => {
     const globalToast = useToast()
     const ref = useRef(null)
     const userInfos = useSelector(state => state.auth.user);
+    const [buttonIsLoading, setButtonIsLoading] = useState(false);
     const [inputValues, setInputValues] = useState({
-        senhaAtual: dadosEdicao?.senhaAtual || null,
-        senha: dadosEdicao?.senha || null,
-        repetirSenha: dadosEdicao?.repetirSenha || null,
+        idUsuario: dadosEdicao?.id || null,
+        senhaAntiga: dadosEdicao?.senhaAntiga || null,
+        senhaNova: dadosEdicao?.senhaNova || null,
+        repetirSenhaNova: dadosEdicao?.repetirSenhaNova || null,
     });
 
     const eModoEdicao = dadosEdicao ? true : false
@@ -35,18 +38,18 @@ export const RedefinirSenha = ({ onClose, dadosEdicao, eExigeTrocarSenha, onConf
     const validarFormulario = () => {
         let errors = {};
         if (!eExigeTrocarSenha) {
-            if (inputValues.senhaAtual == null || inputValues.senhaAtual == '') {
-                errors.senhaAtual = "Senha anterior é obrigatório"
+            if (inputValues.senhaAntiga == null || inputValues.senhaAntiga == '') {
+                errors.senhaAntiga = "Senha anterior é obrigatório"
             }
         }
-        if (inputValues.senha == null || inputValues.senha == '') {
-            errors.senha = "Nova Senha é obrigatório"
+        if (inputValues.senhaNova == null || inputValues.senhaNova == '') {
+            errors.senhaNova = "Nova Senha é obrigatório"
         }
-        if (inputValues.repetirSenha == null || inputValues.repetirSenha == '') {
-            errors.repetirSenha = "Repetir senha é obrigatório"
+        if (inputValues.repetirSenhaNova == null || inputValues.repetirSenhaNova == '') {
+            errors.repetirSenhaNova = "Repetir senha é obrigatório"
         }
-        if ((inputValues.senha != null && inputValues.senha != '') && (inputValues.repetirSenha != null && inputValues.repetirSenha != '') && inputValues.senha != inputValues.repetirSenha) {
-            errors.repetirSenha = "As senhas não correspondem"
+        if ((inputValues.senhaNova != null && inputValues.senhaNova != '') && (inputValues.repetirSenhaNova != null && inputValues.repetirSenhaNova != '') && inputValues.senhaNova != inputValues.repetirSenhaNova) {
+            errors.repetirSenhaNova = "As senhas não correspondem"
         }
         setErrors(errors);
         const isValid = (Object.keys(errors).length === 0);
@@ -62,21 +65,31 @@ export const RedefinirSenha = ({ onClose, dadosEdicao, eExigeTrocarSenha, onConf
 
     const acaoPressionarSalvar = async () => {
         try {
+            setButtonIsLoading(true);
             if (validarFormulario()) {
-                onConfirmChangePassword(inputValues.senha);
-                onClose(true);
-                globalToast.show("Sucesso", { data: { messageDescription: 'Senha redefinida com sucesso!' }, type: 'success' })
+                await editarSenhaUsuario(inputValues.idUsuario, { senhaAntiga: inputValues.senhaAntiga, senhaNova: inputValues.senhaNova })
+                    .then((response) => {
+                        onConfirmChangePassword(inputValues.senhaNova);
+                        onClose(true);
+                        globalToast.show("Sucesso", { data: { messageDescription: 'Senha redefinida com sucesso!' }, type: 'success' })
+                    }).catch((error) => {
+                        Toast.show("Aviso", { data: { messageDescription: error?.response?.data?.message }, type: 'warning' })
+                    }).finally(() => {
+                        setButtonIsLoading(false);
+                    })
             } else {
+                setButtonIsLoading(false);
                 Toast.show("Aviso", { data: { messageDescription: 'A validação do formulário falhou!\nVerifique os campos e tente novamente.' }, type: 'warning' })
             }
         } catch (error) {
+            setButtonIsLoading(false);
             console.error(error.response.data);
             Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 
     return (
-        <Modal defaultIsOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
+        <Modal defaultIsOpen={true} useRNModal={true} onClose={() => onClose()} finalFocusRef={ref}>
             <ModalBackdrop />
             <ModalContent>
                 <ModalHeader>
@@ -96,16 +109,16 @@ export const RedefinirSenha = ({ onClose, dadosEdicao, eExigeTrocarSenha, onConf
                         :
                         (
                             <>
-                                <InputPassword label={'Senha Anterior'} erro={errors.senha} inputOnChange={(value) => handleChangeInputValues('senha', value)} isRequired={true} inputValue={inputValues.senha} />
+                                <InputPassword label={'Senha Anterior'} erro={errors.senhaAntiga} inputOnChange={(value) => handleChangeInputValues('senhaAntiga', value)} isRequired={true} inputValue={inputValues.senhaAntiga} />
                             </>
                         )
                     }
-                    <InputPassword label={'Nova Senha'} erro={errors.senha} inputOnChange={(value) => handleChangeInputValues('senha', value)} isRequired={true} inputValue={inputValues.senha} />
-                    <InputPassword label={'Repetir Senha'} erro={errors.repetirSenha} inputOnChange={(value) => handleChangeInputValues('repetirSenha', value)} isRequired={true} inputValue={inputValues.repetirSenha} />
+                    <InputPassword label={'Nova Senha'} erro={errors.senhaNova} inputOnChange={(value) => handleChangeInputValues('senhaNova', value)} isRequired={true} inputValue={inputValues.senhaNova} />
+                    <InputPassword label={'Repetir Senha'} erro={errors.repetirSenhaNova} inputOnChange={(value) => handleChangeInputValues('repetirSenhaNova', value)} isRequired={true} inputValue={inputValues.repetirSenhaNova} />
                 </ModalBody>
                 <ModalFooter gap={10}>
                     <Button label={'Cancelar'} variant={'outline'} action={'secondary'} onPress={() => onClose()} />
-                    <Button label={'Salvar'} onPress={() => acaoPressionarSalvar()} />
+                    <Button label={'Salvar'} onPress={() => acaoPressionarSalvar()} isLoading={buttonIsLoading} />
                 </ModalFooter>
             </ModalContent>
             <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} />

@@ -13,7 +13,7 @@ import { useToast, Toast, ToastProvider } from "react-native-toast-notifications
 import ToastAlert from "../../components/toasts/ToastAlert";
 import { useSelector } from 'react-redux';
 
-export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
+export const FormPagamento = ({ onClose, dadosEdicao }) => {
     const [errors, setErrors] = useState({});
     const globalToast = useToast();
     const ref = useRef(null);
@@ -27,7 +27,7 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
         tipo: dadosEdicao?.tipo || null,
         valor: dadosEdicao?.valor || null,
         multa: dadosEdicao?.multa || null,
-        dataPagamento: dadosEdicao?.dataPagamento || new Date(),
+        dataPagamento: dadosEdicao?.dataPagamento || null,
         dataVencimento: dadosEdicao?.dataVencimento || null,
         situacao: dadosEdicao?.situacao || 'ABERTO'
 
@@ -53,7 +53,7 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
         if (inputValues.tipo == null || inputValues.tipo == '') {
             errors.tipo = "Forma Pagamento é obrigatório"
         }
-        if (inputValues.dataPagamento == null || inputValues.dataPagamento == '') {
+        if (inputValues.situacao == 'ABERTO' && (inputValues.dataPagamento == null || inputValues.dataPagamento == '')) {
             errors.dataPagamento = "Data Pagamento é obrigatório"
         }
         if (inputValues.situacao == null || inputValues.situacao == '') {
@@ -111,7 +111,7 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
             <ModalBackdrop />
             <ModalContent maxHeight={'$3/4'}>
                 <ModalHeader>
-                    <Heading size="xl" color="$textDark800">Cadastro de Pagamento</Heading>
+                    <Heading size="xl" maxFontSizeMultiplier={1.3}>{!eModoEdicao ? 'Cadastro Pagamento' : 'Edição Pagamento'}</Heading>
                     <ModalCloseButton>
                         <Icon as={CloseIcon} />
                     </ModalCloseButton>
@@ -123,6 +123,7 @@ export const FormHistPagamento = ({ onClose, dadosEdicao }) => {
                         <InputNumber label={'Multa'} inputOnChange={(value) => handleChangeInputValues('multa', value)} isRequired={false} inputValue={inputValues.multa} erro={errors.multa} />
                         <InputSelect label={'Forma de Pagamento'} selectValues={TipoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('tipo', value)} isRequired={true} inputValue={inputValues.tipo} erro={errors.tipo} />
                         <InputDate label={'Data Pagamento'} inputOnChange={(value) => handleChangeInputValues('dataPagamento', value)} isRequired={true} inputValue={inputValues.dataPagamento} erro={errors.dataPagamento} />
+                        <InputDate label={'Data Vencimento'} inputOnChange={(value) => handleChangeInputValues('dataVencimento', value)} inputValue={inputValues.dataVencimento} erro={errors.dataVencimento} />
                         <InputSelect label={'Situação'} selectValues={SituacaoPagamentoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} erro={errors.situacao} />
                     </ScrollView>
                 </ModalBody>

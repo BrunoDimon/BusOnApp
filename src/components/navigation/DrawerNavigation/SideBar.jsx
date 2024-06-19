@@ -9,6 +9,9 @@ import ThemeToggle from '../../ThemeToggle';
 import { logout } from '../../../store/authSlice';
 import { useSelector } from 'react-redux';
 import TipoAcessoUsuarioEnum from '../../../enums/TipoAcessoUsuarioEnum';
+import { Avatar } from '@gluestack-ui/themed';
+import { AvatarImage } from '@gluestack-ui/themed';
+import { AvatarFallbackText } from '@gluestack-ui/themed';
 
 export default function SideBar(props) {
     const dispatch = useDispatch();
@@ -21,7 +24,14 @@ export default function SideBar(props) {
             <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: (theme === "light" ? "#e7e5e4" : "#171717") }}>
                 <Box flex={1} >
                     <ImageBackground source={require('../../../../assets/background-drawer.png')} style={{ padding: 40, alignItems: 'center', }}>
-                        <Image source={require('../../../../assets/userProfile.png')} style={{ height: 80, width: 80, borderRadius: 40, marginBottom: 10 }} />
+                        <Avatar bg={'$yellow600'} size={'xl'}>
+                            {
+                                userInfos?.fotoUrl ?
+                                    (<AvatarImage source={process.env.EXPO_PUBLIC_FILES_API_URL + userInfos?.fotoUrl} alt={'foto'} />)
+                                    :
+                                    (<AvatarFallbackText>{userInfos?.nome}</AvatarFallbackText>)
+                            }
+                        </Avatar>
                         <Text fontSize={22} color={'white'}>{userInfos.nome}</Text>
                         <Box style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 4 }}>
                             <Ionicons name="laptop-outline" size={13} color="#fff"></Ionicons>

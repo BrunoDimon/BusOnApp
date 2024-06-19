@@ -22,7 +22,7 @@ export default function InputImage({ label, erro, imageValue, onPickImage, isDis
 
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Center mb={5} flex={1} h={200} borderWidth={2} borderColor={'$trueGray200'} rounded={'$xl'}>
+            <Center mb={5} flex={1} h={200} borderWidth={2} borderColor={'$trueGray200'} $dark-borderColor={'$trueGray700'} rounded={'$xl'}>
                 {
                     imageValue
                         ?

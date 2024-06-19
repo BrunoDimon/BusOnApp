@@ -71,10 +71,10 @@ export default function Instituicao({ navigation }) {
     }
 
     const renderItem = ({ item }) => (
-        <Card bg={'white'} flexDirection="col" px={12} mb={10} mx={15} borderLeftWidth={10} borderColor={'$yellow400'} borderRadius={'$xl'} hardShadow='5'>
+        <Card bg={'white'} $dark-bg="$backgroundDark925" flexDirection="col" px={12} mb={10} mx={15} borderLeftWidth={10} borderColor={'$yellow500'} borderRadius={'$xl'} hardShadow='5'>
             <Box justifyContent="space-between" flexDirection="col">
                 <HStack justifyContent='space-between' my={12}>
-                    <HStack alignItems='center' gap={12} >
+                    <HStack flex={1} alignItems='center' gap={12} >
                         <Avatar>
                             {
                                 item.logoUrl ?
@@ -83,33 +83,35 @@ export default function Instituicao({ navigation }) {
                                     (<AvatarFallbackText>{item.nome}</AvatarFallbackText>)
                             }
                         </Avatar>
-                        <Box>
-                            <Heading color={'$textDark700'}>{item.nome}</Heading>
-                            {item.endereco && (
-                                <Text color={'$textDark700'}>{item.endereco}</Text>
-                            )}
-                        </Box>
+                        <VStack flex={1}>
+                            <HStack flex={1} alignItems='flex-end' justifyContent='space-between' >
+                                <Heading flex={1} color={'$textDark700'} $dark-color={'$textLight100'}>{item.nome}</Heading>
+                                <ButtonDotsDropdownMenu titulo={item.id + '-' + item.nome} opcoesMenu={
+                                    [{
+                                        onPress: () => acaoEditarInstituicao(item.id),
+                                        nomeIcone: 'pencil-outline',
+                                        corIcone: '#005db4',
+                                        label: 'Editar',
+                                    },
+                                    {
+                                        onPress: () => {
+                                            openDialog('EXCLUIR', { onPress: () => acaoExcluirInstituicao(item.id) })
+                                        },
+                                        nomeIcone: 'trash-can-outline',
+                                        corIcone: '#dc2626',
+                                        label: 'Excluir',
+                                    },
+                                    ]
+                                } />
+                            </HStack>
+                            <HStack flex={1} justifyContent='space-between' >
+                                <Text flex={1} color={'$textDark700'} $dark-color={'$textLight100'}>{item.endereco}</Text>
+                                <Box flex={0} >
+                                    <Situacao situacao={AtivoInativoEnum[item.situacao]} pr={10} />
+                                </Box>
+                            </HStack>
+                        </VStack>
                     </HStack>
-                    <Box alignItems='flex-end' justifyContent='space-between' >
-                        <ButtonDotsDropdownMenu titulo={item.id + '-' + item.nome} opcoesMenu={
-                            [{
-                                onPress: () => acaoEditarInstituicao(item.id),
-                                nomeIcone: 'pencil-outline',
-                                corIcone: '#005db4',
-                                label: 'Editar',
-                            },
-                            {
-                                onPress: () => {
-                                    openDialog('EXCLUIR', { onPress: () => acaoExcluirInstituicao(item.id) })
-                                },
-                                nomeIcone: 'trash-can-outline',
-                                corIcone: '#dc2626',
-                                label: 'Excluir',
-                            },
-                            ]
-                        } />
-                        <Situacao situacao={AtivoInativoEnum[item.situacao]} pr={10} />
-                    </Box>
                 </HStack>
             </Box>
         </Card>

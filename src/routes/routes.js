@@ -1,12 +1,12 @@
 import Usuario from "../screens/Usuarios/Usuario";
 import Parametros from "../screens/Parametros/Parametros";
-import HistoricoPagamento from "../screens/HistoricoPagamento/HistoricoPagamento";
 import Inicio from "../screens/Inicio/Inicio";
 import MeusDados from "../screens/MeusDados/MeusDados";
 import IaChat from "../screens/IaChat/IaChat";
 import Cursos from "../screens/Cursos/Cursos";
 import Instituicao from "../screens/Instituicao/Instituicao";
 import { Associacao } from "../screens/Associacao/Associacao";
+import Pagamentos from "../screens/Pagamento/Pagamentos";
 
 export default routes = [
     {
@@ -40,11 +40,11 @@ export default routes = [
         component: Usuario
     },
     {
-        name: 'historico-pagamentos',
-        label: 'Histórico Pagamentos',
+        name: 'pagamentos',
+        label: 'Pagamentos',
         accessRequired: ['ALUNO', 'GESTAO'],
         rigthButtonHeader: 'sync',
-        component: HistoricoPagamento
+        component: Pagamentos
     },
     {
         name: 'meus-dados',

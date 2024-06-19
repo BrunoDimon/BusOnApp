@@ -19,7 +19,7 @@ export const InputNumber = ({ label, erro, inputValue, inputOnChange, isDisabled
 
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Input h={50} borderRadius={'$xl'} >
+            <Input h={50} borderRadius={'$xl'} $focus-borderColor={'$trueGray400'}>
                 <InputField inputMode="numeric" type={'text'} keyboardType={'number-pad'} value={inputValue?.toString()} onChangeText={(v) => verificarValorNumerico(v)} />
             </Input>
         </FormInput>

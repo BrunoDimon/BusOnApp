@@ -13,9 +13,9 @@ export const Input = createStyle({
   },
 
   ':focus': {
-    'borderColor': '$primary700',
+    'borderColor': '$borderDark700',
     ':hover': {
-      borderColor: '$primary700',
+      borderColor: '$borderDark700',
     },
   },
 
@@ -41,9 +41,9 @@ export const Input = createStyle({
       borderColor: '$borderDark400',
     },
     ':focus': {
-      'borderColor': '$primary400',
+      'borderColor': '$borderDark500',
       ':hover': {
-        borderColor: '$primary400',
+        borderColor: '$borderDark500',
       },
     },
     ':disabled': {

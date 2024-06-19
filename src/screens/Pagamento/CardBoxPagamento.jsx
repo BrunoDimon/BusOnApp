@@ -13,16 +13,19 @@ import { AvatarFallbackText } from "@gluestack-ui/themed";
 import { Image } from "@gluestack-ui/themed";
 import { useState } from "react";
 import { Divider } from "@gluestack-ui/themed";
+import { Button } from "../../components/buttons/Button";
+import { BadgeCheck, BadgeX } from "lucide-react-native";
 moment.locale('pt-br');
 
-export default function CardBoxPagamento({ dados, voidDelete, voidEdit }) {
+export default function CardBoxPagamento({ dados, voidDelete, voidEdit, exibirBotoesAprovarPagamento, voidAprovar, voidReprovar }) {
     const { openDialog } = useDialog();
     const userInfo = useSelector(state => state.auth.user);
     const [exibirDetalhesFatura, setExibirDetalhesFatura] = useState(false);
 
     return (
         <Pressable mb={10} w={'$full'} onPress={() => setExibirDetalhesFatura(!exibirDetalhesFatura)}>
-            <CardBox borderLeftWidth={10} borderColor={'$yellow400'} borderRadius={'$xl'} pr={15} h={'$2xl'} justifyContent="space-between">
+
+            <CardBox borderLeftWidth={10} borderColor={'$yellow500'} borderRadius={'$xl'} pr={15} h={'$2xl'} justifyContent="space-between">
                 <HStack flex={1} justifyContent="center" flexDIrection="col">
                     <VStack flex={1}>
                         <HStack justifyContent="space-between" alignItems="center">
@@ -41,11 +44,18 @@ export default function CardBoxPagamento({ dados, voidDelete, voidEdit }) {
                                     : (
                                         <>
                                             <Avatar>
-                                                <AvatarFallbackText>{dados?.usuario?.nome}</AvatarFallbackText>
+                                                {
+                                                    dados?.usuario?.fotoUrl ?
+                                                        (<AvatarImage source={process.env.EXPO_PUBLIC_FILES_API_URL + dados?.usuario?.fotoUrl} alt={'foto'} />)
+                                                        :
+                                                        (<AvatarFallbackText>{dados?.usuario?.nome}</AvatarFallbackText>)
+                                                }
                                             </Avatar>
+
+
                                             <VStack flex={1}>
-                                                <Heading numberOfLines={1} color={'$textDark700'}>{dados?.usuario?.nome}</Heading>
-                                                <Text numberOfLines={1} color={'$textDark700'}>{dados?.usuario?.curso?.nome} - {dados?.usuario?.curso?.instituicao?.nome}</Text>
+                                                <Heading numberOfLines={1} color={'$textDark700'} $dark-color={'$textLight100'}>{dados?.usuario?.nome}</Heading>
+                                                <Text numberOfLines={1} color={'$textDark700'} $dark-color={'$textLight100'} >{dados?.usuario?.curso?.nome} - {dados?.usuario?.curso?.instituicao?.nome}</Text>
                                             </VStack>
                                         </>
                                     )
@@ -57,7 +67,7 @@ export default function CardBoxPagamento({ dados, voidDelete, voidEdit }) {
                                 (
                                     <Box alignSelf="flex-start">
 
-                                        < ButtonDotsDropdownMenu titulo={'id' + '-' + 'nome'} opcoesMenu={
+                                        < ButtonDotsDropdownMenu titulo={dados?.usuario?.id + ' - ' + dados?.usuario?.nome} opcoesMenu={
                                             [{
                                                 onPress: () => { voidEdit() },
                                                 nomeIcone: 'pencil-outline',
@@ -66,7 +76,7 @@ export default function CardBoxPagamento({ dados, voidDelete, voidEdit }) {
                                             },
                                             {
                                                 onPress: () => {
-                                                    openDialog('EXCLUIR', { onPress: () => { voidDelete(id) } })
+                                                    openDialog('EXCLUIR', { onPress: () => { voidDelete() } })
                                                 },
                                                 nomeIcone: 'trash-can-outline',
                                                 corIcone: '#dc2626',
@@ -79,7 +89,9 @@ export default function CardBoxPagamento({ dados, voidDelete, voidEdit }) {
                             }
                         </HStack>
                         <Box justifyContent="space-between" flexDirection="row" alignItems="center" mt={8}>
-                            <Situacao situacao={SituacaoPagamentoEnum[dados.situacao]} />
+                            <Box flex={1}>
+                                <Situacao mt={5} situacao={SituacaoPagamentoEnum[dados.situacao]} />
+                            </Box>
                             <Box flexDirection="row" justifyContent="space-between" adjustsFontSizeToFit={true} >
                                 <Box flexDirection="row" gap={2} alignItems="center">
                                     <Box flexDirection="row" alignItems="flex-end">
@@ -90,6 +102,16 @@ export default function CardBoxPagamento({ dados, voidDelete, voidEdit }) {
                                 </Box>
                             </Box>
                         </Box>
+                        {
+                            exibirBotoesAprovarPagamento &&
+                            (
+                                <HStack alignSelf="flex-end" gap={5} mt={10}>
+                                    <Button onPress={() => voidReprovar()} icon={BadgeX} action={'negative'} />
+                                    <Button onPress={() => voidAprovar()} icon={BadgeCheck} action={'positive'} />
+                                </HStack>
+                            )
+                        }
+
                         {exibirDetalhesFatura &&
                             (
                                 <Box flexDirection="col" alignItems="flex-end">

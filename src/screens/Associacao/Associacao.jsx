@@ -71,7 +71,7 @@ export const Associacao = ({ navigation }) => {
     }
 
     const renderItem = ({ item }) => (
-        <Card bg={'white'} flexDirection="col" px={12} mb={10} mx={15} borderLeftWidth={10} borderColor={'$yellow400'} borderRadius={'$xl'} hardShadow='5'>
+        <Card bg={'white'} $dark-bg="$backgroundDark925" flexDirection="col" px={12} mb={10} mx={15} borderLeftWidth={10} borderColor={'$yellow500'} borderRadius={'$xl'} hardShadow='5'>
             <Box justifyContent="space-between" flexDirection="col">
                 <HStack justifyContent='space-between' my={12}>
                     <HStack alignItems='center' gap={12} >
@@ -85,10 +85,8 @@ export const Associacao = ({ navigation }) => {
                             }
                         </Avatar>
                         <Box>
-                            <Heading color={'$textDark700'}>{item.nome}</Heading>
-                            {item.endereco && (
-                                <Text color={'$textDark700'}>{item.endereco}</Text>
-                            )}
+                            <Heading color={'$textDark700'} $dark-color={'$textLight100'}>{item.nome}</Heading>
+                            <Text color={'$textDark700'} $dark-color={'$textLight100'}>{item.endereco}</Text>
                         </Box>
                     </HStack>
                     <Box alignItems='flex-end' justifyContent='space-between' >

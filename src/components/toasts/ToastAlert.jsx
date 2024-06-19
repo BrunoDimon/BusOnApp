@@ -24,12 +24,9 @@ export default ToastAlert = ({ toastId, tipo, titulo, descricao, toastClose }) =
             <Card w={'95%'} rounded={'$lg'} py={12} px={15} m={10} bg={estilo.bgColor} borderLeftWidth={10} borderColor={estilo.borderColor} hardShadow="5">
                 <HStack flex={1} w={'$full'} justifyContent="space-between">
                     <VStack space="xs">
-                        <ToastTitle size="xl">{titulo}</ToastTitle>
-                        <ToastDescription size="md">{descricao}</ToastDescription>
+                        <ToastTitle size="xl" color={'$textDark700'}>{titulo}</ToastTitle>
+                        <ToastDescription size="md" color={'$textDark600'}>{descricao}</ToastDescription>
                     </VStack>
-                    {/*                     <Pressable mt="$1" onPress={() => toastClose()}>
-                        <Icon as={CloseIcon} color="$black" />
-                    </Pressable> */}
                 </HStack>
             </Card>
         </SafeAreaView>

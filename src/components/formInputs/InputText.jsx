@@ -5,7 +5,7 @@ import { FormInput } from "./FormInput"
 export const InputText = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, keyboardType }) => {
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Input h={50} borderRadius={'$xl'} >
+            <Input h={50} borderRadius={'$xl'} $focus-borderColor={'$trueGray400'}>
                 <InputField type={'text'} keyboardType={keyboardType} value={inputValue?.toString()} onChangeText={(v) => inputOnChange(v)} />
             </Input>
         </FormInput>

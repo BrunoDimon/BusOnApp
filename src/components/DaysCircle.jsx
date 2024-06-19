@@ -18,7 +18,7 @@ export default DaysCircle = ({ daysActive }) => {
             {
                 days.map((day, index) => (
                     <Box key={index} ml={-10} zIndex={-index}>
-                        <Box bgColor={isActive(day) ? '$yellow400' : '$light400'} w={36} aspectRatio={'1/1'} justifyContent="center" alignItems="center" borderRadius={'$full'} hardShadow="1">
+                        <Box bgColor={isActive(day) ? '$yellow500' : '$light400'} $dark-bg={isActive(day) ? '$yellow500' : '$backgroundDark800'} w={36} aspectRatio={'1/1'} justifyContent="center" alignItems="center" borderRadius={'$full'} hardShadow="1">
                             <Text fontSize={'$xl'} fontWeight="$extrabold" color='$white'>
                                 {day.charAt(0)}
                             </Text>

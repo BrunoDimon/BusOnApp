@@ -30,13 +30,13 @@ export default function AppContainer({ navigation }) {
     }, [])
     return (
         <GluestackUIProvider colorMode={theme} config={config}  >
-            <SafeAreaView flex={1} backgroundColor={theme == 'dark' ? '#404040' : '#F1F1F1'}>
+            <SafeAreaView flex={1} backgroundColor={theme == 'dark' ? '#262626' : '#F1F1F1'}>
                 <RootSiblingParent>
                     <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} >
                         <DialogProvider>
                             <NavigationContainer >
                                 <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} />
-                                {isAuthenticated ? <DrawerNavigation /> : <Login />}
+                                {isAuthenticated ? <BottomTabNavigation /> : <Login />}
                             </NavigationContainer>
                         </DialogProvider>
                     </ToastProvider>

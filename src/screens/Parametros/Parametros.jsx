@@ -146,10 +146,10 @@ export default Configuracoes = ({ navigation }) => {
                 )
             }
 
-            <ScrollView showsVerticalScrollIndicator={false} flex={1} borderRadius={'$3xl'} mx={'$4'} mt={'$2'} mb={'$4'} bg={'$white'} >
+            <ScrollView showsVerticalScrollIndicator={false} flex={1} borderRadius={'$3xl'} mx={'$4'} mt={'$2'} mb={'$4'} bg={'$white'} $dark-bg="$backgroundDark925">
                 <Box flex={1} gap={15} p={15} mt={10}>
                     <VStack flex={1} gap={15}>
-                        <Heading fontSize={'$2xl'} color="#525252">Valores</Heading>
+                        <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Valores</Heading>
                         <HStack flex={1} gap={15}>
                             <InputNumber label={'Valor 1 dia'} erro={errors.valor1} inputOnChange={(value) => handleChangeInputValues('valor1', value)} inputValue={inputValues.valor1} isDisabled={isLoadingParametros} isRequired={true} />
                             <InputNumber label={'Valor 2 dia'} erro={errors.valor2} inputOnChange={(value) => handleChangeInputValues('valor2', value)} inputValue={inputValues.valor2} isDisabled={isLoadingParametros} isRequired={true} />
@@ -168,7 +168,7 @@ export default Configuracoes = ({ navigation }) => {
                     <Divider bg="$backgroundDark800" />
 
                     <VStack flex={1} gap={15}>
-                        <Heading fontSize={'$2xl'} color="#525252">Datas Mensalidade</Heading>
+                        <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Datas Mensalidade</Heading>
                         <InputNumber label={'Dia Vencimento'} erro={errors.diaVencimento} inputOnChange={(value) => handleChangeInputValues('diaVencimento', value)} inputValue={inputValues.diaVencimento} isDisabled={isLoadingParametros} isRequired={true} />
                         <InputNumber label={'Dia Tolêrancia Multa'} erro={errors.diasToleranciaMulta} inputOnChange={(value) => handleChangeInputValues('diasToleranciaMulta', value)} inputValue={inputValues.diasToleranciaMulta} isDisabled={isLoadingParametros} isRequired={true} />
                     </VStack>
@@ -176,7 +176,7 @@ export default Configuracoes = ({ navigation }) => {
                     <Divider bg="$backgroundDark800" />
 
                     <VStack flex={1} gap={15}>
-                        <Heading fontSize={'$2xl'} color="#525252">Liberações</Heading>
+                        <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Liberações</Heading>
                         <InputSelect label="Liberar Alteração Dados Pessoais" erro={errors.liberaAlteracaoDadosPessoais} selectValues={LiberadoBloqueadoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('liberaAlteracaoDadosPessoais', value)} inputValue={inputValues.liberaAlteracaoDadosPessoais} isRequired={true} isDisabled={isLoadingParametros} />
                     </VStack>
 

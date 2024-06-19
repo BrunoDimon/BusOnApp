@@ -65,8 +65,8 @@ export default routesMenu = [
         category: 'Pagamentos',
         routes: [
             {
-                name: 'historico-pagamentos',
-                label: 'Histórico',
+                name: 'pagamentos',
+                label: 'Pagamentos',
                 iconName: 'clipboard-text-clock-outline',
                 accessRequired: ['GESTAO', 'ALUNO'],
             },

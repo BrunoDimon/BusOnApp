@@ -1,20 +1,21 @@
 import { Box, FlatList } from "@gluestack-ui/themed"
 import { useEffect, useState } from "react";
 import CardBoxPagamento from "./CardBoxPagamento";
-import { buscarTodosPagamentos, cadastrarPagamento, buscarPagamentoPorId, editarPagamento, excluirPagamento } from "../../service/api/requests/pagamentoRequest";
-import { FormHistPagamento } from "./FormHistPagamento";
+import { buscarTodosPagamentos, cadastrarPagamento, buscarPagamentoPorId, editarPagamento, excluirPagamento, aprovarPagamento, reprovarPagamento } from "../../service/api/requests/pagamentoRequest";
+import { FormPagamento } from "./FormPagamento";
 import { useSelector } from "react-redux";
 import { Button } from "../../components/buttons/Button";
 import { useToast } from "react-native-toast-notifications";
 
 
-export default HistoricoPagamentos = ({ navigation }) => {
+export default Pagamentos = ({ navigation }) => {
     const [formIsOpen, setFormIsOpen] = useState(false);
     const [dadosFormEdicao, setDadosFormEdicao] = useState();
     const [listIsRefreshing, setListIsRefreshing] = useState(false);
     const [pagamentos, setPagamentos] = useState([]);
     const globalToast = useToast();
     const userInfos = useSelector(state => state.auth.user);
+    const [exibirBotoesAprovarPagamento, setExibirBotoesAprovarPagamento] = useState(false);
 
     useEffect(() => {
         navigation.setOptions({ onRightButtonPress: buscarPagamentos })
@@ -70,6 +71,26 @@ export default HistoricoPagamentos = ({ navigation }) => {
             globalToast.show("Erro ao editar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         })
     }
+    const acaoAprovarPagamento = async (id) => {
+        await aprovarPagamento(id).then((response) => {
+            globalToast.show(response.data.title, { data: { messageDescription: response.data.message }, type: 'success' })
+            buscarPagamentos();
+        }).catch((error) => {
+            setDadosFormEdicao(null);
+            console.error(error.response.data)
+            globalToast.show("Erro ao editar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+        })
+    }
+    const acaoReprovarPagamento = async (id) => {
+        await reprovarPagamento(id).then((response) => {
+            globalToast.show(response.data.title, { data: { messageDescription: response.data.message }, type: 'success' })
+            buscarPagamentos();
+        }).catch((error) => {
+            setDadosFormEdicao(null);
+            console.error(error.response.data)
+            globalToast.show("Erro ao editar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+        })
+    }
 
     const handleFormClose = (reconsultarRegistro) => {
         setDadosFormEdicao(null);
@@ -89,19 +110,25 @@ export default HistoricoPagamentos = ({ navigation }) => {
             dados={item}
             voidDelete={() => handleExcluirPagamento(item.id)}
             voidEdit={() => handleEditarPagamento(item.id)}
+            voidAprovar={() => acaoAprovarPagamento(item.id)}
+            voidReprovar={() => acaoReprovarPagamento(item.id)}
+            exibirBotoesAprovarPagamento={exibirBotoesAprovarPagamento}
         />
     );
 
     return (
         <Box flex={1}>
             {
-                formIsOpen && <FormHistPagamento onClose={(v) => handleFormClose(v)} dadosEdicao={dadosFormEdicao} />
+                formIsOpen && <FormPagamento onClose={(v) => handleFormClose(v)} dadosEdicao={dadosFormEdicao} />
             }
-            <Box mx={20} mb={15} justifyContent="flex-end" borderRadius={'$5x1'} flexDirection="row">
+            <Box mx={20} mb={15} justifyContent="space-between" borderRadius={'$5x1'} flexDirection="row">
                 {
                     userInfos.tipoAcesso !== 'ALUNO' &&
                     (
-                        <Button label={'Cadastrar'} isLoading={formIsOpen} onPress={() => setFormIsOpen(true)} />
+                        <>
+                            <Button label={'Aprov./Reprov.'} isLoading={formIsOpen} onPress={() => setExibirBotoesAprovarPagamento(!exibirBotoesAprovarPagamento)} variant={'outline'} action={'secondary'} />
+                            <Button label={'Cadastrar'} isLoading={formIsOpen} onPress={() => setFormIsOpen(true)} />
+                        </>
                     )}
             </Box>
             <FlatList

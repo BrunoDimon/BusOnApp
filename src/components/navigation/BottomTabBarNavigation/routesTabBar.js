@@ -26,8 +26,8 @@ export default routesTabBar = [
         tipoAcesso: 'GESTAO',
         routes: [
             {
-                name: 'historico-pagamentos',
-                label: 'Histórico Pag.',
+                name: 'pagamentos',
+                label: 'Pagamentos',
                 iconName: 'clipboard-text-clock-outline',
                 isMainRoute: false,
             },
@@ -49,8 +49,8 @@ export default routesTabBar = [
         tipoAcesso: 'ALUNO',
         routes: [
             {
-                name: 'historico-pagamentos',
-                label: 'Histórico Pagamentos',
+                name: 'pagamentos',
+                label: 'Pagamentos',
                 iconName: 'clipboard-text-clock-outline',
                 isMainRoute: false,
             },

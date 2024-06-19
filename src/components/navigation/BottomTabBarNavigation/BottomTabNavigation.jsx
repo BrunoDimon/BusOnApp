@@ -22,7 +22,7 @@ export default function BottomTabNavigation({ navigation: navigationDrawer }) {
             initialRouteName={initialRouteName}
             tabBar={props => <TabBar {...props} />}
             sceneContainerStyle={{
-                backgroundColor: theme === 'light' ? '#f1f1f1' : '#404040'
+                backgroundColor: theme === 'light' ? '#f1f1f1' : '#171717'
             }}
             screenOptions={({ route }) => ({
                 unmountOnBlur: true,

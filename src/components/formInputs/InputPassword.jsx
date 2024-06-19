@@ -7,7 +7,7 @@ export const InputPassword = ({ label, erro, inputValue, inputOnChange, isDisabl
     const [showPassword, setShowPassword] = useState(false);
     return (
         <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Input h={50} borderRadius={'$xl'} >
+            <Input h={50} borderRadius={'$xl'} $focus-borderColor={'$trueGray400'}>
                 <InputField type={showPassword ? 'text' : 'password'} keyboardType={keyboardType} value={inputValue?.toString()} onChangeText={(v) => inputOnChange(v)} />
                 <InputSlot onPress={() => setShowPassword(!showPassword)}>
                     <InputIcon pr="$10" pb={'$6'} size='xs' color="$textDark500" as={showPassword ? EyeIcon : EyeOffIcon} />

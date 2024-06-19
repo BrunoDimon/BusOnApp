@@ -57,7 +57,7 @@ export default function Cursos({ navigation }) {
                 id: response.data.id,
                 nome: response.data.nome,
                 situacao: response.data.situacao,
-                instituicao_id: response.data.instituicao_id,
+                instituicaoId: response.data.instituicaoId,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);
@@ -69,11 +69,11 @@ export default function Cursos({ navigation }) {
     }
 
     const renderItem = ({ item }) => (
-        <Card bg={'white'} flexDirection="col" px={12} mb={10} mx={15} borderLeftWidth={10} borderColor={'$yellow400'} borderRadius={'$xl'} hardShadow='5'>
+        <Card bg={'white'} $dark-bg="$backgroundDark925" flexDirection="col" px={12} mb={10} mx={15} borderLeftWidth={10} borderColor={'$yellow500'} borderRadius={'$xl'} hardShadow='5'>
             <HStack flex={1} justifyContent='space-between' my={12} gap={10}>
                 <VStack flex={1}>
                     <HStack flex={1} justifyContent='space-between' >
-                        <Heading flex={1} numberOfLines={1} color={'$textDark700'}>{item.nome}</Heading>
+                        <Heading flex={1} numberOfLines={1} color={'$textDark700'} $dark-color={'$textLight100'}>{item.nome}</Heading>
                         <ButtonDotsDropdownMenu titulo={item.id + '-' + item.nome} opcoesMenu={
                             [{
                                 onPress: () => acaoEditarCurso(item.id),
@@ -93,10 +93,10 @@ export default function Cursos({ navigation }) {
                         } />
                     </HStack>
                     <HStack flex={1} justifyContent='space-between' alignItems='center' gap={12} >
-                        {item.instituicao && (
-                            <Text flex={1} numberOfLines={1} color={'$textDark700'}>{item.instituicao.nome}</Text>
-                        )}
-                        <Situacao situacao={AtivoInativoEnum[item.situacao]} pr={10} />
+                        <Text flex={1} numberOfLines={1} color={'$textDark700'} $dark-color={'$textLight100'}>{item.instituicao?.nome}</Text>
+                        <Box flex={0} >
+                            <Situacao situacao={AtivoInativoEnum[item.situacao]} pr={10} />
+                        </Box>
                     </HStack>
                 </VStack>
             </HStack>
