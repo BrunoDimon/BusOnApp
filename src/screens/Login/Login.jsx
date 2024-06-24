@@ -9,7 +9,6 @@ import TipoAcessoUsuarioEnum from '../../enums/TipoAcessoUsuarioEnum';
 import { loginRequest } from '../../service/api/requests/autenticacaoRequests';
 import { login } from '../../store/authSlice';
 import { RedefinirSenha } from './RedefinirSenha';
-import { editarSenhaUsuario } from "../../service/api/requests/usuarioRequests";
 import { store } from "../../store/storeConfig";
 import { useToast } from "react-native-toast-notifications";
 
@@ -17,6 +16,7 @@ import { useToast } from "react-native-toast-notifications";
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [jwtToken, setJwtToken] = useState('');
     const [isLoading, setIsLoading] = useState(false)
     const [isOpenRedefinirSenha, setIsOpenRedefinirSenha] = useState(false)
     const [dadosRedefinirSenha, setDadosRedefinirSenha] = useState({})
@@ -54,6 +54,7 @@ export default function Login() {
                     refreshToken: response.data.refreshToken
                 };
                 if (dadosUsuario.user.exigirRedefinicaoSenha) {
+                    setJwtToken(dadosUsuario.token);
                     setDadosRedefinirSenha({ ...dadosUsuario.user, senhaAntiga: password })
                     setIsOpenRedefinirSenha(true);
                 } else {
@@ -80,7 +81,13 @@ export default function Login() {
         <Box flex={1} sx={{ _dark: { bg: '$secondary900', }, _light: { bg: '$light100', }, }}>
             {
                 isOpenRedefinirSenha &&
-                <RedefinirSenha onClose={() => setIsOpenRedefinirSenha(false)} eExigeTrocarSenha={true} onConfirmChangePassword={(v) => onConfirmChangePassword(v)} dadosEdicao={dadosRedefinirSenha} />
+                <RedefinirSenha
+                    onClose={() => setIsOpenRedefinirSenha(false)}
+                    eExigeTrocarSenha={true}
+                    onConfirmChangePassword={(v) => onConfirmChangePassword(v)}
+                    dadosEdicao={dadosRedefinirSenha}
+                    jwtToken={jwtToken}
+                />
             }
             <Box flex={0.7} alignItems='center' justifyContent='flex-end'>
                 <Image

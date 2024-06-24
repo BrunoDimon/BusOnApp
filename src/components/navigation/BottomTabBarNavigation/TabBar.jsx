@@ -15,7 +15,7 @@ const getKeyboardHeight = (event) => {
 export default TabBar = ({ state, navigation, descriptors }) => {
     const isFocused = useIsFocused();
     const [keyboardHeight, setKeyboardHeight] = useState(0);
-    const routes = routesTabBar.filter(v => v.tipoAcesso === useSelector(state => state.auth.user.tipoAcesso))
+    const routes = routesTabBar.filter(v => v.tipoAcesso === useSelector(state => state.auth?.user?.tipoAcesso))
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (event) => {
@@ -33,7 +33,7 @@ export default TabBar = ({ state, navigation, descriptors }) => {
     }, []);
     let hideTabBar = false;
 
-    state.routes.map((route, index) => {
+    state.routes?.map((route, index) => {
         const { options } = descriptors[route.key];
 
         if (state.index == index && options.hideTabBar) {
@@ -51,7 +51,7 @@ export default TabBar = ({ state, navigation, descriptors }) => {
         <Box $dark-bg="$backgroundDark950" $light-bg="#f1f1f1" w={'$full'} h={85}>
             <Box $dark-bg="$backgroundDark900" $light-bg="$white" w={'$full'} hardShadow={'5'} h={85} borderTopEndRadius={35} borderTopStartRadius={35} flexDirection="row" justifyContent="space-between" overflow="hidden">
                 {
-                    routes[0].routes.map((route, index) => {
+                    routes[0].routes?.map((route, index) => {
                         const isFocusedRoute = state.routes[state.index].name === route.name;
                         const onPress = () => {
                             const event = navigation.emit({

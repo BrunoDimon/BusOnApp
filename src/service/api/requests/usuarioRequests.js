@@ -15,7 +15,7 @@ export const cadastrarUsuario = async (data) => {
     return request = await api.post('/usuario', data, {
         headers: {
             'Content-Type': 'multipart/form-data',
-        }
+        },
     });
 }
 
@@ -23,10 +23,14 @@ export const editarUsuario = async (id, data) => {
     return request = await api.put('/usuario/' + String(id), data, {
         headers: {
             'Content-Type': 'multipart/form-data',
-        }
+        },
     });
 }
 
-export const editarSenhaUsuario = async (id, data) => {
-    return request = await api.put('/usuario/atualizar-senha/' + String(id), data);
+export const editarSenhaUsuario = async (id, data, jwtToken) => {
+    return request = await api.put('/usuario/atualizar-senha/' + String(id), data, {
+        headers: {
+            Authorization: jwtToken
+        }
+    });
 }

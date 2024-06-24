@@ -12,7 +12,7 @@ import { useToast, Toast, ToastProvider } from "react-native-toast-notifications
 import ToastAlert from "../../components/toasts/ToastAlert";
 import { editarSenhaUsuario } from "../../service/api/requests/usuarioRequests";
 
-export const RedefinirSenha = ({ onClose, dadosEdicao, eExigeTrocarSenha, onConfirmChangePassword }) => {
+export const RedefinirSenha = ({ onClose, dadosEdicao, eExigeTrocarSenha, onConfirmChangePassword, jwtToken }) => {
     const globalToast = useToast()
     const ref = useRef(null)
     const userInfos = useSelector(state => state.auth.user);
@@ -67,7 +67,7 @@ export const RedefinirSenha = ({ onClose, dadosEdicao, eExigeTrocarSenha, onConf
         try {
             setButtonIsLoading(true);
             if (validarFormulario()) {
-                await editarSenhaUsuario(inputValues.idUsuario, { senhaAntiga: inputValues.senhaAntiga, senhaNova: inputValues.senhaNova })
+                await editarSenhaUsuario(inputValues.idUsuario, { senhaAntiga: inputValues.senhaAntiga, senhaNova: inputValues.senhaNova }, jwtToken)
                     .then((response) => {
                         onConfirmChangePassword(inputValues.senhaNova);
                         onClose(true);

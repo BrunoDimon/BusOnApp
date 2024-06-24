@@ -35,21 +35,12 @@ export default Inicio = ({ navigation }) => {
         dispatch(setTheme(newTheme));
     };
 
-    const acaoRedefinirSenha = async (newPassword) => {
-        try {
-            const res = await editarSenhaUsuario(userInfos.id, { senha: newPassword });
-            acaoLogin(dadosRedefinirSenha.email, newPassword)
-        } catch (error) {
-            globalToast.show("Erro na redefinição de senha", { data: { messageDescription: error.response.data.message }, type: 'error' })
-        }
-    }
-
     return (
         <Box flex={1}>
             <StatusBar translucent={true} backgroundColor={'#FFC100'} barStyle={'light-content'} /* barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} */ />
             {
                 isOpenRedefinirSenha &&
-                <RedefinirSenha onClose={() => setIsOpenRedefinirSenha(false)} eExigeTrocarSenha={false} onConfirmChangePassword={() => { null }} dadosEdicao={{ id: userInfos.id }} />
+                <RedefinirSenha onClose={() => setIsOpenRedefinirSenha(false)} eExigeTrocarSenha={false} onConfirmChangePassword={() => { null }} dadosEdicao={{ id: userInfos.id }} jwtToken={userInfos.token} />
             }
             <Box py={25} pb={85} px={12} bg={'$yellow500'}>
                 <HStack alignItems="center" gap={12}>

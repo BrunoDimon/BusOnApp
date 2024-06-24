@@ -16,6 +16,7 @@ import { useToast, Toast, ToastProvider } from "react-native-toast-notifications
 import ToastAlert from "../../components/toasts/ToastAlert";
 import InputImage from "../../components/formInputs/InputImage";
 import { InputNumber } from "../../components/formInputs/InputNumber";
+import mime from 'mime'
 
 export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
@@ -161,12 +162,15 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                     diasUsoTransporte: inputValues?.diasUsoTransporte,
                     senha: inputValues?.senha
                 }));
+                console.log('1')
                 if (inputValues.foto) {
+                    console.log('2')
                     formData.append('foto', {
                         uri: inputValues.foto,
-                        name: `${inputValues.nome}.jpg`,
-                        type: 'image/jpeg'
+                        name: inputValues.foto.split('/').pop(),
+                        type: mime.getType(inputValues.foto)
                     });
+                    console.log('3')
                 }
                 if (!eModoEdicao) {
                     await cadastrarUsuario(formData);
@@ -182,7 +186,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
             }
         } catch (error) {
             console.error(error.response.data);
-            Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+            Toast.show("Erro", { data: { messageDescription: error.response?.data?.message }, type: 'warning' })
         }
     }
 
