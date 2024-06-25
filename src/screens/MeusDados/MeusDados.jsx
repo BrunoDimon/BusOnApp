@@ -177,18 +177,22 @@ export default MeusDados = ({ navigation }) => {
                     diasUsoTransporte: inputValues?.diasUsoTransporte
                 }));
                 if (inputValues.foto) {
-                    formData.append('foto', {
+                    const img = {
                         uri: inputValues.foto,
                         name: `${inputValues.nome}.jpg`,
                         type: 'image/jpeg'
-                    });
+                    };
+                    console.log(img.uri)
+                    formData.append('foto', img);
                 }
-                await editarUsuario(usuarioId, formData)
-                    .then(() => {
-                        globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
-                    }).catch((error) => {
-                        globalToast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
-                    });
+                setTimeout(async () => {
+                    await editarUsuario(usuarioId, formData)
+                        .then(() => {
+                            globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
+                        }).catch((error) => {
+                            globalToast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+                        });
+                }, 500);
             } else {
                 globalToast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }

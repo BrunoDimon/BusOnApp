@@ -15,6 +15,7 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
     const ref = useRef(null)
     const userInfos = useSelector(state => state.auth.user);
+    const [isSaving, setIsSaving] = useState(false);
     const [inputValues, setInputValues] = useState({
         nome: dadosEdicao?.nome || null,
         endereco: dadosEdicao?.endereco || null,
@@ -59,6 +60,7 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
 
 
     const handleOnPressSave = async () => {
+        setIsSaving(true);
         try {
             if (validarFormulario()) {
                 const formData = new FormData();
@@ -69,27 +71,33 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
                     associacaoId: inputValues.associacaoId,
                 }));
                 if (inputValues.logo) {
-                    formData.append('logo', {
+                    const img = {
                         uri: inputValues.logo,
                         name: `${inputValues.nome}.jpg`,
                         type: 'image/jpeg'
-                    });
+                    };
+                    console.log(img.uri)
+                    formData.append('logo', img);
                 }
-                if (!eModoEdicao) {
-                    await cadastrarInstituicao(formData);
-                    onClose(true);
-                    globalToast.show("Sucesso", { data: { messageDescription: 'Instituição cadastrada com sucesso!' }, type: 'success' })
-                } else {
-                    await editarInstituicao(dadosEdicao.id, formData);
-                    onClose(true);
-                    globalToast.show("Sucesso", { data: { messageDescription: 'Instituição alterada com sucesso!' }, type: 'success' })
-                }
+                setTimeout(async () => {
+                    if (!eModoEdicao) {
+                        await cadastrarInstituicao(formData);
+                        onClose(true);
+                        globalToast.show("Sucesso", { data: { messageDescription: 'Instituição cadastrada com sucesso!' }, type: 'success' })
+                    } else {
+                        await editarInstituicao(dadosEdicao.id, formData);
+                        onClose(true);
+                        globalToast.show("Sucesso", { data: { messageDescription: 'Instituição alterada com sucesso!' }, type: 'success' })
+                    }
+                }, 500);
             } else {
                 Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error.response.data);
             Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+        } finally {
+            setIsSaving(false);
         }
     }
 
@@ -111,7 +119,7 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
                 </ModalBody>
                 <ModalFooter gap={10}>
                     <Button label={'Cancelar'} variant={'outline'} action={'secondary'} onPress={() => onClose()} />
-                    <Button label={'Salvar'} onPress={() => handleOnPressSave()} />
+                    <Button label={'Salvar'} onPress={() => handleOnPressSave()} isLoading={isSaving} />
                 </ModalFooter>
             </ModalContent>
             <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} />

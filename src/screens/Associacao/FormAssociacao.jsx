@@ -15,6 +15,7 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
     const ref = useRef(null)
     const userInfos = useSelector(state => state.auth.user);
+    const [isSaving, setIsSaving] = useState(false);
     const [inputValues, setInputValues] = useState({
         cnpj: dadosEdicao?.cnpj || null,
         nome: dadosEdicao?.nome || null,
@@ -59,6 +60,7 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
 
     const handleOnPressSave = async () => {
         try {
+            setIsSaving(true);
             if (validarFormulario()) {
                 const formData = new FormData();
                 formData.append('data', JSON.stringify({
@@ -68,27 +70,33 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
                     situacao: inputValues.situacao,
                 }));
                 if (inputValues.logo) {
-                    formData.append('logo', {
+                    const img = {
                         uri: inputValues.logo,
                         name: `${inputValues.nome}.jpg`,
                         type: 'image/jpeg'
-                    });
+                    };
+                    console.log(img.uri)
+                    formData.append('logo', img);
                 }
-                if (!eModoEdicao) {
-                    await cadastrarAssociacao(formData);
-                    onClose(true);
-                    globalToast.show("Sucesso", { data: { messageDescription: 'Associação cadastrada com sucesso!' }, type: 'success' })
-                } else {
-                    await editarAssociacao(dadosEdicao.id, formData);
-                    onClose(true);
-                    globalToast.show("Sucesso", { data: { messageDescription: 'Associação alterada com sucesso!' }, type: 'success' })
-                }
+                setTimeout(async () => {
+                    if (!eModoEdicao) {
+                        await cadastrarAssociacao(formData);
+                        onClose(true);
+                        globalToast.show("Sucesso", { data: { messageDescription: 'Associação cadastrada com sucesso!' }, type: 'success' })
+                    } else {
+                        await editarAssociacao(dadosEdicao.id, formData);
+                        onClose(true);
+                        globalToast.show("Sucesso", { data: { messageDescription: 'Associação alterada com sucesso!' }, type: 'success' })
+                    }
+                }, 500);
             } else {
                 Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
             console.error(error.response.data);
             Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+        } finally {
+            setIsSaving(false);
         }
     }
 
@@ -107,11 +115,13 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
                     <InputText label={'Nome'} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} />
                     <InputText label={'Endereço'} erro={errors.endereco} inputOnChange={(value) => handleChangeInputValues('endereco', value)} isRequired={true} inputValue={inputValues.endereco} />
                     <InputSelect label={'Situação'} erro={errors.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} />
-                    <InputImage label={'Logo'} erro={errors.logo} onPickImage={(value) => handleChangeInputValues('logo', value)} imageValue={inputValues.logo} />
+                    <InputImage label={'Logo'} erro={errors.logo} onPickImage={(value) => {
+                        handleChangeInputValues('logo', value);
+                    }} imageValue={inputValues.logo} />
                 </ModalBody>
                 <ModalFooter gap={10}>
                     <Button label={'Cancelar'} variant={'outline'} action={'secondary'} onPress={() => onClose()} />
-                    <Button label={'Salvar'} onPress={() => handleOnPressSave()} />
+                    <Button label={'Salvar'} onPress={() => handleOnPressSave()} isLoading={isSaving} />
                 </ModalFooter>
             </ModalContent>
             <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} />

@@ -49,6 +49,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const [cursos, setCursos] = useState([]);
     const [isLoadingCursos, setIsLoadingCursos] = useState(false);
 
+    const [isSaving, setIsSaving] = useState(false);
     const [errors, setErrors] = useState({});
 
     const eModoEdicao = dadosEdicao ? true : false
@@ -146,6 +147,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
 
     const handleOnPressSave = async () => {
         try {
+            setIsSaving(true);
             if (validarFormulario()) {
                 const formData = new FormData();
                 formData.append('data', JSON.stringify({
@@ -162,31 +164,35 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                     diasUsoTransporte: inputValues?.diasUsoTransporte,
                     senha: inputValues?.senha
                 }));
-                console.log('1')
                 if (inputValues.foto) {
-                    console.log('2')
-                    formData.append('foto', {
+                    const img = {
                         uri: inputValues.foto,
-                        name: inputValues.foto.split('/').pop(),
-                        type: mime.getType(inputValues.foto)
-                    });
-                    console.log('3')
+                        name: `${inputValues.nome}.jpg`,
+                        type: 'image/jpeg'
+                    };
+                    console.log(img.uri)
+                    formData.append('foto', img);
                 }
-                if (!eModoEdicao) {
-                    await cadastrarUsuario(formData);
-                    onClose(true);
-                    globalToast.show("Sucesso", { data: { messageDescription: 'Usuário cadastrado com sucesso!' }, type: 'success' })
-                } else {
-                    await editarUsuario(dadosEdicao.id, formData);
-                    onClose(true);
-                    globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
-                }
+                setTimeout(async () => {
+                    if (!eModoEdicao) {
+                        await cadastrarUsuario(formData);
+                        onClose(true);
+                        globalToast.show("Sucesso", { data: { messageDescription: 'Usuário cadastrado com sucesso!' }, type: 'success' })
+                    } else {
+                        await editarUsuario(dadosEdicao.id, formData);
+                        onClose(true);
+                        globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
+                    }
+                }, 500)
+
             } else {
                 Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
-            console.error(error.response.data);
-            Toast.show("Erro", { data: { messageDescription: error.response?.data?.message }, type: 'warning' })
+            console.error(error.response?.data);
+            Toast.show("Erro", { data: { messageDescription: error?.response?.data?.message }, type: 'warning' })
+        } finally {
+            setIsSaving(false);
         }
     }
 
@@ -226,7 +232,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                 </ModalBody>
                 <ModalFooter gap={10}>
                     <Button label={"Cancelar"} variant={"outline"} action={"secondary"} onPress={() => onClose()} />
-                    <Button label={"Salvar"} onPress={() => handleOnPressSave()} />
+                    <Button label={"Salvar"} onPress={() => handleOnPressSave()} isLoading={isSaving} />
                 </ModalFooter>
             </ModalContent>
             <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} />

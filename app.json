@@ -33,6 +33,14 @@
     },
     "web": {
       "favicon": "./assets/iconBusOn.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photo",
+        }
+      ]
+    ]
   }
 }

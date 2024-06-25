@@ -13,10 +13,9 @@ api.interceptors.response.use(
         return response;
     },
     error => {
-        console.log(error.response)
         if (error.request && !error.response) {
             Toast.show("Erro no servidor", { data: { messageDescription: 'Nenhuma resposta recebida. Tente novamente mais tarde ou contate o administrador.' }, type: 'error' })
-            console.error('Erro na requisição: Nenhuma resposta recebida', error.request);
+            console.error('Erro na requisição: Nenhuma resposta recebida', error?.request);
         }
         return Promise.reject(error);
     }
