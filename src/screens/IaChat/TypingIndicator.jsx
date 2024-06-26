@@ -68,7 +68,7 @@ export default TypingIndicator = ({ isTyping = false }) => {
           marginBottom: marginScale,
           width: 45,
           borderRadius: 20,
-          backgroundColor: "#ffdc72",
+          backgroundColor: "$yellow500",
         },
       ]}
     >

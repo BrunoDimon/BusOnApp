@@ -7,7 +7,7 @@ export default CardMensagem = ({ mensagem, enviadoDe, ...props }) => {
       <Card
         size="md"
         variant="filled"
-        bg={enviadoDe == 'IA' ? '#ffdc72' : '#dcdcdc'}
+        bg={enviadoDe == 'IA' ? '$yellow500' : '#dcdcdc'}
         maxWidth={300}
         minHeight={35}
         justifyContent="center"
@@ -16,7 +16,7 @@ export default CardMensagem = ({ mensagem, enviadoDe, ...props }) => {
         borderTopRightRadius={enviadoDe == 'IA' ? 20 : 0}
         borderTopLeftRadius={enviadoDe == 'IA' ? 0 : 20}
         p={10}
-        mx={10} 
+        mx={10}
       >
         <Text color={enviadoDe == 'IA' ? '#ffffff' : '#2c2c2c'}>{mensagem}</Text>
       </Card>

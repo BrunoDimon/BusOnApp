@@ -126,7 +126,7 @@ export default IaChat = ({ navigation }) => {
               <MaterialCommunityIcons
                 name="send-circle-outline"
                 size={30}
-                color={"#ffd000"}
+                color={awaitResponse || !inputChat ? "black" : '#FFC100'}
               />
             </Button>
           </Input>
