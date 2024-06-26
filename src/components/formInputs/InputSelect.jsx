@@ -1,4 +1,4 @@
-import { AlertCircleIcon, FormControlErrorText, FormControlLabelText, Input, InputField, SelectDragIndicator, SelectItem, SelectItemText } from "@gluestack-ui/themed"
+import { AlertCircleIcon, FormControlErrorText, FormControlLabelText, Input, InputField, SelectDragIndicator, SelectItem, SelectItemText, SelectScrollView } from "@gluestack-ui/themed"
 import { FormControl, FormControlError, FormControlErrorIcon, FormControlLabel, } from "@gluestack-ui/themed"
 import { FormInput } from "./FormInput"
 import { ChevronDownIcon } from "@gluestack-ui/themed"
@@ -43,20 +43,22 @@ export const InputSelect = ({ label, erro, inputValue, inputOnChange, isDisabled
                         }
                     </SelectIcon>
                 </SelectTrigger>
-                <SelectPortal useRNModal={true}>
+                <SelectPortal useRNModal={true} >
                     <SelectBackdrop />
                     <SelectContent>
                         <SelectDragIndicatorWrapper>
                             <SelectDragIndicator />
                         </SelectDragIndicatorWrapper>
-                        {
-                            isRequired ?? <SelectItem key={0} label={null} value={null} />
-                        }
-                        {
-                            values?.map((value, index) => (
-                                <SelectItem key={index} label={value.label} value={value.value} isDisabled={value.isDisabled} />
-                            ))
-                        }
+                        <SelectScrollView>
+                            {
+                                isRequired ?? <SelectItem key={0} label={null} value={null} />
+                            }
+                            {
+                                values?.map((value, index) => (
+                                    <SelectItem key={index} label={value.label} value={value.value} isDisabled={value.isDisabled} />
+                                ))
+                            }
+                        </SelectScrollView>
 
                     </SelectContent>
                 </SelectPortal>
