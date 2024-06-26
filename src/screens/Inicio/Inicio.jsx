@@ -17,8 +17,8 @@ import { RedefinirSenha } from "../Login/RedefinirSenha";
 export default Inicio = ({ navigation }) => {
     const dispatch = useDispatch();
     const userInfos = useSelector(state => state.auth.user);
+    const userToken = useSelector(state => state.auth.token);
     const [isOpenRedefinirSenha, setIsOpenRedefinirSenha] = useState(false)
-
     const userRoutes = routesMenu.map(category => {
         const filteredRoutes = category.routes.filter(route => route.accessRequired.includes(userInfos?.tipoAcesso));
         return {
@@ -40,7 +40,7 @@ export default Inicio = ({ navigation }) => {
             <StatusBar translucent={true} backgroundColor={'#FFC100'} barStyle={'light-content'} /* barStyle={theme == 'dark' ? 'light-content' : 'dark-content'} */ />
             {
                 isOpenRedefinirSenha &&
-                <RedefinirSenha onClose={() => setIsOpenRedefinirSenha(false)} eExigeTrocarSenha={false} onConfirmChangePassword={() => { null }} dadosEdicao={{ id: userInfos.id }} jwtToken={userInfos.token} />
+                <RedefinirSenha onClose={() => setIsOpenRedefinirSenha(false)} eExigeTrocarSenha={false} onConfirmChangePassword={() => { null }} dadosEdicao={{ id: userInfos.id }} jwtToken={userToken} />
             }
             <Box py={25} pb={85} px={12} bg={'$yellow500'}>
                 <HStack alignItems="center" gap={12}>
