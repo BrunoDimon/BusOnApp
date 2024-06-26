@@ -95,9 +95,15 @@ export default function CardBoxPagamento({ dados, voidDelete, voidEdit, exibirBo
                             <Box flexDirection="row" justifyContent="space-between" adjustsFontSizeToFit={true} >
                                 <Box flexDirection="row" gap={2} alignItems="center">
                                     <Box flexDirection="row" alignItems="flex-end">
-                                        <Text mt={5} fontWeight="$bold" fontSize={'$xl'}>{moment(dados.dataPagamento || dados.dataVencimento).format('DD/MM/yyyy')}</Text>
+                                        <Box>
+                                            <Text textAlign="center" mt={5} fontWeight="$bold" fontSize={'$md'}>{dados.dataPagamento ? 'Pago ' : 'Vencimento'}</Text>
+                                            <Text mt={5} fontWeight="$bold" fontSize={'$xl'}>{moment(dados.dataPagamento || dados.dataVencimento).format('DD/MM/yyyy')}</Text>
+                                        </Box>
                                         <Text mt={5} fontWeight="$bold" fontSize={'$xl'}> | </Text>
-                                        <Text mt={5} fontWeight="$bold" fontSize={'$xl'}>{formatarValorEmReais(dados.valorTotal)}</Text>
+                                        <Box >
+                                            <Text textAlign="center" mt={5} fontWeight="$bold" fontSize={'$md'}>{'Total'}</Text>
+                                            <Text mt={5} fontWeight="$bold" fontSize={'$xl'}>{formatarValorEmReais(dados.valorTotal)}</Text>
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Box>

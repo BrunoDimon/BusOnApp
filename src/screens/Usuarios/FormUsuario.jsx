@@ -17,6 +17,7 @@ import ToastAlert from "../../components/toasts/ToastAlert";
 import InputImage from "../../components/formInputs/InputImage";
 import { InputNumber } from "../../components/formInputs/InputNumber";
 import mime from 'mime'
+import validarEmail from "../../functions/ValidarEmail";
 
 export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
@@ -129,6 +130,10 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
         }
         if (!inputValues.email) {
             errors.email = "E-mail é obrigatório";
+        } else {
+            if (!validarEmail(inputValues.email)) {
+                errors.email = "O valor informado não é um e-mail";
+            }
         }
         if (!inputValues.telefone) {
             errors.telefone = "Telefone é obrigatório";
@@ -183,16 +188,15 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                         onClose(true);
                         globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
                     }
-                }, 500)
-
+                }, 500);
             } else {
+                setIsSaving(false);
                 Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
+            setIsSaving(false);
             console.error(error.response?.data);
             Toast.show("Erro", { data: { messageDescription: error?.response?.data?.message }, type: 'warning' })
-        } finally {
-            setIsSaving(false);
         }
     }
 
@@ -219,7 +223,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                         <InputSelect label={"Associação"} erro={errors.associacaoId} inputOnChange={(value) => handleChangeInputValues("associacaoId", value)} inputValue={inputValues.associacaoId} selectValues={associacoes} isRequired={!eUsuarioAdmin} isDisabled={!eUsuarioAdmin} />
                         <InputText label={"Nome Completo"} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues("nome", value)} isRequired={true} inputValue={inputValues.nome} />
                         <InputImage label={'Foto'} erro={errors.foto} onPickImage={(value) => handleChangeInputValues('foto', value)} imageValue={inputValues.foto} />
-                        <InputText label={"E-mail"} erro={errors.email} inputOnChange={(value) => handleChangeInputValues("email", value)} isRequired={true} inputValue={inputValues.email} />
+                        <InputText label={"E-mail"} erro={errors.email} keyboardType={'email-address'} autoCapitalize="none" inputOnChange={(value) => handleChangeInputValues("email", value)} isRequired={true} inputValue={inputValues.email} />
                         <InputNumber label={"Telefone"} erro={errors.telefone} inputOnChange={(value) => handleChangeInputValues("telefone", value)} isRequired={true} inputValue={inputValues.telefone} />
                         <InputText label={"Endereço"} erro={errors.endereco} inputOnChange={(value) => handleChangeInputValues("endereco", value)} inputValue={inputValues.endereco} />
                         <InputText label={"Matricula"} erro={errors.matricula} inputOnChange={(value) => handleChangeInputValues("matricula", value)} inputValue={inputValues.matricula} />

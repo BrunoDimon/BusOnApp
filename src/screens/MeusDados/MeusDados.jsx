@@ -16,6 +16,7 @@ import { Heading } from "@gluestack-ui/themed"
 import { buscarParametroDaAssociacao } from "../../service/api/requests/parametroRequests"
 import { useToast } from "react-native-toast-notifications"
 import InputImage from "../../components/formInputs/InputImage"
+import validarEmail from "../../functions/ValidarEmail"
 
 export default MeusDados = ({ navigation }) => {
     const globalToast = useToast()
@@ -152,11 +153,14 @@ export default MeusDados = ({ navigation }) => {
         }
         if (!inputValues.email) {
             errors.email = "E-mail é obrigatório";
+        } else {
+            if (!validarEmail(inputValues.email)) {
+                errors.email = "O valor informado não é um e-mail";
+            }
         }
         if (!inputValues.telefone) {
             errors.telefone = "Telefone é obrigatório";
         }
-
         setErrors(errors);
         const isValid = Object.keys(errors).length === 0;
         return isValid;
@@ -194,13 +198,13 @@ export default MeusDados = ({ navigation }) => {
                         });
                 }, 500);
             } else {
+                setIsSaving(false);
                 globalToast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
+            setIsSaving(false);
             console.error(error.response.data);
             globalToast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
-        } finally {
-            setIsSaving(false)
         }
     }
 
@@ -223,7 +227,7 @@ export default MeusDados = ({ navigation }) => {
                         <Box w={'$full'}>
                             <InputImage label={'Foto'} erro={errors.foto} onPickImage={(value) => handleChangeInputValues('foto', value)} imageValue={inputValues.foto} />
                             <InputText label={'Nome Completo'} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
-                            <InputText label={'E-mail'} inputOnChange={(value) => handleChangeInputValues('email', value)} isRequired={true} inputValue={inputValues.email} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
+                            <InputText label={'E-mail'} keyboardType={'email-address'} autoCapitalize="none" inputOnChange={(value) => handleChangeInputValues('email', value)} isRequired={true} inputValue={inputValues.email} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputText label={'Telefone'} inputOnChange={(value) => handleChangeInputValues('telefone', value)} isRequired={true} inputValue={inputValues.telefone} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputText label={'Endereço'} inputOnChange={(value) => handleChangeInputValues('endereco', value)} isRequired={false} inputValue={inputValues.endereco} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputText label={'Matricula'} inputOnChange={(value) => handleChangeInputValues('matricula', value)} isRequired={false} inputValue={inputValues.matricula} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />

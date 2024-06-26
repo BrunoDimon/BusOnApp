@@ -73,6 +73,7 @@ export default Pagamentos = ({ navigation }) => {
     }
     const acaoAprovarPagamento = async (id) => {
         await aprovarPagamento(id).then((response) => {
+            globalToast.hideAll()
             globalToast.show(response.data.title, { data: { messageDescription: response.data.message }, type: 'success' })
             buscarPagamentos();
         }).catch((error) => {
@@ -83,6 +84,7 @@ export default Pagamentos = ({ navigation }) => {
     }
     const acaoReprovarPagamento = async (id) => {
         await reprovarPagamento(id).then((response) => {
+            globalToast.hideAll()
             globalToast.show(response.data.title, { data: { messageDescription: response.data.message }, type: 'success' })
             buscarPagamentos();
         }).catch((error) => {

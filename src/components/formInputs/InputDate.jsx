@@ -1,10 +1,11 @@
-import { AlertCircleIcon, Button, ButtonIcon, ButtonText, FormControlErrorText, FormControlLabelText, Icon, Input, InputField } from "@gluestack-ui/themed"
+import { AlertCircleIcon, Button, ButtonGroup, ButtonIcon, ButtonText, Button as Btn, FormControlErrorText, FormControlLabelText, Icon, Input, InputField } from "@gluestack-ui/themed"
 import { CalendarDaysIcon, FormControl, FormControlError, FormControlErrorIcon, FormControlLabel, } from "@gluestack-ui/themed"
 import { FormInput } from "./FormInput"
 import { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import 'moment/locale/pt-br';
+import { TrashIcon } from "lucide-react-native";
 moment.locale('pt-br');
 
 export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, calendarType = 'date' }) => {
@@ -12,7 +13,9 @@ export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, 
 
     const onChange = (event, selectedDate) => {
         setShow(false);
-        inputOnChange(selectedDate)
+        if (event.type === "set") {
+            inputOnChange(selectedDate)
+        }
     };
     const handlePress = async () => {
         if (show) {
@@ -26,9 +29,22 @@ export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, 
                 <ButtonText color={inputValue ? "black" : "gray"} $dark-color={inputValue ? "$textLight100" : "gray"} fontWeight={"$normal"}>
                     {inputValue ? moment(inputValue).format('DD/MM/yyyy') : 'dd/mm/yyyy'}
                 </ButtonText>
-                <ButtonIcon size={'lg'}>
-                    <Icon as={CalendarDaysIcon} color={"$secondary400"} size="20" />
-                </ButtonIcon>
+                <ButtonGroup gap={20} justifyContent="center" alignItems="center">
+                    {
+                        inputValue &&
+                        (
+                            <Btn variant={'link'} action="secondary" onPress={() => inputOnChange(null)}>
+                                <ButtonIcon size={'lg'} >
+                                    <Icon as={TrashIcon} color={"$secondary400"} size="20" />
+                                </ButtonIcon>
+                            </Btn>
+                        )
+                    }
+
+                    <ButtonIcon size={'lg'}>
+                        <Icon as={CalendarDaysIcon} color={"$secondary400"} size="20" />
+                    </ButtonIcon>
+                </ButtonGroup>
             </Button>
 
             {show && (

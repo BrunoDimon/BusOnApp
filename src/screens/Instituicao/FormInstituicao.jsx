@@ -91,13 +91,13 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
                     }
                 }, 500);
             } else {
+                setIsSaving(false);
                 Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
+            setIsSaving(false);
             console.error(error.response.data);
             Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
-        } finally {
-            setIsSaving(false);
         }
     }
 

@@ -51,6 +51,11 @@ export const RedefinirSenha = ({ onClose, dadosEdicao, eExigeTrocarSenha, onConf
         if ((inputValues.senhaNova != null && inputValues.senhaNova != '') && (inputValues.repetirSenhaNova != null && inputValues.repetirSenhaNova != '') && inputValues.senhaNova != inputValues.repetirSenhaNova) {
             errors.repetirSenhaNova = "As senhas não correspondem"
         }
+        if (inputValues?.senhaNova.length < 8) {
+            errors.senhaNova = "A senha deve conter pelo menos 8 caracteres"
+            errors.repetirSenhaNova = "A senha deve conter pelo menos 8 caracteres"
+        }
+
         setErrors(errors);
         const isValid = (Object.keys(errors).length === 0);
         return isValid;

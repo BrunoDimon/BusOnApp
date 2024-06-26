@@ -112,16 +112,17 @@ export default function Login() {
                         Bem vindo
                     </Heading>
                     <Box flex={1.2} my={10}>
-                        <InputText label={'E-mail'} inputOnChange={setEmail} inputValue={email} />
+                        <InputText label={'E-mail'} keyboardType={'email-address'} autoCapitalize="none" inputOnChange={setEmail} inputValue={email} />
                         <InputPassword label={'Senha'} inputOnChange={setPassword} inputValue={password} />
                     </Box>
                     <Box flex={1} my={20}>
                         <HStack flex={0} alignItems='center' justifyContent='space-between'>
-                            <Pressable>
+                            {/* <Pressable>
                                 <Text size='xl' fontWeight='$semibold' maxFontSizeMultiplier={1.25}>
                                     Esqueceu a senha?
                                 </Text>
-                            </Pressable>
+                            </Pressable> */}
+                            <Box></Box>
                             <Button label={'Entrar'} onPress={() => acaoLogin(email, password)} isLoading={isLoading} />
                         </HStack>
                     </Box>

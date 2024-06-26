@@ -18,6 +18,7 @@ export const FormPagamento = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
     const ref = useRef(null);
     const [isLoadingUsuarios, setIsLoadingUsuarios] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const [usuarios, setUsuarios] = useState([]);
     const userInfos = useSelector(state => state.auth.user);
     const [inputValues, setInputValues] = useState({
@@ -66,6 +67,7 @@ export const FormPagamento = ({ onClose, dadosEdicao }) => {
 
     const handleOnPressSave = async () => {
         try {
+            setIsSaving(true);
             if (validarFormulario()) {
                 if (!eModoEdicao) {
                     await cadastrarPagamento(inputValues);
@@ -77,9 +79,11 @@ export const FormPagamento = ({ onClose, dadosEdicao }) => {
                     globalToast.show("Sucesso", { data: { messageDescription: 'Pagamento alterado com sucesso!' }, type: 'success' })
                 }
             } else {
+                setIsSaving(false);
                 Toast.show("Aviso", { data: { messageDescription: 'Preencha os campos obrigatórios do formulário!' }, type: 'warning' })
             }
         } catch (error) {
+            setIsSaving(false);
             console.error(error);
             Toast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
@@ -129,7 +133,7 @@ export const FormPagamento = ({ onClose, dadosEdicao }) => {
                 </ModalBody>
                 <ModalFooter justifyContent="space-between">
                     <Button label={"Cancelar"} variant={"outline"} action={"secondary"} onPress={() => onClose()} />
-                    <Button label={"Salvar"} onPress={() => handleOnPressSave()} />
+                    <Button label={"Salvar"} onPress={() => handleOnPressSave()} isLoading={isSaving} />
                 </ModalFooter>
             </ModalContent>
             <ToastProvider placement="top" renderToast={(toast) => <ToastAlert toastId={toast.id} titulo={toast.message} descricao={toast.data.messageDescription} tipo={toast.type} toastClose={() => Toast.hide(toast.id)} />} />
