@@ -45,6 +45,7 @@ export default IaChat = ({ navigation }) => {
         },
       ]);
       const data = await enviarMensagem(mensagem);
+      console.log(data)
       setMensagens((mensagens) => [
         ...mensagens,
         {

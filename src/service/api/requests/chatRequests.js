@@ -3,7 +3,7 @@ import { api } from '../api';
 export const enviarMensagem = async (mensagem) => {
     try {
         return request = await api.post('/chatbot/conversation', { message: mensagem })
-            .then(response => response.data.response.content);
+            .then(response => response.data.response?.content?.message);
     } catch (error) {
         console.log(error)
     }
