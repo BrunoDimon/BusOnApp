@@ -180,11 +180,17 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                 }
                 setTimeout(async () => {
                     if (!eModoEdicao) {
-                        await cadastrarUsuario(formData);
+                        await cadastrarUsuario(formData)
+                            .finally(() => {
+                                setIsSaving(false);
+                            });
                         onClose(true);
                         globalToast.show("Sucesso", { data: { messageDescription: 'Usuário cadastrado com sucesso!' }, type: 'success' })
                     } else {
-                        await editarUsuario(dadosEdicao.id, formData);
+                        await editarUsuario(dadosEdicao.id, formData)
+                            .finally(() => {
+                                setIsSaving(false);
+                            });
                         onClose(true);
                         globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
                     }

@@ -195,6 +195,8 @@ export default MeusDados = ({ navigation }) => {
                             globalToast.show("Sucesso", { data: { messageDescription: 'Usuário alterado com sucesso!' }, type: 'success' })
                         }).catch((error) => {
                             globalToast.show("Erro", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+                        }).finally(() => {
+                            setIsSaving(false);
                         });
                 }, 500);
             } else {

@@ -80,11 +80,17 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
                 }
                 setTimeout(async () => {
                     if (!eModoEdicao) {
-                        await cadastrarAssociacao(formData);
+                        await cadastrarAssociacao(formData)
+                            .finally(() => {
+                                setIsSaving(false);
+                            });
                         onClose(true);
                         globalToast.show("Sucesso", { data: { messageDescription: 'Associação cadastrada com sucesso!' }, type: 'success' })
                     } else {
-                        await editarAssociacao(dadosEdicao.id, formData);
+                        await editarAssociacao(dadosEdicao.id, formData)
+                            .finally(() => {
+                                setIsSaving(false);
+                            });
                         onClose(true);
                         globalToast.show("Sucesso", { data: { messageDescription: 'Associação alterada com sucesso!' }, type: 'success' })
                     }

@@ -1,7 +1,7 @@
 import { api } from '../api';
 
-export const buscarTodosUsuarios = async (filtros) => {
-    return request = await api.get('/usuario?filters=' + JSON.stringify(filtros));
+export const buscarTodosUsuarios = async (filtros, ordernacao) => {
+    return request = await api.get('/usuario?filters=' + JSON.stringify(filtros) + '&orderBy=' + JSON.stringify(ordernacao));
 };
 
 export const buscarUsuarioPorId = async (id) => {

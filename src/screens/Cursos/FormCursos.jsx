@@ -64,11 +64,17 @@ export const FormCursos = ({ onClose, dadosEdicao }) => {
             setIsSaving(true);
             if (validarFormulario()) {
                 if (!eModoEdicao) {
-                    await cadastrarCurso(inputValues);
+                    await cadastrarCurso(inputValues)
+                        .finally(() => {
+                            setIsSaving(false);
+                        });
                     onClose(true);
                     globalToast.show("Sucesso", { data: { messageDescription: 'Curso cadastrado com sucesso!' }, type: 'success' })
                 } else {
-                    await editarCurso(dadosEdicao.id, inputValues);
+                    await editarCurso(dadosEdicao.id, inputValues)
+                        .finally(() => {
+                            setIsSaving(false);
+                        });
                     onClose(true);
                     globalToast.show("Sucesso", { data: { messageDescription: 'Curso alterado com sucesso!' }, type: 'success' })
                 }

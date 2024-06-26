@@ -81,11 +81,17 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
                 }
                 setTimeout(async () => {
                     if (!eModoEdicao) {
-                        await cadastrarInstituicao(formData);
+                        await cadastrarInstituicao(formData)
+                            .finally(() => {
+                                setIsSaving(false);
+                            });
                         onClose(true);
                         globalToast.show("Sucesso", { data: { messageDescription: 'Instituição cadastrada com sucesso!' }, type: 'success' })
                     } else {
-                        await editarInstituicao(dadosEdicao.id, formData);
+                        await editarInstituicao(dadosEdicao.id, formData)
+                            .finally(() => {
+                                setIsSaving(false);
+                            });
                         onClose(true);
                         globalToast.show("Sucesso", { data: { messageDescription: 'Instituição alterada com sucesso!' }, type: 'success' })
                     }

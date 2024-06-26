@@ -36,9 +36,10 @@ export default function Usuario({ navigation }) {
                 { notEquals: { tipoAcesso: 'ALUNO' } }
                 :
                 { equals: { associacaoId: userInfos.associacaoId }, notEquals: { tipoAcesso: 'ADMIN' } }
+        const orderBy = [{ field: 'situacao', direction: 'ASC' }, { field: 'nome', direction: 'ASC' },]
         try {
             setListIsRefreshing(true);
-            const response = await buscarTodosUsuarios(whereClause);
+            const response = await buscarTodosUsuarios(whereClause, orderBy);
             setAlunos(response.data);
         } catch (error) {
             console.error('Erro ao buscar alunos:', error.response.data);
