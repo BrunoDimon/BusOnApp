@@ -1,87 +1,95 @@
 <div align="center">
-  <img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/busOnFontePreta.png" alt="BusOn Logo" style='height: 280px;'/>
-  <hr>
+  <img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/busOnFonteBranca.png" alt="BusOn Logo" style='height: 280px;'/>  <hr>
   <h1>
     <br>
-      <p>Front - end  BusOn - Projeto Integrador Inteligencia Artificial <br> Engenharia de Software - UNISATC</p>
+      <p>Front-End Buson - Projeto Integrador IA - Engenharia de Software - UNISATC</p>
   </h1>
 </div>
 
-Este projeto consiste em um aplicativo desenvolvido para facilitar o gerenciamento dos pagamentos dos alunos que utilizam o serviço de transporte de São Ludgero para universidades. Através desta aplicação, é possível realizar e monitorar os pagamentos dos alunos de forma organizada e eficiente. O objetivo é proporcionar uma ferramenta que simplifique o controle financeiro e administrativo relacionado ao transporte univesitário.
+# Sobre o Projeto
+## Oque é:
+- O Aplicativo foi desenvolvido com o intuito de facilitar o gerenciamento dos pagamentos mensais dos acadêmicos que utilizam o serviço de transporte para deslocamento até as universidades. Além disso, o aplicativo fornece informações detalhadas sobre a associação e, situação dos acadêmicos e seus pagamentos, por meio de um chat com inteligência artificial.
 
-## Introdução
+## Oque procuramos resolver:
+- Controle manual por meio de uma planilha de controle;
+- Preenchimento de documentos de forma manual;
+  
+## Objetivos:
+- Facilitar a cobrança/conferência/consulta de pagamentos dos acadêmicos;
+- Facilitar emissão de documentos para os acadêmicos em nome da associação;
+- Gerenciamento dos dias de utilização do transporte por cada universitário e manter seus dados atualizados;
+- Gerenciamento de todas informações de alunos da associação;
+- Contato assertivo com cada acadêmico;
 
-Essas instruções permitirão que você obtenha uma cópia do projeto em operação na sua máquina local para fins de desenvolvimento e teste.
+---
 
-Consulte **[Implantação](#-implanta%C3%A7%C3%A3o)** para saber como implantar o projeto.
+# Inicialização do Projeto
 
-## Telas do App
-
-Abaixo o menu principal de cada usuario:
-
-Tela Aluno
-<div style text-align: right>
-  <img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/TelaAluno.jfif" alt="BusOn Logo" style='height: 600px;'/>
-</div>
-
-Tela Gestao
-<div>
-  <img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/TelaGestao.jfif" alt="BusOn Logo" style='height: 600px;'/>
-</div>
-
-
-## Pré-requisitos
-
-Para instalar a aplicação, primeiro precisa dos seguintes componentes instalados:
-
-```
-VisualStudioCode - https://code.visualstudio.com/
-```
-```
-Git - https://www.git-scm.com/downloads
-```
-```
-NodeJs - https://nodejs.org/en/download/package-manager/current
-```
-
-### Instalação e execução
-
-Para instalar o aplicativo, siga os seguintes passos:
-
-1. Clone o repositório do aplicativo.
+Clone o projeto:
 ```sh
   git clone https://github.com/BrunoDimon/BusOnApp.git
 ```
-2. Execute o comando para instalar as dependências do aplicativo.
+
+Instalar as dependências:
 ```sh
   npm install
 ```
-3. Execute o comando para iniciar a aplicação.
+
+Iniciar a aplicação
 ```sh
   npm start
 ```
-4. Com aplicativo do Expo, scaneie o QR code gerado ou simule em um smartphone virtual via Android Studio
 
+Com aplicativo do Expo GO, scaneie o QR code gerado ou simule em um smartphone virtual via Android Studio
 
-## Implantação
+Instalar o [Expo GO](https://expo.dev/go)
 
-Adicione notas adicionais sobre como implantar isso em um sistema ativo
+---
 
-### Tecnologias utilizadas
+# Variáveis de Ambiente
 
-[![Expo][Expo.js]][Expo-url]
-[![React Native][ReactNative.js]][ReactNative-url]
+Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu arquivo .env
+> O arquivo [.env.example](https://github.com/BrunoDimon/BusOnApp/blob/main/.env.example) foi deixado no projeto para usar de modelo
+
+---
+
+### Variáveis do banco de dados
+##### **Configurações para conexção com o banco de dados**
+
+`EXPO_PUBLIC_BACK_END_API_URL` (Endereço da API do back-end. Ex: "http://000.000.00:3000/api")
+
+`EXPO_PUBLIC_FILES_API_URL` -> (Endereço do servidor de arquivos. Ex: "http://000.000.000.00:3000/files/")
+
+---
+
+# Tecnologias utilizadas
+### Tecnologias usadas para a execução
 [![JavaScript][JavaScript.js]][JavaScript-url]
-## Autores
+[![React Native][ReactNative.js]][ReactNative-url]
+[![Redux][Redux]][Redux-url]
+<a href="GluestackUI-url"  style="background-color: white; display: inline-block; padding: 5px; border-radius: 4px;">
+  <img src="https://github.com/gluestack/gluestack-ui/blob/main/img/gluestack-logo.svg" alt="GluestackUI" height="28" />
+</a>
 
-* **Bruno Dimon** - *Desenvolvimento Frond End* - [https://github.com/BrunoDimon](https://github.com/BrunoDimon)
-* **Douglas Kuerten** - *Desenvolvimento Frond End* - [https://github.com/DouglasKuerten](https://github.com/DouglasKuerten)
-* **Thiago Dimon** - *Desenvolvimento Frond End e UI* - [https://github.com/thiagoDimon](https://github.com/thiagoDimon)
-* **Vinicius Milanez** - *Desenvolvimento Frond End* - [https://github.com/viniciusmilanez](https://github.com/viniciusmilanez) 
+### Tecnologias usadas em desenvolvimento apenas
+[![Insomnia][Insomnia.js]][Insomnia-url]
+[![AndroidStudio][AndroidStudio]][AndroidStudio-url]
+[![Expo][Expo.js]][Expo-url]
 
-## Referências
+# Autores
 
-Cite aqui todas as referências utilizadas neste projeto, pode ser outros repositórios, livros, artigos de internet etc.
+* **Bruno Dimon** - [https://github.com/BrunoDimon](https://github.com/BrunoDimon)
+* **Douglas Kuerten** - [https://github.com/DouglasKuerten](https://github.com/DouglasKuerten)
+* **Lucas Zanoni** - [https://github.com/Castrozan](https://github.com/Castrozan)
+* **Thiago Dimon** - [https://github.com/thiagoDimon](https://github.com/thiagoDimon)
+* **Vinicius Milanez** - [https://github.com/viniciusmilanez](https://github.com/viniciusmilanez)
+  
+---
+
+# Repositórios Relacionados
+
+ #### - [Buson Back-End](https://github.com/BrunoDimon/BusOn)
+ #### - [Buson Front-End App (Mobile)](https://github.com/BrunoDimon/BusOnApp)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -92,3 +100,16 @@ Cite aqui todas as referências utilizadas neste projeto, pode ser outros reposi
 [ReactNative-url]: https://reactnative.dev/
 [Expo.js]: https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white
 [Expo-url]: https://expo.dev/
+[Insomnia.js]: https://img.shields.io/badge/Insomnia-5849be?style=for-the-badge&logo=Insomnia&logoColor=white
+[Insomnia-url]: https://insomnia.rest/download
+[Redux]: https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white
+[Redux-url]: https://redux.js.org/
+
+[AndroidStudio]: https://img.shields.io/badge/android%20studio-346ac1?style=for-the-badge&logo=android%20studio&logoColor=white
+[AndroidStudio-url]: https://developer.android.com/studio?hl=pt-br
+
+
+
+
+
+
