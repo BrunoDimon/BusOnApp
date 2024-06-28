@@ -92,7 +92,8 @@ export const FormPagamento = ({ onClose, dadosEdicao }) => {
         try {
             setIsLoadingUsuarios(true);
             const filters = { equals: { associacaoId: userInfos.associacaoId } }
-            const response = await buscarTodosUsuarios(filters);
+            const orderBy = [{ field: 'situacao', direction: 'ASC' }, { field: 'nome', direction: 'ASC' },]
+            const response = await buscarTodosUsuarios(filters, orderBy);
             const valoresSelect = response.data.map((value) => ({
                 label: value.nome,
                 value: value.id,

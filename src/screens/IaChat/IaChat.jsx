@@ -20,6 +20,7 @@ export default IaChat = ({ navigation }) => {
   const [mensagens, setMensagens] = useState([]);
   const [awaitResponse, setAwaitResponse] = useState(false);
   const theme = useSelector(state => state.theme.theme);
+  const usuarioId = useSelector(state => state.auth.user.id);
 
   const logo = theme === "light" ? require('../../../assets/busOnFontePreta.png') : require('../../../assets/busOnFonteBranca.png');
   const draw = require('../../../assets/school-bus-predios-dark.png');
@@ -44,12 +45,12 @@ export default IaChat = ({ navigation }) => {
           enviadoDe: "Você",
         },
       ]);
-      const data = await enviarMensagem(mensagem);
+      const data = await enviarMensagem(mensagem + ". Quem está fazendo a pergunta é o usuário de id: " + usuarioId);
       console.log(data)
       setMensagens((mensagens) => [
         ...mensagens,
         {
-          mensagem: data,
+          mensagem: data.message || data,
           enviadoDe: "IA",
         },
       ]);

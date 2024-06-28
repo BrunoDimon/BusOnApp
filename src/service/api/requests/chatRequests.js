@@ -5,6 +5,6 @@ export const enviarMensagem = async (mensagem) => {
         return request = await api.post('/chatbot/conversation', { message: mensagem })
             .then(response => response.data.response?.content);
     } catch (error) {
-        console.log(error)
+        console.log(error.response)
     }
 };
