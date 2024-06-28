@@ -21,6 +21,18 @@
 - Gerenciamento de todas informações de alunos da associação;
 - Contato assertivo com cada acadêmico;
 
+## Screenshots do App
+<div>
+<img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/Fotos%20App/1%20-%20Login.jpeg" alt="Login" style='height: 350px;'>
+<img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/Fotos%20App/Gest%C3%A3o/1%20-%20InicioGestao.jpeg" alt="Início" style='height: 350px;'>
+<img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/Fotos%20App/Gest%C3%A3o/12%20-%20ListagemAlunosGestao.jpeg" alt="Alunos" style='height: 350px;'>
+<img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/Fotos%20App/Gest%C3%A3o/10%20-%20IA2Gestao.jpg" alt="IA Chat" style='height: 350px;'>
+<img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/Fotos%20App/Gest%C3%A3o/13%20-%20ListagemPagamentosGestao.jpeg" alt="Pagamentos" style='height: 350px;'>
+<img src="https://github.com/BrunoDimon/BusOnApp/blob/main/assets/Fotos%20App/Gest%C3%A3o/7%20-%20ParametrosAssociacao1Gestao.jpeg" alt="Parâmetros" style='height: 350px;'>
+</div>
+
+Clique [aqui](https://github.com/BrunoDimon/BusOnApp/tree/main/assets/Fotos%20App) para vizualizar mais screenshots
+
 ---
 
 # Inicialização do Projeto
