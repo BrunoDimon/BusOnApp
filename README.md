@@ -34,6 +34,12 @@ Clique [aqui](https://github.com/BrunoDimon/BusOnApp/tree/main/assets/Fotos%20Ap
 
 ---
 
+# Futuras Atualizações
+Pretendemos criar novas funcionalidades para facilitar ainda mais a gestão do transporte universitário.
+Para sugestões de melhorias, novas funcionalidades, bugs e duvidas, consulte os [Issues](https://github.com/BrunoDimon/BusOnApp/issues) em aberto ou abra um novo, estaremos acompanhando novas sugestões e também registrando as novas funcionalidades que estão na fila para serem desenvolvidas.
+
+---
+
 # Inicialização do Projeto
 
 Clone o projeto:
