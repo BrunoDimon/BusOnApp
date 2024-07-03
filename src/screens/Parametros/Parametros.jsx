@@ -10,6 +10,8 @@ import LiberadoBloqueadoEnum from "../../enums/LiberadoBloqueadoEnum"
 import { Button } from "../../components/buttons/Button"
 import { ModalContent } from "@gluestack-ui/themed"
 import { useToast } from "react-native-toast-notifications"
+import { Text } from "@gluestack-ui/themed"
+import SimNaoEnum from "../../enums/SimNaoEnum"
 
 export default Configuracoes = ({ navigation }) => {
     const globalToast = useToast()
@@ -31,6 +33,7 @@ export default Configuracoes = ({ navigation }) => {
         diaVencimento: null,
         diasToleranciaMulta: null,
         liberaAlteracaoDadosPessoais: 'BLOQUEADO',
+        gerarPagamentosAutomatico: 'NAO',
     });
 
     const handleChangeInputValues = (fieldName, value) => {
@@ -74,6 +77,9 @@ export default Configuracoes = ({ navigation }) => {
         }
         if (inputValues.liberaAlteracaoDadosPessoais == null || inputValues.liberaAlteracaoDadosPessoais == '') {
             errors.liberaAlteracaoDadosPessoais = "Obrigatório"
+        }
+        if (inputValues.gerarPagamentosAutomatico == null || inputValues.gerarPagamentosAutomatico == '') {
+            errors.gerarPagamentosAutomatico = "Obrigatório"
         }
 
         setErrors(errors);
@@ -176,9 +182,12 @@ export default Configuracoes = ({ navigation }) => {
                     <Divider bg="$backgroundDark800" />
 
                     <VStack flex={1} gap={15}>
-                        <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Liberações</Heading>
+                        <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Configurações</Heading>
+
                         <InputSelect label="Liberar Alteração Dados Pessoais" erro={errors.liberaAlteracaoDadosPessoais} selectValues={LiberadoBloqueadoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('liberaAlteracaoDadosPessoais', value)} inputValue={inputValues.liberaAlteracaoDadosPessoais} isRequired={true} isDisabled={isLoadingParametros} />
+                        <InputSelect label="Gerar Pagamentos Automaticamente" dica={'Define se deverá gerar os pagamentos automaticamente no dia 1 do mês. Caso "Sim", irá gerar as faturas para todos os usuários ativos de sua associação. Caso "Não" as faturas não serão geradas automaticamente no dia 1 do mês, porém ainda é possivel gerar manualmente através do botão de "Gerar Pagamentos" na tela de "Pagamentos"'} erro={errors.gerarPagamentosAutomatico} selectValues={SimNaoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('gerarPagamentosAutomatico', value)} inputValue={inputValues.gerarPagamentosAutomatico} isRequired={true} isDisabled={isLoadingParametros} />
                     </VStack>
+
 
                     <Box alignSelf="flex-end">
                         <Button label={'Salvar'} onPress={() => handleOnPressSave()} isLoading={isSaving} />

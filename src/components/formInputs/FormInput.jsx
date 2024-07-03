@@ -1,7 +1,7 @@
-import { AlertCircleIcon, FormControlErrorText, FormControlLabelText, Input, InputField } from "@gluestack-ui/themed"
+import { AlertCircleIcon, FormControlErrorText, FormControlHelper, FormControlHelperText, FormControlLabelText, Input, InputField } from "@gluestack-ui/themed"
 import { FormControl, FormControlError, FormControlErrorIcon, FormControlLabel, } from "@gluestack-ui/themed"
 
-export const FormInput = ({ label, erro, inputValue, inputOnChangeText, isDisabled, isInvalid, isReadOnly, isRequired, keyboardType, children }) => {
+export const FormInput = ({ label, erro, dica, inputValue, inputOnChangeText, isDisabled, isInvalid, isReadOnly, isRequired, keyboardType, children }) => {
     return (
         <FormControl
             isDisabled={isDisabled}
@@ -23,6 +23,16 @@ export const FormInput = ({ label, erro, inputValue, inputOnChangeText, isDisabl
                     {erro}
                 </FormControlErrorText>
             </FormControlError>
+            {
+                dica && (
+                    <FormControlHelper>
+                        <FormControlHelperText mx={5} flex={1}>
+                            {dica}
+                        </FormControlHelperText>
+                    </FormControlHelper>
+                )
+            }
+
         </FormControl>
 
     )

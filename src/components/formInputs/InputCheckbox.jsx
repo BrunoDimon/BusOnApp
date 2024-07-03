@@ -1,7 +1,7 @@
 import { Checkbox, CheckIcon, CheckboxIcon, CheckboxIndicator, CheckboxGroup, VStack, CheckboxLabel } from "@gluestack-ui/themed"
 import { FormInput } from "./FormInput"
 
-export const InputCheckbox = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, checkboxValues = [], typeCheckboxValues, defaultValue, isLoading }) => {
+export const InputCheckbox = ({ label, erro, dica, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, checkboxValues = [], typeCheckboxValues, defaultValue, isLoading }) => {
     const enumToOptions = (enumObject) => {
         return Object.entries(enumObject).map(([key, value]) => ({
             label: value,
@@ -12,7 +12,7 @@ export const InputCheckbox = ({ label, erro, inputValue, inputOnChange, isDisabl
     const values = typeCheckboxValues === 'ENUM' ? enumToOptions(checkboxValues) : checkboxValues;
 
     return (
-        <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
+        <FormInput label={label} erro={erro} dica={dica} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
             <CheckboxGroup
                 value={inputValue}
                 onChange={inputOnChange}
