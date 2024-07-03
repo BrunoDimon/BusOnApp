@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { VStack } from '@gluestack-ui/themed';
 import { TrashIcon } from '@gluestack-ui/themed';
 
-export default function InputImage({ label, erro, imageValue, onPickImage, isDisabled, isInvalid, isReadOnly, isRequired }) {
+export default function InputImage({ label, erro, dica, imageValue, onPickImage, isDisabled, isInvalid, isReadOnly, isRequired }) {
     const [permission, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
     const pickImage = async () => {
@@ -23,7 +23,7 @@ export default function InputImage({ label, erro, imageValue, onPickImage, isDis
     };
 
     return (
-        <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
+        <FormInput label={label} erro={erro} dica={dica} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
             <Center mb={5} flex={1} h={200} borderWidth={2} borderColor={'$trueGray200'} $dark-borderColor={'$trueGray700'} rounded={'$xl'}>
                 {
                     permission?.status !== ImagePicker.PermissionStatus.GRANTED

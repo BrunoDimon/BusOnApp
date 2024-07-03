@@ -3,7 +3,7 @@ import { FormControl, FormControlError, FormControlErrorIcon, FormControlLabel, 
 import { FormInput } from "./FormInput"
 import Toast from "react-native-root-toast"
 
-export const InputNumber = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, keyboardType }) => {
+export const InputNumber = ({ label, erro, dica, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, keyboardType }) => {
     const verificarValorNumerico = (value) => {
         if (/^\d*$/.test(value)) {
             inputOnChange(value);
@@ -18,7 +18,7 @@ export const InputNumber = ({ label, erro, inputValue, inputOnChange, isDisabled
     }
 
     return (
-        <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
+        <FormInput label={label} erro={erro} dica={dica} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
             <Input h={50} borderRadius={'$xl'} $focus-borderColor={'$trueGray400'}>
                 <InputField inputMode="numeric" type={'text'} keyboardType={'number-pad'} value={inputValue?.toString()} onChangeText={(v) => verificarValorNumerico(v)} />
             </Input>
