@@ -38,9 +38,9 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow $(PRODUCT_NAME) to access your photo",
+          "photosPermission": "Permissão para que o BusOn acesse as suas fotos"
         }
       ]
-    ]
+    ],
   }
 }
