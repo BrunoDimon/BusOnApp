@@ -14,7 +14,7 @@ export default routes = [
         label: 'Inicio',
         accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
         component: Inicio,
-        isInitialRoute: false,
+        isInitialRoute: true,
     },
     {
         name: 'ia-chat',
