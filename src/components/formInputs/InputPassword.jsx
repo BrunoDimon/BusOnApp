@@ -3,10 +3,10 @@ import { FormInput } from "./FormInput"
 
 import { useState } from "react"
 
-export const InputPassword = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, keyboardType }) => {
+export const InputPassword = ({ label, erro, dica, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, keyboardType }) => {
     const [showPassword, setShowPassword] = useState(false);
     return (
-        <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
+        <FormInput label={label} erro={erro} dica={dica} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
             <Input h={50} borderRadius={'$xl'} $focus-borderColor={'$trueGray400'}>
                 <InputField type={showPassword ? 'text' : 'password'} keyboardType={keyboardType} value={inputValue?.toString()} autoCapitalize="none" onChangeText={(v) => inputOnChange(v)} />
                 <InputSlot onPress={() => setShowPassword(!showPassword)}>

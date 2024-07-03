@@ -8,7 +8,7 @@ import 'moment/locale/pt-br';
 import { TrashIcon } from "lucide-react-native";
 moment.locale('pt-br');
 
-export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, calendarType = 'date' }) => {
+export const InputDate = ({ label, erro, dica, inputValue, inputOnChange, isDisabled, isInvalid, isReadOnly, isRequired, calendarType = 'date' }) => {
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
@@ -24,7 +24,7 @@ export const InputDate = ({ label, erro, inputValue, inputOnChange, isDisabled, 
         setShow(true);
     }
     return (
-        <FormInput label={label} erro={erro} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
+        <FormInput label={label} erro={erro} dica={dica} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
             <Button variant="outline" borderColor="$secondary200" $dark-borderColor={'$trueGray600'} h={50} borderRadius={'$xl'} onPress={handlePress} justifyContent="space-between" >
                 <ButtonText color={inputValue ? "black" : "gray"} $dark-color={inputValue ? "$textLight100" : "gray"} fontWeight={"$normal"}>
                     {inputValue ? moment(inputValue).format('DD/MM/yyyy') : 'dd/mm/yyyy'}
