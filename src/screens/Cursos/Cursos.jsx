@@ -47,7 +47,7 @@ export default function Cursos({ navigation }) {
             buscarCursos();
             globalToast.show("Sucesso", { data: { messageDescription: 'Curso excluído com sucesso!' }, type: 'success' })
         } catch (error) {
-            globalToast.show("Erro ao excluir", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+            globalToast.show("Falha ao excluir o curso", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 

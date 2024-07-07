@@ -59,7 +59,7 @@ export default function Usuario({ navigation }) {
             buscarUsuarios();
             globalToast.show("Sucesso", { data: { messageDescription: 'Usuário excluído com sucesso!' }, type: 'success' })
         } catch (error) {
-            globalToast.show("Erro ao deletar", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+            globalToast.show("Falha ao excluir o usuário", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     };
 
@@ -75,6 +75,7 @@ export default function Usuario({ navigation }) {
                 matricula: response.data?.matricula,
                 cursoId: response.data?.curso?.id,
                 instituicaoId: response.data.curso?.instituicao?.id,
+                dataEntradaAssociacao: response.data?.dataEntradaAssociacao,
                 tipoAcesso: response.data?.tipoAcesso,
                 situacao: response.data?.situacao,
                 diasUsoTransporte: response.data?.diasUsoTransporte,

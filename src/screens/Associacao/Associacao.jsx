@@ -47,7 +47,7 @@ export const Associacao = ({ navigation }) => {
             buscarAssociacoes();
             globalToast.show("Sucesso", { data: { messageDescription: 'Usuário excluído com sucesso!' }, type: 'success' })
         } catch (error) {
-            globalToast.show("Erro ao excluir", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+            globalToast.show("Falha ao excluir a associação", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 

@@ -25,6 +25,12 @@ const Dialog = memo(function Dialog({ type = 'DEFAULT', config = {}, onClose }) 
             descricao: config.descricao || 'Você tem certeza que deseja salvar o registro?',
             etiquetaBotaoAcao: config.etiquetaBotaoAcao || 'Salvar'
         },
+        'CONFIRMAR': {
+            buttonBgColor: '$yellow500',
+            titulo: config.titulo || 'Confirmar',
+            descricao: config.descricao || 'Você tem certeza que deseja realizar a operação?',
+            etiquetaBotaoAcao: config.etiquetaBotaoAcao || 'Salvar'
+        },
         'DEFAULT': {
             buttonBgColor: '$black',
             titulo: 'Default',
