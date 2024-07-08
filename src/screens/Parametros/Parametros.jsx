@@ -12,12 +12,17 @@ import { ModalContent } from "@gluestack-ui/themed"
 import { useToast } from "react-native-toast-notifications"
 import { Text } from "@gluestack-ui/themed"
 import SimNaoEnum from "../../enums/SimNaoEnum"
+import { FormInput } from "../../components/formInputs/FormInput"
+import { gerarPagamentosManualmente } from "../../service/api/requests/pagamentoRequest"
+import { useDialog } from "../../components/dialog/DialogContext"
 
 export default Configuracoes = ({ navigation }) => {
     const globalToast = useToast()
+    const { openDialog } = useDialog();
 
     const associacaoId = useSelector(state => state.auth.user.associacaoId);
     const [isLoadingParametros, setIsLoadingParametros] = useState(true);
+    const [isLoadingGerarPagamentos, setIsLoadingGerarPagamentos] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -138,6 +143,21 @@ export default Configuracoes = ({ navigation }) => {
         buscarParametros();
     }, []);
 
+    const acaoGerarPagamentosManualmente = async () => {
+        setIsLoadingGerarPagamentos(true);
+        try {
+            await gerarPagamentosManualmente({ associacaoId: associacaoId })
+                .then((response) => {
+                    globalToast.show(response.data.title, { data: { messageDescription: response.data.message }, type: 'success' })
+                })
+        } catch (error) {
+            console.error(error.response.data.title, error.response.data);
+            globalToast.show(error.response.data.title, { data: { messageDescription: error.response.data.message }, type: 'warning' })
+        } finally {
+            setIsLoadingGerarPagamentos(false);
+        }
+    }
+
     return (
         <>
             {
@@ -157,8 +177,8 @@ export default Configuracoes = ({ navigation }) => {
                     <VStack flex={1} gap={15}>
                         <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Valores</Heading>
                         <HStack flex={1} gap={15}>
-                            <InputNumber label={'Valor 1 dia'} erro={errors.valor1} inputOnChange={(value) => handleChangeInputValues('valor1', value)} inputValue={inputValues.valor1} isDisabled={isLoadingParametros} isRequired={true} />
-                            <InputNumber label={'Valor 2 dia'} erro={errors.valor2} inputOnChange={(value) => handleChangeInputValues('valor2', value)} inputValue={inputValues.valor2} isDisabled={isLoadingParametros} isRequired={true} />
+                            <InputNumber label={'Valor 1 dia'} erro={errors.valor1} inputOnChange={(value) => handleChangeInputValues('valor1', value)} inputValue={inputValues.valor1} isDisabled={isLoadingParametros} isRequired={true} enterKeyHint={'next'} />
+                            <InputNumber label={'Valor 2 dia'} erro={errors.valor2} inputOnChange={(value) => handleChangeInputValues('valor2', value)} inputValue={inputValues.valor2} isDisabled={isLoadingParametros} isRequired={true} enterKeyHint={'next'} />
                         </HStack>
                         <HStack flex={1} gap={15} >
                             <InputNumber label={'Valor 3 dia'} erro={errors.valor3} inputOnChange={(value) => handleChangeInputValues('valor3', value)} inputValue={inputValues.valor3} isDisabled={isLoadingParametros} isRequired={true} />
@@ -174,18 +194,18 @@ export default Configuracoes = ({ navigation }) => {
                     <Divider bg="$backgroundDark800" />
 
                     <VStack flex={1} gap={15}>
-                        <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Datas Mensalidade</Heading>
+                        <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Pagamentos</Heading>
                         <InputNumber label={'Dia Vencimento'} erro={errors.diaVencimento} inputOnChange={(value) => handleChangeInputValues('diaVencimento', value)} inputValue={inputValues.diaVencimento} isDisabled={isLoadingParametros} isRequired={true} />
                         <InputNumber label={'Dia Tolêrancia Multa'} erro={errors.diasToleranciaMulta} inputOnChange={(value) => handleChangeInputValues('diasToleranciaMulta', value)} inputValue={inputValues.diasToleranciaMulta} isDisabled={isLoadingParametros} isRequired={true} />
+                        <InputSelect label="Gerar Pagamentos Automaticamente" dica={'Define se deverá gerar os pagamentos automaticamente no dia 1 do mês. Caso "Sim", irá gerar as faturas para todos os usuários ativos de sua associação. Caso "Não" as faturas não serão geradas automaticamente no dia 1 do mês, porém ainda é possivel gerar manualmente através do botão de "Gerar Pagamentos" na tela de "Pagamentos"'} erro={errors.gerarPagamentosAutomatico} selectValues={SimNaoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('gerarPagamentosAutomatico', value)} inputValue={inputValues.gerarPagamentosAutomatico} isRequired={true} isDisabled={isLoadingParametros} />
+                        <Button label={'Gerar Pagamentos Manualmente'} onPress={() => openDialog('CONFIRMAR', { titulo: 'Gerar Pagamentos', descricao: 'Tem certeza que deseja gerar os pagamentos do mês atual para todos os usuários da sua associação?', onPress: () => acaoGerarPagamentosManualmente() })} />
                     </VStack>
 
                     <Divider bg="$backgroundDark800" />
 
                     <VStack flex={1} gap={15}>
                         <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Configurações</Heading>
-
                         <InputSelect label="Liberar Alteração Dados Pessoais" erro={errors.liberaAlteracaoDadosPessoais} selectValues={LiberadoBloqueadoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('liberaAlteracaoDadosPessoais', value)} inputValue={inputValues.liberaAlteracaoDadosPessoais} isRequired={true} isDisabled={isLoadingParametros} />
-                        <InputSelect label="Gerar Pagamentos Automaticamente" dica={'Define se deverá gerar os pagamentos automaticamente no dia 1 do mês. Caso "Sim", irá gerar as faturas para todos os usuários ativos de sua associação. Caso "Não" as faturas não serão geradas automaticamente no dia 1 do mês, porém ainda é possivel gerar manualmente através do botão de "Gerar Pagamentos" na tela de "Pagamentos"'} erro={errors.gerarPagamentosAutomatico} selectValues={SimNaoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('gerarPagamentosAutomatico', value)} inputValue={inputValues.gerarPagamentosAutomatico} isRequired={true} isDisabled={isLoadingParametros} />
                     </VStack>
 
 

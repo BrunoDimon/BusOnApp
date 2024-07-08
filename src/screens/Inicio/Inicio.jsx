@@ -13,6 +13,7 @@ import ButtonDotsDropdownMenu from "../../components/buttons/ButtonDotsDropdownM
 import { logout } from "../../store/authSlice";
 import { useState } from "react";
 import { RedefinirSenha } from "../Login/RedefinirSenha";
+import { logoutRequest } from "../../service/api/requests/autenticacaoRequests";
 
 export default Inicio = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -72,7 +73,7 @@ export default Inicio = ({ navigation }) => {
                                                 label: 'Redefinir Senha'
                                             },
                                             {
-                                                onPress: () => dispatch(logout()),
+                                                onPress: () => logoutRequest(),
                                                 nomeIcone: 'exit-to-app',
                                                 corIcone: '#FFC100',
                                                 label: 'Sair'

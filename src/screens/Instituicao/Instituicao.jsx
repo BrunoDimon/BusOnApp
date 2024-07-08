@@ -47,7 +47,7 @@ export default function Instituicao({ navigation }) {
             buscarInstituicoes();
             globalToast.show("Sucesso", { data: { messageDescription: 'Instituição excluída com sucesso!' }, type: 'success' })
         } catch (error) {
-            globalToast.show("Erro ao excluir", { data: { messageDescription: error.response.data.message }, type: 'warning' })
+            globalToast.show("Falha ao excluir a instituição", { data: { messageDescription: error.response.data.message }, type: 'warning' })
         }
     }
 

@@ -9,6 +9,21 @@ export const loginRequest = async (email, senha) => {
     }
     return request = await api.post('/autenticacao/autenticar', data);
 }
+export const logoutRequest = async () => {
+    return request = await api.post('/autenticacao/logout')
+        .then(() => {
+            console.log('Usuário deslogado com sucesso!')
+            store.dispatch(logout())
+        }).catch((error) => {
+            console.log(error.response)
+            let toast = Toast.show('Erro ao sair', {
+                duration: Toast.durations.LONG,
+            });
+            setTimeout(function hideToast() {
+                Toast.hide(toast);
+            }, 5000);
+        });
+}
 
 export const validateToken = async () => {
     await api.post('/autenticacao/validar-token')

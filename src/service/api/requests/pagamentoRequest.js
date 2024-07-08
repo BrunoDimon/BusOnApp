@@ -25,3 +25,6 @@ export const aprovarPagamento = async (id) => {
 export const reprovarPagamento = async (id) => {
     return request = await api.put('/pagamento/reprovar/' + String(id));
 }
+export const gerarPagamentosManualmente = async (associacaoId) => {
+    return request = await api.post('/pagamento/gerar-manualmente', associacaoId);
+}

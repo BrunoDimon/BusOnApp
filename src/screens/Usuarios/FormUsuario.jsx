@@ -18,6 +18,7 @@ import InputImage from "../../components/formInputs/InputImage";
 import { InputNumber } from "../../components/formInputs/InputNumber";
 import mime from 'mime'
 import validarEmail from "../../functions/ValidarEmail";
+import { InputDate } from "../../components/formInputs/InputDate";
 
 export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
@@ -33,6 +34,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
         endereco: dadosEdicao?.endereco || null,
         matricula: dadosEdicao?.matricula || null,
         instituicaoId: dadosEdicao?.instituicaoId || null,
+        dataEntradaAssociacao: dadosEdicao?.dataEntradaAssociacao || null,
         cursoId: dadosEdicao?.cursoId || null,
         tipoAcesso: dadosEdicao?.tipoAcesso || "ALUNO",
         situacao: dadosEdicao?.situacao || "ATIVO",
@@ -123,7 +125,10 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
         let errors = {};
 
         if (!eUsuarioAdmin && !inputValues.associacaoId) {
-            errors.associacaoId = "Assosiação é obrigatória";
+            errors.associacaoId = "Associação é obrigatória";
+        }
+        if (inputValues.associacaoId && !inputValues.dataEntradaAssociacao) {
+            errors.dataEntradaAssociacao = "Data entrada associação é obrigatória";
         }
         if (!inputValues.nome) {
             errors.nome = "Nome é obrigatório";
@@ -163,6 +168,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                     endereco: inputValues?.endereco,
                     matricula: inputValues?.matricula,
                     instituicaoId: inputValues?.instituicaoId,
+                    dataEntradaAssociacao: inputValues?.dataEntradaAssociacao,
                     cursoId: inputValues?.cursoId,
                     tipoAcesso: inputValues?.tipoAcesso,
                     situacao: inputValues?.situacao,
@@ -236,6 +242,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                         <InputSelect label={"Instituição"} inputOnChange={(value) => handleChangeInputValues("instituicaoId", value)} inputValue={inputValues.instituicaoId} selectValues={instituicoes} />
                         <InputSelect label={"Curso"} inputOnChange={(value) => handleChangeInputValues("cursoId", value)} inputValue={inputValues.cursoId} selectValues={cursos} isDisabled={!inputValues.instituicaoId} />
                         <InputSelect label={"Tipo Acesso"} inputOnChange={(value) => handleChangeInputValues("tipoAcesso", value)} inputValue={inputValues.tipoAcesso} selectValues={tipoAcessoValores} typeSelectValues={'ENUM'} isRequired={true} />
+                        <InputDate label={'Data Entrada Associação'} inputOnChange={(value) => handleChangeInputValues('dataEntradaAssociacao', value)} inputValue={inputValues.dataEntradaAssociacao} erro={errors.dataEntradaAssociacao} isRequired={inputValues.associacaoId} />
                         <InputSelect label={"Situação"} inputOnChange={(value) => handleChangeInputValues("situacao", value)} inputValue={inputValues.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} isRequired={true} />
                         <InputCheckbox label={"Dias Uso Transporte"} inputOnChange={(value) => handleChangeInputValues("diasUsoTransporte", value)} checkboxValues={DiasSemanaEnum} typeCheckboxValues={'ENUM'} inputValue={inputValues.diasUsoTransporte} />
                     </ScrollView>
