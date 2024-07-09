@@ -44,7 +44,7 @@ export default function Login() {
                         cursoNome: response.data.cursoNome,
                         instituicaoNome: response.data.instituicaoNome,
                         associacaoId: response.data.associacaoId,
-                        associacaoNome: response.data.associacaoNome,
+                        associacaoSigla: response.data.associacaoSigla,
                         tipoAcesso: response.data.tipoAcesso,
                         situacao: response.data.situacao,
                         exigirRedefinicaoSenha: response.data.exigirRedefinicaoSenha,

@@ -84,7 +84,7 @@ export default Inicio = ({ navigation }) => {
                                 </HStack>
                                 <VStack flex={1} gap={5}>
                                     <HStack alignItens="center" justifyContent="center" mt={5}>
-                                        <Text flex={1} fontSize={'$lg'} fontWeight={'$semibold'} textAlignVertical="bottom" numberOfLines={1} color={'$white'}>{userInfos?.associacaoNome}</Text>
+                                        <Text flex={1} fontSize={'$lg'} fontWeight={'$semibold'} textAlignVertical="bottom" numberOfLines={1} color={'$white'}>{userInfos?.associacaoSigla}</Text>
                                         <Box flex={0} ml={10}>
                                             <Badge justifyContent="center" size="lg" py={5} variant="solid" bg={'$yellow200'}>
                                                 <BadgeText color={'$yellow600'}>{userInfos?.tipoAcesso}</BadgeText>

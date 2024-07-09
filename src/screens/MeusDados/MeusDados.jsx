@@ -6,7 +6,6 @@ import { InputDate } from "../../components/formInputs/InputDate"
 import { useEffect, useState } from "react"
 import { Button } from "../../components/buttons/Button"
 import DiasSemanaEnum from "../../enums/DiasSemanaEnum";
-import { buscarTodasAssociacoes } from "../../service/api/requests/associacaoRequests"
 import { buscarTodasInstituicoes } from "../../service/api/requests/instituicaoRequests"
 import { buscarTodosCursos } from "../../service/api/requests/cursoRequests"
 import { InputCheckbox } from "../../components/formInputs/InputCheckbox"

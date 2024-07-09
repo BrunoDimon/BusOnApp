@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { VStack } from '@gluestack-ui/themed';
 import { TrashIcon } from '@gluestack-ui/themed';
 
-export default function InputImage({ label, erro, dica, imageValue, onPickImage, isDisabled, isInvalid, isReadOnly, isRequired }) {
+export default function InputImage({ label, erro, dica, imageValue, onPickImage, isDisabled, isInvalid, isReadOnly, isRequired, aspectPickImage, aspectImageShow = '1/1' }) {
     const [permission, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
     const pickImage = async () => {
@@ -16,6 +16,7 @@ export default function InputImage({ label, erro, dica, imageValue, onPickImage,
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             quality: 1,
+            aspect: aspectPickImage
         });
         if (!result.canceled) {
             onPickImage(result.assets[0].uri);
@@ -24,7 +25,7 @@ export default function InputImage({ label, erro, dica, imageValue, onPickImage,
 
     return (
         <FormInput label={label} erro={erro} dica={dica} isDisabled={isDisabled} isInvalid={isInvalid} isReadOnly={isReadOnly} isRequired={isRequired}>
-            <Center mb={5} flex={1} h={200} borderWidth={2} borderColor={'$trueGray200'} $dark-borderColor={'$trueGray700'} rounded={'$xl'}>
+            <Center mb={5} flex={1} h={200} borderWidth={2} borderColor={'$trueGray200'} $dark-borderColor={'$trueGray700'} rounded={'$xl'} px={10}>
                 {
                     permission?.status !== ImagePicker.PermissionStatus.GRANTED
                         ?
@@ -35,7 +36,7 @@ export default function InputImage({ label, erro, dica, imageValue, onPickImage,
                         :
                         imageValue
                             ?
-                            (<Image flex={1} aspectRatio={'1/1'} m={10} source={{ uri: imageValue }} alt='imagem-logo' />)
+                            (<Image flex={1} aspectRatio={aspectImageShow} m={10} source={{ uri: imageValue }} alt='imagem-logo' resizeMode='contain' />)
                             :
                             (<MaterialCommunityIcons name={'tooltip-image-outline'} size={80} color={'#B1B1B1'} />)
                 }

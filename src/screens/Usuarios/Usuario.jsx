@@ -134,7 +134,7 @@ export default function Usuario({ navigation }) {
                                 ?
                                 <DaysCircle daysActive={item.diasUsoTransporte} />
                                 :
-                                <Text>{item.associacao?.nome}</Text>
+                                <Text>{item.associacao?.sigla}</Text>
                         }
                     </HStack>
                 </VStack>

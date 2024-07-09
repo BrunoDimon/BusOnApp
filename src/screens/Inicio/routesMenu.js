@@ -58,6 +58,12 @@ export default routesMenu = [
                 iconName: 'content-save-cog-outline',
                 accessRequired: ['GESTAO'],
             },
+            {
+                name: 'documentos',
+                label: 'Emitir Documentos',
+                iconName: 'file-document-outline',
+                accessRequired: ['GESTAO'],
+            },
 
         ]
     },
@@ -85,6 +91,18 @@ export default routesMenu = [
                 name: 'usuario',
                 label: 'Usuários',
                 iconName: 'account-group-outline',
+                accessRequired: ['ADMIN'],
+            },
+            {
+                name: 'templates-documentos',
+                label: 'Templates Documentos',
+                iconName: 'file-code-outline',
+                accessRequired: ['ADMIN'],
+            },
+            {
+                name: 'documentos',
+                label: 'Emitir Documentos',
+                iconName: 'file-document-outline',
                 accessRequired: ['ADMIN'],
             },
 
