@@ -69,7 +69,7 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
             setIsLoadingAssociacoes(true);
             const response = await buscarTodasAssociacoes();
             const valoresSelect = response.data.map((value) => ({
-                label: value.nome,
+                label: value.sigla,
                 value: value.id,
                 isDisabled: value.situacao !== 'ATIVO'
             }));

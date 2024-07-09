@@ -56,10 +56,16 @@ export const Associacao = ({ navigation }) => {
             const dados = {
                 id: response.data.id,
                 cnpj: response.data.cnpj,
+                sigla: response.data.sigla,
                 nome: response.data.nome,
+                cidade: response.data.cidade,
+                cep: response.data.cep,
+                uf: response.data.uf,
+                bairro: response.data.bairro,
                 endereco: response.data.endereco,
                 situacao: response.data.situacao,
                 logo: response.data.logoUrl,
+                logoDeclaracao: response.data.logoDeclaracaoUrl,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);
@@ -85,12 +91,12 @@ export const Associacao = ({ navigation }) => {
                             }
                         </Avatar>
                         <Box>
-                            <Heading color={'$textDark700'} $dark-color={'$textLight100'}>{item.nome}</Heading>
-                            <Text color={'$textDark700'} $dark-color={'$textLight100'}>{item.endereco}</Text>
+                            <Heading color={'$textDark700'} $dark-color={'$textLight100'}>{item.sigla}</Heading>
+                            <Text color={'$textDark700'} $dark-color={'$textLight100'}>{item.nome}</Text>
                         </Box>
                     </HStack>
                     <Box alignItems='flex-end' justifyContent='space-between' >
-                        <ButtonDotsDropdownMenu titulo={item.id + '-' + item.nome} opcoesMenu={
+                        <ButtonDotsDropdownMenu titulo={item.id + ' - ' + item.sigla + ' (' + item.nome + ')'} opcoesMenu={
                             [{
                                 onPress: () => acaoEditarAssociacao(item.id),
                                 nomeIcone: 'pencil-outline',

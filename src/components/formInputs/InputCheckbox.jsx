@@ -17,7 +17,7 @@ export const InputCheckbox = ({ label, erro, dica, inputValue, inputOnChange, is
                 value={inputValue}
                 onChange={inputOnChange}
             >
-                <VStack flex={1} ml={5} space="md">
+                <VStack flex={0} ml={5} space="md">
                     {
                         values?.map((value, index) => (
                             <Checkbox key={index} value={value.value} size={'md'} aria-label={value.label}>

@@ -9,13 +9,18 @@ export const FormInput = ({ label, erro, dica, inputValue, inputOnChangeText, is
             isReadOnly={isReadOnly}
             isRequired={isRequired}
             mb={10}
-            flex={1}
+            flex={0}
         >
-            <FormControlLabel>
-                <FormControlLabelText mr={5} color={isDisabled ? "$textDark500" : "$textDark800"} $dark-color={isDisabled ? "$textLight500" : "$textLight100"} size="xl" lineHeight="$xl" fontWeight="$semibold" maxFontSizeMultiplier={1.2}>
-                    {label}
-                </FormControlLabelText>
-            </FormControlLabel>
+            {
+                label && (
+                    <FormControlLabel>
+                        <FormControlLabelText mr={5} color={isDisabled ? "$textDark500" : "$textDark800"} $dark-color={isDisabled ? "$textLight500" : "$textLight100"} size="xl" lineHeight="$xl" fontWeight="$semibold" maxFontSizeMultiplier={1.2}>
+                            {label}
+                        </FormControlLabelText>
+                    </FormControlLabel>
+                )
+            }
+
             {children}
             <FormControlError>
                 <FormControlErrorIcon as={AlertCircleIcon} />

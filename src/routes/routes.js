@@ -7,6 +7,8 @@ import Cursos from "../screens/Cursos/Cursos";
 import Instituicao from "../screens/Instituicao/Instituicao";
 import { Associacao } from "../screens/Associacao/Associacao";
 import Pagamentos from "../screens/Pagamento/Pagamentos";
+import Documentos from "../screens/Documentos/Documentos";
+import TemplatesDocumentos from "../screens/TemplatesDocumentos/TemplatesDocumentos";
 
 export default routes = [
     {
@@ -80,5 +82,19 @@ export default routes = [
         accessRequired: ['GESTAO'],
         rigthButtonHeader: 'sync',
         component: Cursos
+    },
+    {
+        name: 'documentos',
+        label: 'Documentos',
+        accessRequired: ['GESTAO', 'ADMIN'],
+        rigthButtonHeader: 'sync',
+        component: Documentos
+    },
+    {
+        name: 'templates-documentos',
+        label: 'Templates Documentos',
+        accessRequired: ['ADMIN'],
+        rigthButtonHeader: 'sync',
+        component: TemplatesDocumentos
     },
 ]

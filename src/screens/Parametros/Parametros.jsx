@@ -177,16 +177,28 @@ export default Configuracoes = ({ navigation }) => {
                     <VStack flex={1} gap={15}>
                         <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Valores</Heading>
                         <HStack flex={1} gap={15}>
-                            <InputNumber label={'Valor 1 dia'} erro={errors.valor1} inputOnChange={(value) => handleChangeInputValues('valor1', value)} inputValue={inputValues.valor1} isDisabled={isLoadingParametros} isRequired={true} enterKeyHint={'next'} />
-                            <InputNumber label={'Valor 2 dia'} erro={errors.valor2} inputOnChange={(value) => handleChangeInputValues('valor2', value)} inputValue={inputValues.valor2} isDisabled={isLoadingParametros} isRequired={true} enterKeyHint={'next'} />
+                            <Box flex={1}>
+                                <InputNumber label={'Valor 1 dia'} erro={errors.valor1} inputOnChange={(value) => handleChangeInputValues('valor1', value)} inputValue={inputValues.valor1} isDisabled={isLoadingParametros} isRequired={true} enterKeyHint={'next'} />
+                            </Box>
+                            <Box flex={1}>
+                                <InputNumber label={'Valor 2 dia'} erro={errors.valor2} inputOnChange={(value) => handleChangeInputValues('valor2', value)} inputValue={inputValues.valor2} isDisabled={isLoadingParametros} isRequired={true} enterKeyHint={'next'} />
+                            </Box>
                         </HStack>
                         <HStack flex={1} gap={15} >
-                            <InputNumber label={'Valor 3 dia'} erro={errors.valor3} inputOnChange={(value) => handleChangeInputValues('valor3', value)} inputValue={inputValues.valor3} isDisabled={isLoadingParametros} isRequired={true} />
-                            <InputNumber label={'Valor 4 dia'} erro={errors.valor4} inputOnChange={(value) => handleChangeInputValues('valor4', value)} inputValue={inputValues.valor4} isDisabled={isLoadingParametros} isRequired={true} />
+                            <Box flex={1}>
+                                <InputNumber label={'Valor 3 dia'} erro={errors.valor3} inputOnChange={(value) => handleChangeInputValues('valor3', value)} inputValue={inputValues.valor3} isDisabled={isLoadingParametros} isRequired={true} />
+                            </Box>
+                            <Box flex={1}>
+                                <InputNumber label={'Valor 4 dia'} erro={errors.valor4} inputOnChange={(value) => handleChangeInputValues('valor4', value)} inputValue={inputValues.valor4} isDisabled={isLoadingParametros} isRequired={true} />
+                            </Box>
                         </HStack>
                         <HStack flex={1} gap={15} >
-                            <InputNumber label={'Valor 5 dia'} erro={errors.valor5} inputOnChange={(value) => handleChangeInputValues('valor5', value)} inputValue={inputValues.valor5} isDisabled={isLoadingParametros} isRequired={true} />
-                            <InputNumber label={'Valor 6 dia'} erro={errors.valor6} inputOnChange={(value) => handleChangeInputValues('valor6', value)} inputValue={inputValues.valor6} isDisabled={isLoadingParametros} isRequired={true} />
+                            <Box flex={1}>
+                                <InputNumber label={'Valor 5 dia'} erro={errors.valor5} inputOnChange={(value) => handleChangeInputValues('valor5', value)} inputValue={inputValues.valor5} isDisabled={isLoadingParametros} isRequired={true} />
+                            </Box>
+                            <Box flex={1}>
+                                <InputNumber label={'Valor 6 dia'} erro={errors.valor6} inputOnChange={(value) => handleChangeInputValues('valor6', value)} inputValue={inputValues.valor6} isDisabled={isLoadingParametros} isRequired={true} />
+                            </Box>
                         </HStack>
                     </VStack>
                     <InputNumber label={'Valor Multa'} erro={errors.valorMulta} inputOnChange={(value) => handleChangeInputValues('valorMulta', value)} inputValue={inputValues.valorMulta} isDisabled={isLoadingParametros} isRequired={true} />
@@ -207,7 +219,6 @@ export default Configuracoes = ({ navigation }) => {
                         <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Configurações</Heading>
                         <InputSelect label="Liberar Alteração Dados Pessoais" erro={errors.liberaAlteracaoDadosPessoais} selectValues={LiberadoBloqueadoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('liberaAlteracaoDadosPessoais', value)} inputValue={inputValues.liberaAlteracaoDadosPessoais} isRequired={true} isDisabled={isLoadingParametros} />
                     </VStack>
-
 
                     <Box alignSelf="flex-end">
                         <Button label={'Salvar'} onPress={() => handleOnPressSave()} isLoading={isSaving} />
