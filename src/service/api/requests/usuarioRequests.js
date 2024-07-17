@@ -4,6 +4,10 @@ export const buscarTodosUsuarios = async (filtros, ordenacao) => {
     const orderBy = ordenacao ? `&orderBy=${JSON.stringify(ordenacao)}` : '';
     return request = await api.get('/usuario?filters=' + JSON.stringify(filtros) + orderBy);
 };
+export const buscarTodosUsuariosCompleto = async (filtros, ordenacao) => {
+    const orderBy = ordenacao ? `&orderBy=${JSON.stringify(ordenacao)}` : '';
+    return request = await api.get('/usuario/completo?filters=' + JSON.stringify(filtros) + orderBy);
+};
 
 export const buscarUsuarioPorId = async (id) => {
     return request = await api.get('/usuario/' + String(id));

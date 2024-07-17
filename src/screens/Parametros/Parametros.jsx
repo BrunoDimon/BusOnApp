@@ -178,30 +178,30 @@ export default Configuracoes = ({ navigation }) => {
                         <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Valores</Heading>
                         <HStack flex={1} gap={15}>
                             <Box flex={1}>
-                                <InputNumber label={'Valor 1 dia'} erro={errors.valor1} inputOnChange={(value) => handleChangeInputValues('valor1', value)} inputValue={inputValues.valor1} isDisabled={isLoadingParametros} isRequired={true} enterKeyHint={'next'} />
+                                <InputNumber label={'Valor 1 dia'} erro={errors.valor1} inputOnChange={(value) => handleChangeInputValues('valor1', value)} inputValue={inputValues.valor1} isDisabled={isLoadingParametros} isRequired={true} isDecimal={true} enterKeyHint={'next'} />
                             </Box>
                             <Box flex={1}>
-                                <InputNumber label={'Valor 2 dia'} erro={errors.valor2} inputOnChange={(value) => handleChangeInputValues('valor2', value)} inputValue={inputValues.valor2} isDisabled={isLoadingParametros} isRequired={true} enterKeyHint={'next'} />
-                            </Box>
-                        </HStack>
-                        <HStack flex={1} gap={15} >
-                            <Box flex={1}>
-                                <InputNumber label={'Valor 3 dia'} erro={errors.valor3} inputOnChange={(value) => handleChangeInputValues('valor3', value)} inputValue={inputValues.valor3} isDisabled={isLoadingParametros} isRequired={true} />
-                            </Box>
-                            <Box flex={1}>
-                                <InputNumber label={'Valor 4 dia'} erro={errors.valor4} inputOnChange={(value) => handleChangeInputValues('valor4', value)} inputValue={inputValues.valor4} isDisabled={isLoadingParametros} isRequired={true} />
+                                <InputNumber label={'Valor 2 dia'} erro={errors.valor2} inputOnChange={(value) => handleChangeInputValues('valor2', value)} inputValue={inputValues.valor2} isDisabled={isLoadingParametros} isRequired={true} isDecimal={true} enterKeyHint={'next'} />
                             </Box>
                         </HStack>
                         <HStack flex={1} gap={15} >
                             <Box flex={1}>
-                                <InputNumber label={'Valor 5 dia'} erro={errors.valor5} inputOnChange={(value) => handleChangeInputValues('valor5', value)} inputValue={inputValues.valor5} isDisabled={isLoadingParametros} isRequired={true} />
+                                <InputNumber label={'Valor 3 dia'} erro={errors.valor3} inputOnChange={(value) => handleChangeInputValues('valor3', value)} inputValue={inputValues.valor3} isDisabled={isLoadingParametros} isRequired={true} isDecimal={true} />
                             </Box>
                             <Box flex={1}>
-                                <InputNumber label={'Valor 6 dia'} erro={errors.valor6} inputOnChange={(value) => handleChangeInputValues('valor6', value)} inputValue={inputValues.valor6} isDisabled={isLoadingParametros} isRequired={true} />
+                                <InputNumber label={'Valor 4 dia'} erro={errors.valor4} inputOnChange={(value) => handleChangeInputValues('valor4', value)} inputValue={inputValues.valor4} isDisabled={isLoadingParametros} isRequired={true} isDecimal={true} />
+                            </Box>
+                        </HStack>
+                        <HStack flex={1} gap={15} >
+                            <Box flex={1}>
+                                <InputNumber label={'Valor 5 dia'} erro={errors.valor5} inputOnChange={(value) => handleChangeInputValues('valor5', value)} inputValue={inputValues.valor5} isDisabled={isLoadingParametros} isRequired={true} isDecimal={true} />
+                            </Box>
+                            <Box flex={1}>
+                                <InputNumber label={'Valor 6 dia'} erro={errors.valor6} inputOnChange={(value) => handleChangeInputValues('valor6', value)} inputValue={inputValues.valor6} isDisabled={isLoadingParametros} isRequired={true} isDecimal={true} />
                             </Box>
                         </HStack>
                     </VStack>
-                    <InputNumber label={'Valor Multa'} erro={errors.valorMulta} inputOnChange={(value) => handleChangeInputValues('valorMulta', value)} inputValue={inputValues.valorMulta} isDisabled={isLoadingParametros} isRequired={true} />
+                    <InputNumber label={'Valor Multa'} erro={errors.valorMulta} inputOnChange={(value) => handleChangeInputValues('valorMulta', value)} inputValue={inputValues.valorMulta} isDisabled={isLoadingParametros} isRequired={true} isDecimal={true} />
 
                     <Divider bg="$backgroundDark800" />
 
@@ -209,7 +209,7 @@ export default Configuracoes = ({ navigation }) => {
                         <Heading fontSize={'$2xl'} color="#525252" $dark-color={'$textLight100'}>Pagamentos</Heading>
                         <InputNumber label={'Dia Vencimento'} erro={errors.diaVencimento} inputOnChange={(value) => handleChangeInputValues('diaVencimento', value)} inputValue={inputValues.diaVencimento} isDisabled={isLoadingParametros} isRequired={true} />
                         <InputNumber label={'Dia Tolêrancia Multa'} erro={errors.diasToleranciaMulta} inputOnChange={(value) => handleChangeInputValues('diasToleranciaMulta', value)} inputValue={inputValues.diasToleranciaMulta} isDisabled={isLoadingParametros} isRequired={true} />
-                        <InputSelect label="Gerar Pagamentos Automaticamente" dica={'Define se deverá gerar os pagamentos automaticamente no dia 1 do mês. Caso "Sim", irá gerar as faturas para todos os usuários ativos de sua associação. Caso "Não" as faturas não serão geradas automaticamente no dia 1 do mês, porém ainda é possivel gerar manualmente através do botão de "Gerar Pagamentos" na tela de "Pagamentos"'} erro={errors.gerarPagamentosAutomatico} selectValues={SimNaoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('gerarPagamentosAutomatico', value)} inputValue={inputValues.gerarPagamentosAutomatico} isRequired={true} isDisabled={isLoadingParametros} />
+                        <InputSelect label="Gerar Pagamentos Automaticamente" dica={'Define se deverá gerar os pagamentos automaticamente no dia 1 do mês. Caso "Sim", irá gerar as faturas para todos os usuários ativos de sua associação. Caso "Não" as faturas não serão geradas automaticamente no dia 1 do mês, porém ainda é possivel gerar manualmente através do botão de "Gerar Pagamentos Manualmente"'} erro={errors.gerarPagamentosAutomatico} selectValues={SimNaoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('gerarPagamentosAutomatico', value)} inputValue={inputValues.gerarPagamentosAutomatico} isRequired={true} isDisabled={isLoadingParametros} />
                         <Button label={'Gerar Pagamentos Manualmente'} onPress={() => openDialog('CONFIRMAR', { titulo: 'Gerar Pagamentos', descricao: 'Tem certeza que deseja gerar os pagamentos do mês atual para todos os usuários da sua associação?', onPress: () => acaoGerarPagamentosManualmente() })} />
                     </VStack>
 
