@@ -3,7 +3,7 @@ import { InputSelect } from "../../components/formInputs/InputSelect";
 import { useEffect, useState } from "react";
 import { InputDate } from "../../components/formInputs/InputDate";
 import { InputCheckbox } from "../../components/formInputs/InputCheckbox";
-import { buscarTodosUsuarios } from "../../service/api/requests/usuarioRequests";
+import { buscarTodosUsuarios, buscarTodosUsuariosCompleto } from "../../service/api/requests/usuarioRequests";
 import { useSelector } from "react-redux";
 import { Button } from "../../components/buttons/Button";
 import * as Print from 'expo-print';
@@ -13,6 +13,15 @@ import JSZip from 'jszip';
 import { useToast } from "react-native-toast-notifications";
 import { buscarAssociacaoPorId, buscarTodasAssociacoes } from "../../service/api/requests/associacaoRequests";
 import { buscarTemplateDocumentoPorId, buscarTodosTemplatesDocumentos } from "../../service/api/requests/templateDocumentoRequest";
+import formatarValorEmReais from "../../functions/FormatarValorEmReais";
+import { formatarValorEmReaisPorExtenso } from "../../functions/FormatarValorEmReaisPorExtenso";
+import moment from 'moment';
+import 'moment/locale/pt-br';
+import { TrashIcon } from "lucide-react-native";
+import formatarCpf from "../../functions/FormatarCpf";
+import formatarCep from "../../functions/FormatarCep";
+import formatarCnpj from "../../functions/FormatarCnpj";
+moment.locale('pt-br');
 
 export default function Documentos({ navigation }) {
     const globalToast = useToast()
@@ -25,6 +34,7 @@ export default function Documentos({ navigation }) {
     const [associacaoSelecionada, setAssociacaoSelecionada] = useState(userInfos.associacaoId);
     const [selecionarTodosUsuarios, setSelecionarTodosUsuarios] = useState([]);
     const [dataDeclaracao, setDataDeclaracao] = useState();
+    const [dataEmissao, setDataEmissao] = useState(new Date());
 
     const [isLoadingTemplateDocumentos, setIsLoadingTemplateDocumentos] = useState(false);
     const [templatesDocumentos, setTemplatesDocumentos] = useState([]);
@@ -38,13 +48,19 @@ export default function Documentos({ navigation }) {
     const [isLoadingAssociacoes, setIsLoadingAssociacoes] = useState(false);
     const [associacoes, setAssociacoes] = useState([]);
 
+    const [isLoadingUsuariosGestao, setIsLoadingUsuariosGestao] = useState(false);
+    const [usuariosGestao, setUsuariosGestao] = useState([]);
+    const [dadosUsuariosGestao, setDadosUsuariosGestao] = useState([]);
+
+    const [usuarioAssinatura, setUsuarioAssinatura] = useState();
+
     const buscarUsuarios = async () => {
         if (associacaoSelecionada) {
             try {
                 setIsLoadingUsuarios(true);
                 const filters = { equals: { associacaoId: associacaoSelecionada } }
                 const orderBy = [{ field: 'situacao', direction: 'ASC' }, { field: 'nome', direction: 'ASC' },]
-                const response = await buscarTodosUsuarios(filters, orderBy);
+                const response = await buscarTodosUsuariosCompleto(filters, orderBy);
                 setDadosUsuarios(response.data);
                 const valoresSelect = response.data.map((value) => ({
                     label: value.nome,
@@ -56,6 +72,27 @@ export default function Documentos({ navigation }) {
                 console.error('Erro ao buscar usuários:', error.response.data);
             } finally {
                 setIsLoadingUsuarios(false)
+            }
+        }
+    };
+    const buscarUsuariosGestao = async () => {
+        if (associacaoSelecionada) {
+            try {
+                setIsLoadingUsuariosGestao(true);
+                const filters = { equals: { associacaoId: associacaoSelecionada, tipoAcesso: "GESTAO" } }
+                const orderBy = [{ field: 'situacao', direction: 'ASC' }, { field: 'nome', direction: 'ASC' },]
+                const response = await buscarTodosUsuarios(filters, orderBy);
+                setDadosUsuariosGestao(response.data);
+                const valoresSelect = response.data.map((value) => ({
+                    label: value.nome,
+                    value: value.id,
+                    isDisabled: value.situacao !== 'ATIVO'
+                }));
+                setUsuariosGestao(valoresSelect);
+            } catch (error) {
+                console.error('Erro ao buscar usuários gestão:', error.response.data);
+            } finally {
+                setIsLoadingUsuariosGestao(false)
             }
         }
     };
@@ -116,7 +153,8 @@ export default function Documentos({ navigation }) {
     }, []);
     useEffect(() => {
         buscarDadosDaAssociacao();
-        buscarTemplatesDocumentos()
+        buscarTemplatesDocumentos();
+        buscarUsuariosGestao();
         buscarUsuarios();
     }, [associacaoSelecionada])
 
@@ -128,8 +166,11 @@ export default function Documentos({ navigation }) {
         if (templateDocumentoSelecionado == null) {
             errors.templateDocumentoSelecionado = "Obrigatório"
         }
-        if (dataDeclaracao == null) {
-            errors.dataDeclaracao = "Obrigatório"
+        if (usuarioAssinatura == null) {
+            errors.usuarioAssinatura = "Obrigatório"
+        }
+        if (dataEmissao == null) {
+            errors.dataEmissao = "Obrigatório"
         }
         if (usuariosSelecionados == null || usuariosSelecionados.length === 0) {
             errors.usuariosSelecionados = "Obrigatório"
@@ -143,7 +184,7 @@ export default function Documentos({ navigation }) {
         if (Object.keys(errors).length !== 0) {
             validarFiltrosEmissao();
         }
-    }, [templateDocumentoSelecionado, dataDeclaracao, usuariosSelecionados]);
+    }, [templateDocumentoSelecionado, dataEmissao, usuarioAssinatura, usuariosSelecionados]);
 
     useEffect(() => {
         if (selecionarTodosUsuarios.includes('SELECIONAR_TODOS')) {
@@ -158,7 +199,6 @@ export default function Documentos({ navigation }) {
         const vals = Object.values(params);
         return new Function(...names, `return \`${this}\`;`)(...vals);
     }
-
     const generatePDF = async (nomeTemplate, htmlTemplate, dados) => {
         var declaracaoHtml = htmlTemplate.interpolate({
             dados
@@ -185,16 +225,30 @@ export default function Documentos({ navigation }) {
                 then(async (response) => {
                     const htmlTemplate = response.data.htmlTemplate;
                     const nomeTemplate = response.data.nome;
+                    const dadosUsuarioAssinatura = dadosUsuariosGestao.find(dadosUsuario => dadosUsuario.id === usuarioAssinatura);
                     for (const usuario of usuariosSelecionados) {
                         const dadosUsuarioAtual = dadosUsuarios.find(dadosUsuario => dadosUsuario.id === usuario);
                         const dados = {
-                            dadosUsuario: dadosUsuarioAtual,
-                            dadosAssociacao: dadosAssociacao,
+                            dadosUsuario: {
+                                ...dadosUsuarioAtual,
+                                cpfFormatado: formatarCpf(dadosUsuarioAtual.cpf),
+                                valorMensalidadeFormatado: formatarValorEmReais(dadosUsuarioAtual.valorMensalidade),
+                                valorMensalidadePorExtenso: formatarValorEmReaisPorExtenso(dadosUsuarioAtual.valorMensalidade)
+                            },
+                            dadosUsuarioAssinatura: {
+                                ...dadosUsuarioAssinatura,
+                                cpfFormatado: formatarCpf(dadosUsuarioAssinatura.cpf)
+                            },
+                            dadosAssociacao: {
+                                ...dadosAssociacao,
+                                cnpjFormatado: formatarCnpj(dadosAssociacao.cnpj),
+                                cepFormatado: formatarCep(dadosAssociacao.cep)
+                            },
                             nomeDeclaracao: nomeTemplate,
-                            dataDeclaracao: dataDeclaracao,
+                            dataEmissao: moment(dataEmissao).format('DD/MM/yyyy'),
+                            dataDeclaracao: dataDeclaracao && moment(dataDeclaracao).format('DD/MM/yyyy'),
                             logoDeclaracaoUrl: dadosAssociacao.logoDeclaracaoUrl && process.env.EXPO_PUBLIC_FILES_API_URL + dadosAssociacao.logoDeclaracaoUrl || null,
                         };
-
                         const pdfUri = await generatePDF(nomeTemplate, htmlTemplate, dados);
                         if (pdfUri) {
                             pdfUris.push(pdfUri);
@@ -239,21 +293,25 @@ export default function Documentos({ navigation }) {
 
     return (
         <Box flex={1} mx={15} >
-            <VStack flex={0} >
-                {
-                    eUsuarioAdmin && (
-                        <InputSelect label={"Associação"} erro={errors.associacaoId} inputOnChange={setAssociacaoSelecionada} inputValue={associacaoSelecionada} selectValues={associacoes} isLoading={isLoadingAssociacoes} isRequired={true} />
-                    )
-                }
-                <InputSelect label={'Tipo de Declaração'} selectValues={templatesDocumentos} inputOnChange={setTemplateDocumentoSelecionado} erro={errors.templateDocumentoSelecionado} isRequired={true} isLoading={isLoadingTemplateDocumentos} />
-                <InputDate label={'Data da Declaração'} inputValue={dataDeclaracao} inputOnChange={setDataDeclaracao} erro={errors.dataDeclaracao} isRequired={true} />
-            </VStack>
-            <VStack flex={1} my={15}>
-                <InputCheckbox label={'Alunos'} checkboxValues={[{ label: 'Selecionar Todos', value: 'SELECIONAR_TODOS' }]} inputOnChange={setSelecionarTodosUsuarios} inputValue={selecionarTodosUsuarios} />
-                <ScrollView flex={1} >
-                    <InputCheckbox checkboxValues={usuarios} inputOnChange={setUsuariosSelecionados} inputValue={usuariosSelecionados} erro={errors.usuariosSelecionados} />
-                </ScrollView>
-            </VStack>
+            <ScrollView>
+                <VStack flex={0} >
+                    {
+                        eUsuarioAdmin && (
+                            <InputSelect label={"Associação"} erro={errors.associacaoId} inputOnChange={setAssociacaoSelecionada} inputValue={associacaoSelecionada} selectValues={associacoes} isLoading={isLoadingAssociacoes} isRequired={true} />
+                        )
+                    }
+                    <InputSelect label={'Tipo de Declaração'} selectValues={templatesDocumentos} inputOnChange={setTemplateDocumentoSelecionado} erro={errors.templateDocumentoSelecionado} isRequired={true} isLoading={isLoadingTemplateDocumentos} />
+                    <InputSelect label={"Usuário Assinatura"} erro={errors.usuarioAssinatura} inputOnChange={setUsuarioAssinatura} inputValue={usuarioAssinatura} selectValues={usuariosGestao} isLoading={isLoadingUsuariosGestao} isRequired={true} dica={'Valor será exibido ao final da declaração com os dados do usuário para efetuar a assinatura como responsável pela declaração'} />
+                    <InputDate label={'Data de Emissão'} inputValue={dataEmissao} inputOnChange={setDataEmissao} erro={errors.dataEmissao} isRequired={true} dica={'Valor será exibido como a data que a declaração foi emitida'} />
+                    <InputDate label={'Data da Declaração'} inputValue={dataDeclaracao} inputOnChange={setDataDeclaracao} erro={errors.dataDeclaracao} isRequired={false} dica={'Valor será exibido referenciando para qual data a declaração foi emitida'} />
+                </VStack>
+                <VStack flex={1} my={15}>
+                    <InputCheckbox label={'Alunos'} checkboxValues={[{ label: 'Selecionar Todos', value: 'SELECIONAR_TODOS' }]} inputOnChange={setSelecionarTodosUsuarios} inputValue={selecionarTodosUsuarios} />
+                    <ScrollView flex={1} >
+                        <InputCheckbox checkboxValues={usuarios} inputOnChange={setUsuariosSelecionados} inputValue={usuariosSelecionados} erro={errors.usuariosSelecionados} />
+                    </ScrollView>
+                </VStack>
+            </ScrollView>
             <Box flex={0} my={15}>
                 <Button label={'Emitir'} onPress={() => acaoEmitirDeclaracoes()} />
             </Box>

@@ -16,6 +16,7 @@ import { buscarParametroDaAssociacao } from "../../service/api/requests/parametr
 import { useToast } from "react-native-toast-notifications"
 import InputImage from "../../components/formInputs/InputImage"
 import validarEmail from "../../functions/ValidarEmail"
+import { InputNumber } from "../../components/formInputs/InputNumber"
 
 export default MeusDados = ({ navigation }) => {
     const globalToast = useToast()
@@ -29,7 +30,8 @@ export default MeusDados = ({ navigation }) => {
         nome: null,
         email: null,
         telefone: null,
-        endereco: null,
+        cidade: null,
+        cpf: null,
         matricula: null,
         instituicaoId: null,
         cursoId: null,
@@ -102,7 +104,8 @@ export default MeusDados = ({ navigation }) => {
                     nome: dadosUsuario.nome,
                     email: dadosUsuario.email,
                     telefone: dadosUsuario.telefone,
-                    endereco: dadosUsuario.endereco,
+                    cidade: dadosUsuario.cidade,
+                    cpf: dadosUsuario.cpf,
                     matricula: dadosUsuario.matricula,
                     instituicaoId: dadosUsuario.curso?.instituicao?.id,
                     cursoId: dadosUsuario.curso?.id,
@@ -174,7 +177,8 @@ export default MeusDados = ({ navigation }) => {
                     nome: inputValues?.nome,
                     email: inputValues?.email,
                     telefone: inputValues?.telefone,
-                    endereco: inputValues?.endereco,
+                    cidade: inputValues?.cidade,
+                    cpf: inputValues?.cpf,
                     matricula: inputValues?.matricula,
                     cursoId: inputValues?.cursoId,
                     diasUsoTransporte: inputValues?.diasUsoTransporte
@@ -229,8 +233,9 @@ export default MeusDados = ({ navigation }) => {
                             <InputImage label={'Foto'} erro={errors.foto} onPickImage={(value) => handleChangeInputValues('foto', value)} imageValue={inputValues.foto} />
                             <InputText label={'Nome Completo'} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputText label={'E-mail'} keyboardType={'email-address'} autoCapitalize="none" inputOnChange={(value) => handleChangeInputValues('email', value)} isRequired={true} inputValue={inputValues.email} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
-                            <InputText label={'Telefone'} inputOnChange={(value) => handleChangeInputValues('telefone', value)} isRequired={true} inputValue={inputValues.telefone} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
-                            <InputText label={'Endereço'} inputOnChange={(value) => handleChangeInputValues('endereco', value)} isRequired={false} inputValue={inputValues.endereco} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
+                            <InputNumber label={'Telefone'} inputOnChange={(value) => handleChangeInputValues('telefone', value)} isRequired={true} inputValue={inputValues.telefone} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
+                            <InputText label={'Cidade'} inputOnChange={(value) => handleChangeInputValues('cidade', value)} isRequired={false} inputValue={inputValues.cidade} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
+                            <InputNumber label={'CPF'} inputOnChange={(value) => handleChangeInputValues('cpf', value)} isRequired={true} inputValue={inputValues.cpf} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputText label={'Matricula'} inputOnChange={(value) => handleChangeInputValues('matricula', value)} isRequired={false} inputValue={inputValues.matricula} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputSelect label={"Instituição"} inputOnChange={(value) => handleChangeInputValues("instituicaoId", value)} inputValue={inputValues.instituicaoId} selectValues={instituicoes} isDisabled={isLoadingDadosUsuario || isDisabledDadosUsuarios} />
                             <InputSelect label={"Curso"} inputOnChange={(value) => handleChangeInputValues("cursoId", value)} inputValue={inputValues.cursoId} selectValues={cursos} isDisabled={!inputValues.instituicaoId || isDisabledDadosUsuarios} />

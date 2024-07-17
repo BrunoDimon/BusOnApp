@@ -136,12 +136,28 @@ export const FormTemplatesDocumentos = ({ onClose, dadosEdicao }) => {
                         <InputTextArea height={'$96'} label={'HTML do Template'} erro={errors.htmlTemplate} inputOnChange={(value) => handleChangeInputValues('htmlTemplate', value)} isRequired={true} inputValue={inputValues.htmlTemplate}
                             dica={`
 Dados disponibilizados para criar uma declaração:
-    const dados = { dadosUsuario,
-                    dadosAssociacao,
-                    nomeDeclaracao,
-                    dataDeclaracao,
-                    logoDeclaracaoUrl
-                  };    
+
+  const dados = {
+      dadosUsuario: {
+          ...dadosUsuarioAtual,
+          cpfFormatado,,
+          valorMensalidadeFormatado,,
+          valorMensalidadePorExtenso
+      },
+      dadosUsuarioAssinatura: {
+          ...dadosUsuarioAssinatura,
+          cpfFormatado
+      },
+      dadosAssociacao: {
+          ...dadosAssociacao,
+          cnpjFormatado,
+          cepFormatado
+      },
+      nomeDeclaracao,
+      dataEmissao,
+      dataDeclaracao,
+      logoDeclaracaoUrl
+  };
 
 Como utilizar:
     Fazer o html normalmente, e onde quiser algum valor dinâmico utilizar a tag \${dados.}
@@ -158,7 +174,10 @@ Exemplo:
             </h1>
             <p>Data: \${dados.dataDeclaracao}</p>
         </body>
-    </html>`}
+    </html>
+
+Obs: Funções não funcionam se tentar cadastrar no meio do html usando \${FUNCAO()} 
+    `}
                         />
                     </ModalBody>
                     <ModalFooter gap={10}>

@@ -31,12 +31,14 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
         nome: dadosEdicao?.nome || null,
         email: dadosEdicao?.email || null,
         telefone: dadosEdicao?.telefone || null,
-        endereco: dadosEdicao?.endereco || null,
+        cidade: dadosEdicao?.cidade || null,
+        cpf: dadosEdicao?.cpf || null,
         matricula: dadosEdicao?.matricula || null,
         instituicaoId: dadosEdicao?.instituicaoId || null,
         dataEntradaAssociacao: dadosEdicao?.dataEntradaAssociacao || null,
         cursoId: dadosEdicao?.cursoId || null,
         tipoAcesso: dadosEdicao?.tipoAcesso || "ALUNO",
+        cargo: dadosEdicao?.cargo || null,
         situacao: dadosEdicao?.situacao || "ATIVO",
         diasUsoTransporte: dadosEdicao?.diasUsoTransporte || [],
         senha: null,
@@ -165,12 +167,14 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                     nome: inputValues?.nome,
                     email: inputValues?.email,
                     telefone: inputValues?.telefone,
-                    endereco: inputValues?.endereco,
+                    cidade: inputValues?.cidade,
+                    cpf: inputValues?.cpf,
                     matricula: inputValues?.matricula,
                     instituicaoId: inputValues?.instituicaoId,
                     dataEntradaAssociacao: inputValues?.dataEntradaAssociacao,
                     cursoId: inputValues?.cursoId,
                     tipoAcesso: inputValues?.tipoAcesso,
+                    cargo: inputValues?.cargo,
                     situacao: inputValues?.situacao,
                     diasUsoTransporte: inputValues?.diasUsoTransporte,
                     senha: inputValues?.senha
@@ -237,11 +241,13 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                         <InputImage label={'Foto'} erro={errors.foto} onPickImage={(value) => handleChangeInputValues('foto', value)} imageValue={inputValues.foto} />
                         <InputText label={"E-mail"} erro={errors.email} keyboardType={'email-address'} autoCapitalize="none" inputOnChange={(value) => handleChangeInputValues("email", value)} isRequired={true} inputValue={inputValues.email} />
                         <InputNumber label={"Telefone"} erro={errors.telefone} inputOnChange={(value) => handleChangeInputValues("telefone", value)} isRequired={true} inputValue={inputValues.telefone} />
-                        <InputText label={"Endereço"} erro={errors.endereco} inputOnChange={(value) => handleChangeInputValues("endereco", value)} inputValue={inputValues.endereco} />
+                        <InputText label={"Cidade"} erro={errors.cidade} inputOnChange={(value) => handleChangeInputValues("cidade", value)} inputValue={inputValues.cidade} />
+                        <InputNumber label={"CPF"} erro={errors.cpf} inputOnChange={(value) => handleChangeInputValues("cpf", value)} inputValue={inputValues.cpf} isRequired={true} />
                         <InputText label={"Matricula"} erro={errors.matricula} inputOnChange={(value) => handleChangeInputValues("matricula", value)} inputValue={inputValues.matricula} />
                         <InputSelect label={"Instituição"} inputOnChange={(value) => handleChangeInputValues("instituicaoId", value)} inputValue={inputValues.instituicaoId} selectValues={instituicoes} />
                         <InputSelect label={"Curso"} inputOnChange={(value) => handleChangeInputValues("cursoId", value)} inputValue={inputValues.cursoId} selectValues={cursos} isDisabled={!inputValues.instituicaoId} />
                         <InputSelect label={"Tipo Acesso"} inputOnChange={(value) => handleChangeInputValues("tipoAcesso", value)} inputValue={inputValues.tipoAcesso} selectValues={tipoAcessoValores} typeSelectValues={'ENUM'} isRequired={true} />
+                        <InputText label={"Cargo"} erro={errors.cargo} inputOnChange={(value) => handleChangeInputValues("cargo", value)} inputValue={inputValues.cargo} />
                         <InputDate label={'Data Entrada Associação'} inputOnChange={(value) => handleChangeInputValues('dataEntradaAssociacao', value)} inputValue={inputValues.dataEntradaAssociacao} erro={errors.dataEntradaAssociacao} isRequired={inputValues.associacaoId} />
                         <InputSelect label={"Situação"} inputOnChange={(value) => handleChangeInputValues("situacao", value)} inputValue={inputValues.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} isRequired={true} />
                         <InputCheckbox label={"Dias Uso Transporte"} inputOnChange={(value) => handleChangeInputValues("diasUsoTransporte", value)} checkboxValues={DiasSemanaEnum} typeCheckboxValues={'ENUM'} inputValue={inputValues.diasUsoTransporte} />
