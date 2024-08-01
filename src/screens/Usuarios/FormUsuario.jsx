@@ -270,9 +270,11 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                         <InputDate label={'Data Entrada Associação'} inputOnChange={(value) => handleChangeInputValues('dataEntradaAssociacao', value)} inputValue={inputValues.dataEntradaAssociacao} erro={errors.dataEntradaAssociacao} isRequired={inputValues.associacaoId} />
                         <InputSelect label={"Situação"} inputOnChange={(value) => handleChangeInputValues("situacao", value)} inputValue={inputValues.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} isRequired={true} />
                         <InputCheckbox label={"Dias Uso Transporte"} inputOnChange={(value) => handleChangeInputValues("diasUsoTransporte", value)} checkboxValues={DiasSemanaEnum} typeCheckboxValues={'ENUM'} inputValue={inputValues.diasUsoTransporte} />
-                        <Box alignSelf="flex-start" mt={5}>
-                            <Button variant={'link'} action={'secondary'} label={"Resetar Senha"} onPress={() => acaoResetarSenha()} isLoading={isSaving} />
-                        </Box>
+                        {eModoEdicao &&
+                            <Box alignSelf="flex-start" mt={5}>
+                                <Button variant={'link'} action={'secondary'} label={"Resetar Senha"} onPress={() => acaoResetarSenha()} isLoading={isSaving} />
+                            </Box>
+                        }
                     </ScrollView>
                 </ModalBody>
                 <ModalFooter gap={10}>
