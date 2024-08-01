@@ -29,7 +29,7 @@ const Dialog = memo(function Dialog({ type = 'DEFAULT', config = {}, onClose }) 
             buttonBgColor: '$yellow500',
             titulo: config.titulo || 'Confirmar',
             descricao: config.descricao || 'Você tem certeza que deseja realizar a operação?',
-            etiquetaBotaoAcao: config.etiquetaBotaoAcao || 'Salvar'
+            etiquetaBotaoAcao: config.etiquetaBotaoAcao || 'Confirmar'
         },
         'DEFAULT': {
             buttonBgColor: '$black',

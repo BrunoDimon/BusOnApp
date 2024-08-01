@@ -39,3 +39,6 @@ export const editarSenhaUsuario = async (id, data, jwtToken) => {
         }
     });
 }
+export const resetarSenhaUsuario = async (id, data, jwtToken) => {
+    return request = await api.put('/usuario/resetar-senha/' + String(id));
+}

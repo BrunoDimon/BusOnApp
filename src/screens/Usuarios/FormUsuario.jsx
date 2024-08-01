@@ -5,7 +5,7 @@ import { InputText } from "../../components/formInputs/InputText";
 import { InputSelect } from "../../components/formInputs/InputSelect";
 import AtivoInativoEnum from "../../enums/AtivoInativoEnum";
 import { useSelector } from "react-redux";
-import { cadastrarUsuario, editarUsuario } from "../../service/api/requests/usuarioRequests";
+import { cadastrarUsuario, editarUsuario, resetarSenhaUsuario } from "../../service/api/requests/usuarioRequests";
 import TipoAcessoUsuarioEnum from "../../enums/TipoAcessoUsuarioEnum";
 import { InputCheckbox } from "../../components/formInputs/InputCheckbox";
 import DiasSemanaEnum from "../../enums/DiasSemanaEnum";
@@ -19,10 +19,13 @@ import { InputNumber } from "../../components/formInputs/InputNumber";
 import mime from 'mime'
 import validarEmail from "../../functions/ValidarEmail";
 import { InputDate } from "../../components/formInputs/InputDate";
+import { useDialog } from "../../components/dialog/DialogContext";
+import { Box } from "@gluestack-ui/themed";
 
 export const FormUsuario = ({ onClose, dadosEdicao }) => {
     const globalToast = useToast();
-    const ref = useRef(null)
+    const ref = useRef(null);
+    const { openDialog } = useDialog();
     const userInfos = useSelector(state => state.auth.user);
     const eUsuarioAdmin = userInfos.tipoAcesso == "ADMIN";
 
@@ -157,6 +160,22 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
         return isValid;
     };
 
+    const acaoResetarSenha = async () => {
+        onClose();
+        openDialog('CONFIRMAR', {
+            onPress: async () => {
+                try {
+                    await resetarSenhaUsuario(dadosEdicao.id)
+                    globalToast.show("Sucesso", { data: { messageDescription: 'Senha redefinida com sucesso!' }, type: 'success' })
+                } catch (error) {
+                    globalToast.show("Erro", { data: { messageDescription: error?.response?.data?.message }, type: 'warning' })
+                }
+            },
+            titulo: "Resetar senha?",
+            descricao: "A senha será redefinida para o padrão (Número de telefone do usuário) e exigira redefinir a senha no próximo login",
+        });
+    }
+
     const handleOnPressSave = async () => {
         try {
             setIsSaving(true);
@@ -225,9 +244,9 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
 
 
     return (
-        <Modal useRNModal={true} defaultIsOpen={true} onClose={() => onClose()} finalFocusRef={ref}>
+        <Modal useRNModal={true} defaultIsOpen={true} onClose={() => onClose()} finalFocusRef={ref} >
             <ModalBackdrop />
-            <ModalContent maxHeight={'$3/4'}>
+            <ModalContent maxHeight={'$3/4'} >
                 <ModalHeader>
                     <Heading size="xl" maxFontSizeMultiplier={1.3}>{!eModoEdicao ? 'Cadastro Aluno' : 'Edição Aluno'}</Heading>
                     <ModalCloseButton>
@@ -251,6 +270,9 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                         <InputDate label={'Data Entrada Associação'} inputOnChange={(value) => handleChangeInputValues('dataEntradaAssociacao', value)} inputValue={inputValues.dataEntradaAssociacao} erro={errors.dataEntradaAssociacao} isRequired={inputValues.associacaoId} />
                         <InputSelect label={"Situação"} inputOnChange={(value) => handleChangeInputValues("situacao", value)} inputValue={inputValues.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} isRequired={true} />
                         <InputCheckbox label={"Dias Uso Transporte"} inputOnChange={(value) => handleChangeInputValues("diasUsoTransporte", value)} checkboxValues={DiasSemanaEnum} typeCheckboxValues={'ENUM'} inputValue={inputValues.diasUsoTransporte} />
+                        <Box alignSelf="flex-start" mt={5}>
+                            <Button variant={'link'} action={'secondary'} label={"Resetar Senha"} onPress={() => acaoResetarSenha()} isLoading={isSaving} />
+                        </Box>
                     </ScrollView>
                 </ModalBody>
                 <ModalFooter gap={10}>
