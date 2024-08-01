@@ -1,24 +1,24 @@
 
 export default routesMenu = [
-    {
-        category: 'IA',
-        routes: [
-            {
-                name: 'ia-chat',
-                accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
-            },
-            {
-                name: 'ia-chat',
-                label: 'IA Chat',
-                iconName: 'robot-outline',
-                accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
-            },
-            {
-                name: 'ia-chat',
-                accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
-            },
-        ]
-    },
+    /*     {
+            category: 'IA',
+            routes: [
+                {
+                    name: 'ia-chat',
+                    accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
+                },
+                {
+                    name: 'ia-chat',
+                    label: 'IA Chat',
+                    iconName: 'robot-outline',
+                    accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
+                },
+                {
+                    name: 'ia-chat',
+                    accessRequired: ['ADMIN', 'GESTAO', 'ALUNO'],
+                },
+            ]
+        }, */
     {
         category: 'Aluno',
         routes: [

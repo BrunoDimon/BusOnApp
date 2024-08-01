@@ -246,7 +246,9 @@ export default function Documentos({ navigation }) {
                             },
                             nomeDeclaracao: nomeTemplate,
                             dataEmissao: moment(dataEmissao).format('DD/MM/yyyy'),
+                            dataEmissaoPorExtenso: moment(dataEmissao).format('LL'),
                             dataDeclaracao: dataDeclaracao && moment(dataDeclaracao).format('DD/MM/yyyy'),
+                            dataDeclaracaoPorExtenso: dataDeclaracao && moment(dataDeclaracao).format('LL'),
                             logoDeclaracaoUrl: dadosAssociacao.logoDeclaracaoUrl && process.env.EXPO_PUBLIC_FILES_API_URL + dadosAssociacao.logoDeclaracaoUrl || null,
                         };
                         const pdfUri = await generatePDF(nomeTemplate, htmlTemplate, dados);
