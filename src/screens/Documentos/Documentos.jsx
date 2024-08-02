@@ -1,4 +1,4 @@
-import { Box, Center, HStack, ScrollView, VStack } from "@gluestack-ui/themed";
+import { Box, Center, HStack, ScrollView, Text, VStack } from "@gluestack-ui/themed";
 import { InputSelect } from "../../components/formInputs/InputSelect";
 import { useEffect, useState } from "react";
 import { InputDate } from "../../components/formInputs/InputDate";
@@ -54,6 +54,11 @@ export default function Documentos({ navigation }) {
 
     const [usuarioAssinatura, setUsuarioAssinatura] = useState();
 
+    const [isGeneratePdf, setIsGeneratePdf] = useState(false);
+    const [quantidadePdfsGerar, setQuantidadePdfsGerar] = useState(0);
+    const [quantidadePdfsGerado, setQuantidadePdfsGerado] = useState(0);
+    const [statusGeracaoPdf, setStatusGeracaoPdf] = useState();
+
     const buscarUsuarios = async () => {
         if (associacaoSelecionada) {
             try {
@@ -98,7 +103,6 @@ export default function Documentos({ navigation }) {
     };
     const buscarTemplatesDocumentos = async () => {
         if (associacaoSelecionada) {
-
             try {
                 setIsLoadingTemplateDocumentos(true);
                 const filters = { equals: { associacaoId: associacaoSelecionada, situacao: 'ATIVO' } }
@@ -194,6 +198,10 @@ export default function Documentos({ navigation }) {
         }
     }, [selecionarTodosUsuarios])
 
+    useEffect(() => {
+        setQuantidadePdfsGerar(usuariosSelecionados.length)
+    }, [usuariosSelecionados])
+
     String.prototype.interpolate = function (params) {
         const names = Object.keys(params);
         const vals = Object.values(params);
@@ -219,77 +227,89 @@ export default function Documentos({ navigation }) {
     };
 
     const acaoEmitirDeclaracoes = async () => {
-        const pdfUris = [];
-        if (validarFiltrosEmissao()) {
-            await buscarTemplateDocumentoPorId(templateDocumentoSelecionado).
-                then(async (response) => {
-                    const htmlTemplate = response.data.htmlTemplate;
-                    const nomeTemplate = response.data.nome;
-                    const dadosUsuarioAssinatura = dadosUsuariosGestao.find(dadosUsuario => dadosUsuario.id === usuarioAssinatura);
-                    for (const usuario of usuariosSelecionados) {
-                        const dadosUsuarioAtual = dadosUsuarios.find(dadosUsuario => dadosUsuario.id === usuario);
-                        const dados = {
-                            dadosUsuario: {
-                                ...dadosUsuarioAtual,
-                                cpfFormatado: formatarCpf(dadosUsuarioAtual.cpf),
-                                valorMensalidadeFormatado: formatarValorEmReais(dadosUsuarioAtual.valorMensalidade),
-                                valorMensalidadePorExtenso: formatarValorEmReaisPorExtenso(dadosUsuarioAtual.valorMensalidade)
-                            },
-                            dadosUsuarioAssinatura: {
-                                ...dadosUsuarioAssinatura,
-                                cpfFormatado: formatarCpf(dadosUsuarioAssinatura.cpf)
-                            },
-                            dadosAssociacao: {
-                                ...dadosAssociacao,
-                                cnpjFormatado: formatarCnpj(dadosAssociacao.cnpj),
-                                cepFormatado: formatarCep(dadosAssociacao.cep)
-                            },
-                            nomeDeclaracao: nomeTemplate,
-                            dataEmissao: moment(dataEmissao).format('DD/MM/yyyy'),
-                            dataEmissaoPorExtenso: moment(dataEmissao).format('LL'),
-                            dataDeclaracao: dataDeclaracao && moment(dataDeclaracao).format('DD/MM/yyyy'),
-                            dataDeclaracaoPorExtenso: dataDeclaracao && moment(dataDeclaracao).format('LL'),
-                            logoDeclaracaoUrl: dadosAssociacao.logoDeclaracaoUrl && process.env.EXPO_PUBLIC_FILES_API_URL + dadosAssociacao.logoDeclaracaoUrl || null,
-                        };
-                        const pdfUri = await generatePDF(nomeTemplate, htmlTemplate, dados);
-                        if (pdfUri) {
-                            pdfUris.push(pdfUri);
+        try {
+            setIsGeneratePdf(true);
+            const pdfUris = [];
+            if (validarFiltrosEmissao()) {
+                await buscarTemplateDocumentoPorId(templateDocumentoSelecionado).
+                    then(async (response) => {
+                        const htmlTemplate = response.data.htmlTemplate;
+                        const nomeTemplate = response.data.nome;
+                        const dadosUsuarioAssinatura = dadosUsuariosGestao.find(dadosUsuario => dadosUsuario.id === usuarioAssinatura);
+                        for (const usuario of usuariosSelecionados) {
+                            console.log(usuario)
+                            const dadosUsuarioAtual = dadosUsuarios.find(dadosUsuario => dadosUsuario.id === usuario);
+                            const dados = {
+                                dadosUsuario: {
+                                    ...dadosUsuarioAtual,
+                                    cpfFormatado: formatarCpf(dadosUsuarioAtual.cpf),
+                                    valorMensalidadeFormatado: formatarValorEmReais(dadosUsuarioAtual.valorMensalidade),
+                                    valorMensalidadePorExtenso: formatarValorEmReaisPorExtenso(dadosUsuarioAtual.valorMensalidade)
+                                },
+                                dadosUsuarioAssinatura: {
+                                    ...dadosUsuarioAssinatura,
+                                    cpfFormatado: formatarCpf(dadosUsuarioAssinatura.cpf)
+                                },
+                                dadosAssociacao: {
+                                    ...dadosAssociacao,
+                                    cnpjFormatado: formatarCnpj(dadosAssociacao.cnpj),
+                                    cepFormatado: formatarCep(dadosAssociacao.cep)
+                                },
+                                nomeDeclaracao: nomeTemplate,
+                                dataEmissao: moment(dataEmissao).format('DD/MM/yyyy'),
+                                dataEmissaoPorExtenso: moment(dataEmissao).format('LL'),
+                                dataDeclaracao: dataDeclaracao && moment(dataDeclaracao).format('DD/MM/yyyy'),
+                                dataDeclaracaoPorExtenso: dataDeclaracao && moment(dataDeclaracao).format('LL'),
+                                logoDeclaracaoUrl: dadosAssociacao.logoDeclaracaoUrl && process.env.EXPO_PUBLIC_FILES_API_URL + dadosAssociacao.logoDeclaracaoUrl || null,
+                            };
+                            const pdfUri = await generatePDF(nomeTemplate, htmlTemplate, dados);
+
+                            if (pdfUri) {
+                                pdfUris.push(pdfUri);
+                            }
+                            setQuantidadePdfsGerado(pdfUris.length)
                         }
-                    }
-                    if (pdfUris.length === 1) {
-                        await shareAsync(pdfUris[0], {
-                            mimeType: 'application/pdf'
-                        });
-                    } else if (pdfUris.length > 1) {
-                        const zip = new JSZip();
-
-                        for (const uri of pdfUris) {
-                            const pdfData = await FileSystem.readAsStringAsync(uri, {
-                                encoding: FileSystem.EncodingType.Base64,
+                        if (pdfUris.length === 1) {
+                            await shareAsync(pdfUris[0], {
+                                mimeType: 'application/pdf'
                             });
-                            const fileName = uri.split('/').pop();
-                            zip.file(fileName, pdfData, { base64: true });
+                        } else if (pdfUris.length > 1) {
+                            setStatusGeracaoPdf("Compactando arquivos...");
+                            const zip = new JSZip();
+
+                            for (const uri of pdfUris) {
+                                const pdfData = await FileSystem.readAsStringAsync(uri, {
+                                    encoding: FileSystem.EncodingType.Base64,
+                                });
+                                const fileName = uri.split('/').pop();
+                                zip.file(fileName, pdfData, { base64: true });
+                            }
+
+                            zip.generateAsync({ type: 'base64' }).then(async (base64) => {
+                                const nomeZip = nomeTemplate;
+                                const zipUri = `${FileSystem.documentDirectory}${nomeZip}.zip`;
+                                await FileSystem.writeAsStringAsync(zipUri, base64, {
+                                    encoding: FileSystem.EncodingType.Base64,
+                                });
+
+                                await shareAsync(zipUri, {
+                                    mimeType: 'application/zip'
+                                });
+                            }).catch((error) => {
+                                console.error('Erro ao criar o arquivo ZIP:', error);
+                            });
+                        } else {
+                            globalToast.show("Aviso", { data: { messageDescription: 'Não foi possível gerar os PDFs.' }, type: 'warning' })
                         }
 
-                        zip.generateAsync({ type: 'base64' }).then(async (base64) => {
-                            const nomeZip = nomeTemplate;
-                            const zipUri = `${FileSystem.documentDirectory}${nomeZip}.zip`;
-                            await FileSystem.writeAsStringAsync(zipUri, base64, {
-                                encoding: FileSystem.EncodingType.Base64,
-                            });
-
-                            await shareAsync(zipUri, {
-                                mimeType: 'application/zip'
-                            });
-                        }).catch((error) => {
-                            console.error('Erro ao criar o arquivo ZIP:', error);
-                        });
-                    } else {
-                        globalToast.show("Aviso", { data: { messageDescription: 'Não foi possível gerar os PDFs.' }, type: 'warning' })
-                    }
-                })
-        } else {
-            globalToast.show("Aviso", { data: { messageDescription: 'Preecha todos os campos obrigatórios!' }, type: 'warning' })
+                    })
+            } else {
+                globalToast.show("Aviso", { data: { messageDescription: 'Preecha todos os campos obrigatórios!' }, type: 'warning' })
+            }
+        } finally {
+            setIsGeneratePdf(false);
+            setQuantidadePdfsGerado(0);
+            setStatusGeracaoPdf(null)
         }
     };
 
@@ -314,8 +334,16 @@ export default function Documentos({ navigation }) {
                     </ScrollView>
                 </VStack>
             </ScrollView>
-            <Box flex={0} my={15}>
-                <Button label={'Emitir'} onPress={() => acaoEmitirDeclaracoes()} />
+            <Box flex={0} mb={15} mt={10} gap={10}>
+                <Text>{"Quantidade alunos selecionados: " + quantidadePdfsGerar}</Text>
+                <Button label={'Emitir'} onPress={() => acaoEmitirDeclaracoes()} isLoading={isGeneratePdf} />
+                {
+                    quantidadePdfsGerado > 0 &&
+                    <Text textAlign="center">{"Gerando: " + quantidadePdfsGerado + " / " + quantidadePdfsGerar}</Text>
+                }
+                {statusGeracaoPdf &&
+                    <Text textAlign="center">{statusGeracaoPdf}</Text>
+                }
             </Box>
         </Box >
     )
