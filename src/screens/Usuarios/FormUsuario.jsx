@@ -204,8 +204,18 @@ export const FormUsuario = ({ onClose, dadosEdicao }) => {
                         name: `${inputValues.nome}.jpg`,
                         type: 'image/jpeg'
                     };
-                    console.log(img.uri)
-                    formData.append('foto', img);
+                    fetch(img.uri)
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('Imagem existe:', img.uri);
+                                formData.append('foto', img);
+                            } else {
+                                console.error('Imagem não encontrada.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Erro ao carregar a imagem:', err);
+                        });
                 }
                 setTimeout(async () => {
                     if (!eModoEdicao) {

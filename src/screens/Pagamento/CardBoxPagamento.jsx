@@ -97,7 +97,7 @@ export default function CardBoxPagamento({ dados, voidDelete, voidEdit, exibirBo
                                     <Box flexDirection="row" alignItems="flex-end">
                                         <Box>
                                             <Text textAlign="center" mt={5} fontWeight="$bold" fontSize={'$md'}>{dados.dataPagamento ? 'Pago ' : 'Vencimento'}</Text>
-                                            <Text mt={5} fontWeight="$bold" fontSize={'$xl'}>{moment(dados.dataPagamento || dados.dataVencimento).format('DD/MM/yyyy')}</Text>
+                                            <Text mt={5} fontWeight="$bold" fontSize={'$xl'}>{moment(dados.dataPagamento || dados.dataVencimento).format('L')}</Text>
                                         </Box>
                                         <Text mt={5} fontWeight="$bold" fontSize={'$xl'}> | </Text>
                                         <Box >

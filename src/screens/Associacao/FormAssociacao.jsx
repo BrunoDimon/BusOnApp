@@ -101,8 +101,18 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
                         name: `Logo-${inputValues.nome}.jpg`,
                         type: 'image/jpeg'
                     };
-                    console.log(img.uri)
-                    formData.append('logo', img);
+                    fetch(img.uri)
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('Logo existe:', img.uri);
+                                formData.append('logo', img);
+                            } else {
+                                console.error('Logo não encontrada.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Erro ao carregar a logo:', err);
+                        });
                 }
                 if (inputValues.logoDeclaracao) {
                     const img = {
@@ -110,8 +120,18 @@ export const FormAssociacao = ({ onClose, dadosEdicao }) => {
                         name: `LogoDeclaracao-${inputValues.nome}.jpg`,
                         type: 'image/jpeg'
                     };
-                    console.log(img.uri)
-                    formData.append('logoDeclaracao', img);
+                    fetch(img.uri)
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('Logo Declaração existe:', img.uri);
+                                formData.append('logoDeclaracao', img);
+                            } else {
+                                console.error('Logo Declaração não encontrada.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Erro ao carregar a logo declaração:', err);
+                        });
                 }
                 setTimeout(async () => {
                     if (!eModoEdicao) {

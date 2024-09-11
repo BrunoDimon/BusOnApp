@@ -76,8 +76,18 @@ export const FormInstituicao = ({ onClose, dadosEdicao }) => {
                         name: `${inputValues.nome}.jpg`,
                         type: 'image/jpeg'
                     };
-                    console.log(img.uri)
-                    formData.append('logo', img);
+                    fetch(img.uri)
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('Logo existe:', img.uri);
+                                formData.append('logo', img);
+                            } else {
+                                console.error('Logo não encontrada.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Erro ao carregar a imagem:', err);
+                        });
                 }
                 setTimeout(async () => {
                     if (!eModoEdicao) {
