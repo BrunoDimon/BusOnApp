@@ -63,7 +63,7 @@ export default function Documentos({ navigation }) {
         if (associacaoSelecionada) {
             try {
                 setIsLoadingUsuarios(true);
-                const filters = { equals: { associacaoId: associacaoSelecionada } }
+                const filters = { equals: { associacaoId: associacaoSelecionada, situacao: "ATIVO" } }
                 const orderBy = [{ field: 'situacao', direction: 'ASC' }, { field: 'nome', direction: 'ASC' },]
                 const response = await buscarTodosUsuariosCompleto(filters, orderBy);
                 setDadosUsuarios(response.data);
