@@ -348,7 +348,6 @@ export default function Documentos({ navigation }) {
                                 dataDeclaracaoPorExtenso: dataDeclaracao && moment(dataDeclaracao).format('LL'),
                                 logoDeclaracaoUrl: dadosAssociacao.logoDeclaracaoUrl && process.env.EXPO_PUBLIC_FILES_API_URL + dadosAssociacao.logoDeclaracaoUrl || null,
                             };
-                            console.log(dados)
                             const pdfUri = await generatePDF_UM_PRA_MUITOS(nomeTemplate, htmlTemplate, dados);
                             if (pdfUri) {
                                 await shareAsync(pdfUri, {
