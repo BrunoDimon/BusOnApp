@@ -12,6 +12,7 @@ import InputImage from "../../components/formInputs/InputImage";
 import { buscarTodasAssociacoes } from "../../service/api/requests/associacaoRequests";
 import { InputTextArea } from "../../components/formInputs/InputTextArea";
 import { cadastrarTemplateDocumento, editarTemplateDocumento } from "../../service/api/requests/templateDocumentoRequest";
+import TipoImpressaoEnum from "../../enums/TipoImpressaoEnum";
 
 
 export const FormTemplatesDocumentos = ({ onClose, dadosEdicao }) => {
@@ -27,6 +28,7 @@ export const FormTemplatesDocumentos = ({ onClose, dadosEdicao }) => {
         situacao: dadosEdicao?.situacao || 'ATIVO',
         associacaoId: dadosEdicao?.associacaoId || null,
         htmlTemplate: dadosEdicao?.htmlTemplate || null,
+        tipoImpressao: dadosEdicao?.tipoImpressao || null,
     });
 
     const eModoEdicao = dadosEdicao ? true : false
@@ -51,6 +53,9 @@ export const FormTemplatesDocumentos = ({ onClose, dadosEdicao }) => {
         }
         if (inputValues.situacao == null || inputValues.situacao == '') {
             errors.situacao = "Situação é obrigatório"
+        }
+        if (inputValues.tipoImpressao == null || inputValues.tipoImpressao == '') {
+            errors.tipoImpressao = "Tipo Impressão é obrigatório"
         }
         if (inputValues.htmlTemplate == null || inputValues.htmlTemplate == '') {
             errors.htmlTemplate = "O html do template é obrigatório"
@@ -133,6 +138,7 @@ export const FormTemplatesDocumentos = ({ onClose, dadosEdicao }) => {
                         <InputSelect label={"Associação"} erro={errors.associacaoId} inputOnChange={(value) => handleChangeInputValues("associacaoId", value)} inputValue={inputValues.associacaoId} selectValues={associacoes} isLoading={isLoadingAssociacoes} isRequired={true} />
                         <InputText label={'Nome'} erro={errors.nome} inputOnChange={(value) => handleChangeInputValues('nome', value)} isRequired={true} inputValue={inputValues.nome} />
                         <InputSelect label={'Situação'} erro={errors.situacao} selectValues={AtivoInativoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('situacao', value)} isRequired={true} inputValue={inputValues.situacao} />
+                        <InputSelect label={'Tipo Impressão'} erro={errors.tipoImpressao} selectValues={TipoImpressaoEnum} typeSelectValues={'ENUM'} inputOnChange={(value) => handleChangeInputValues('tipoImpressao', value)} isRequired={true} inputValue={inputValues.tipoImpressao} />
                         <InputTextArea height={'$96'} label={'HTML do Template'} erro={errors.htmlTemplate} inputOnChange={(value) => handleChangeInputValues('htmlTemplate', value)} isRequired={true} inputValue={inputValues.htmlTemplate}
                             dica={`
 Dados disponibilizados para criar uma declaração:
@@ -177,6 +183,17 @@ Exemplo:
     </html>
 
 Obs: Funções não funcionam se tentar cadastrar no meio do html usando \${FUNCAO()} 
+
+Obs2: Caso for um documento que irá receber uma lista de usuários, deverá utilizar da seguinte forma para exibir todos usuários no mesmo PDF
+
+       </thead>
+        <tbody>
+          \${dados.dadosUsuarios
+            .map(
+              (usuario) => \`
+          <tr>
+            <td>\${usuario.nome}</td>
+
     `}
                         />
                     </ModalBody>
