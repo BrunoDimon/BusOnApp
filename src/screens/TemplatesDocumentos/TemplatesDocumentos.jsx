@@ -60,6 +60,7 @@ export default function TemplatesDocumentos({ navigation }) {
                 nome: response.data.nome,
                 situacao: response.data.situacao,
                 htmlTemplate: response.data?.htmlTemplate,
+                tipoImpressao: response.data.tipoImpressao,
             }
             setDadosFormEdicao(dados);
             setFormIsOpen(true);

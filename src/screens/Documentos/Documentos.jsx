@@ -207,13 +207,32 @@ export default function Documentos({ navigation }) {
         const vals = Object.values(params);
         return new Function(...names, `return \`${this}\`;`)(...vals);
     }
-    const generatePDF = async (nomeTemplate, htmlTemplate, dados) => {
+    const generatePDF_UM_PRA_UM = async (nomeTemplate, htmlTemplate, dados) => {
         var declaracaoHtml = htmlTemplate.interpolate({
             dados
         });
         try {
             const { uri } = await Print.printToFileAsync({ html: declaracaoHtml, width: 595, height: 842 });
             const nomeArquivo = dados.dadosUsuario.nome + ' - ' + nomeTemplate;
+            const pdfUri = `${FileSystem.documentDirectory}${nomeArquivo}.pdf`;
+            await FileSystem.moveAsync({
+                from: uri,
+                to: pdfUri
+            });
+            return pdfUri;
+        } catch (error) {
+            console.error('Erro ao gerar PDF:', error);
+            return null;
+        }
+    };
+
+    const generatePDF_UM_PRA_MUITOS = async (nomeTemplate, htmlTemplate, dados) => {
+        var declaracaoHtml = htmlTemplate.interpolate({
+            dados
+        });
+        try {
+            const { uri } = await Print.printToFileAsync({ html: declaracaoHtml, width: 595, height: 842 });
+            const nomeArquivo = nomeTemplate;
             const pdfUri = `${FileSystem.documentDirectory}${nomeArquivo}.pdf`;
             await FileSystem.moveAsync({
                 from: uri,
@@ -235,17 +254,84 @@ export default function Documentos({ navigation }) {
                     then(async (response) => {
                         const htmlTemplate = response.data.htmlTemplate;
                         const nomeTemplate = response.data.nome;
+                        const tipoImpressao = response.data.tipoImpressao;
                         const dadosUsuarioAssinatura = dadosUsuariosGestao.find(dadosUsuario => dadosUsuario.id === usuarioAssinatura);
-                        for (const usuario of usuariosSelecionados) {
-                            console.log(usuario)
-                            const dadosUsuarioAtual = dadosUsuarios.find(dadosUsuario => dadosUsuario.id === usuario);
+                        if ('UM_DOCUMENTO_PARA_UM_USUARIO' === tipoImpressao) {
+                            for (const usuario of usuariosSelecionados) {
+                                const dadosUsuarioAtual = dadosUsuarios.find(dadosUsuario => dadosUsuario.id === usuario);
+                                const dados = {
+                                    dadosUsuario: {
+                                        ...dadosUsuarioAtual,
+                                        cpfFormatado: formatarCpf(dadosUsuarioAtual.cpf),
+                                        valorMensalidadeFormatado: formatarValorEmReais(dadosUsuarioAtual.valorMensalidade),
+                                        valorMensalidadePorExtenso: formatarValorEmReaisPorExtenso(dadosUsuarioAtual.valorMensalidade)
+                                    },
+                                    dadosUsuarioAssinatura: {
+                                        ...dadosUsuarioAssinatura,
+                                        cpfFormatado: formatarCpf(dadosUsuarioAssinatura.cpf)
+                                    },
+                                    dadosAssociacao: {
+                                        ...dadosAssociacao,
+                                        cnpjFormatado: formatarCnpj(dadosAssociacao.cnpj),
+                                        cepFormatado: formatarCep(dadosAssociacao.cep)
+                                    },
+                                    nomeDeclaracao: nomeTemplate,
+                                    dataEmissao: moment(dataEmissao).format('DD/MM/yyyy'),
+                                    dataEmissaoPorExtenso: moment(dataEmissao).format('LL'),
+                                    dataDeclaracao: dataDeclaracao && moment(dataDeclaracao).format('DD/MM/yyyy'),
+                                    dataDeclaracaoPorExtenso: dataDeclaracao && moment(dataDeclaracao).format('LL'),
+                                    logoDeclaracaoUrl: dadosAssociacao.logoDeclaracaoUrl && process.env.EXPO_PUBLIC_FILES_API_URL + dadosAssociacao.logoDeclaracaoUrl || null,
+                                };
+                                const pdfUri = await generatePDF_UM_PRA_UM(nomeTemplate, htmlTemplate, dados);
+
+                                if (pdfUri) {
+                                    pdfUris.push(pdfUri);
+                                }
+                                setQuantidadePdfsGerado(pdfUris.length)
+                            }
+                            if (pdfUris.length === 1) {
+                                await shareAsync(pdfUris[0], {
+                                    mimeType: 'application/pdf'
+                                });
+                            } else if (pdfUris.length > 1) {
+                                setStatusGeracaoPdf("Compactando arquivos...");
+                                const zip = new JSZip();
+
+                                for (const uri of pdfUris) {
+                                    const pdfData = await FileSystem.readAsStringAsync(uri, {
+                                        encoding: FileSystem.EncodingType.Base64,
+                                    });
+                                    const fileName = uri.split('/').pop();
+                                    zip.file(fileName, pdfData, { base64: true });
+                                }
+
+                                zip.generateAsync({ type: 'base64' }).then(async (base64) => {
+                                    const nomeZip = nomeTemplate;
+                                    const zipUri = `${FileSystem.documentDirectory}${nomeZip}.zip`;
+                                    await FileSystem.writeAsStringAsync(zipUri, base64, {
+                                        encoding: FileSystem.EncodingType.Base64,
+                                    });
+
+                                    await shareAsync(zipUri, {
+                                        mimeType: 'application/zip'
+                                    });
+                                }).catch((error) => {
+                                    console.error('Erro ao criar o arquivo ZIP:', error);
+                                });
+                            } else {
+                                globalToast.show("Aviso", { data: { messageDescription: 'Não foi possível gerar os PDFs.' }, type: 'warning' })
+                            }
+                        } else if ('UM_DOCUMENTO_PARA_MUITOS_USUARIOS' == tipoImpressao) {
                             const dados = {
-                                dadosUsuario: {
-                                    ...dadosUsuarioAtual,
-                                    cpfFormatado: formatarCpf(dadosUsuarioAtual.cpf),
-                                    valorMensalidadeFormatado: formatarValorEmReais(dadosUsuarioAtual.valorMensalidade),
-                                    valorMensalidadePorExtenso: formatarValorEmReaisPorExtenso(dadosUsuarioAtual.valorMensalidade)
-                                },
+                                dadosUsuarios: usuariosSelecionados.map(usuario => {
+                                    const dadosUsuarioAtual = dadosUsuarios.find(dadosUsuario => dadosUsuario.id === usuario);
+                                    return {
+                                        ...dadosUsuarioAtual,
+                                        cpfFormatado: formatarCpf(dadosUsuarioAtual.cpf),
+                                        valorMensalidadeFormatado: formatarValorEmReais(dadosUsuarioAtual.valorMensalidade),
+                                        valorMensalidadePorExtenso: formatarValorEmReaisPorExtenso(dadosUsuarioAtual.valorMensalidade)
+                                    }
+                                }),
                                 dadosUsuarioAssinatura: {
                                     ...dadosUsuarioAssinatura,
                                     cpfFormatado: formatarCpf(dadosUsuarioAssinatura.cpf)
@@ -262,46 +348,17 @@ export default function Documentos({ navigation }) {
                                 dataDeclaracaoPorExtenso: dataDeclaracao && moment(dataDeclaracao).format('LL'),
                                 logoDeclaracaoUrl: dadosAssociacao.logoDeclaracaoUrl && process.env.EXPO_PUBLIC_FILES_API_URL + dadosAssociacao.logoDeclaracaoUrl || null,
                             };
-                            const pdfUri = await generatePDF(nomeTemplate, htmlTemplate, dados);
-
+                            const pdfUri = await generatePDF_UM_PRA_MUITOS(nomeTemplate, htmlTemplate, dados);
                             if (pdfUri) {
-                                pdfUris.push(pdfUri);
+                                await shareAsync(pdfUri, {
+                                    mimeType: 'application/pdf'
+                                });
+                            } else {
+                                globalToast.show("Aviso", { data: { messageDescription: 'Não foi possível gerar os PDFs.' }, type: 'warning' })
                             }
-                            setQuantidadePdfsGerado(pdfUris.length)
-                        }
-                        if (pdfUris.length === 1) {
-                            await shareAsync(pdfUris[0], {
-                                mimeType: 'application/pdf'
-                            });
-                        } else if (pdfUris.length > 1) {
-                            setStatusGeracaoPdf("Compactando arquivos...");
-                            const zip = new JSZip();
-
-                            for (const uri of pdfUris) {
-                                const pdfData = await FileSystem.readAsStringAsync(uri, {
-                                    encoding: FileSystem.EncodingType.Base64,
-                                });
-                                const fileName = uri.split('/').pop();
-                                zip.file(fileName, pdfData, { base64: true });
-                            }
-
-                            zip.generateAsync({ type: 'base64' }).then(async (base64) => {
-                                const nomeZip = nomeTemplate;
-                                const zipUri = `${FileSystem.documentDirectory}${nomeZip}.zip`;
-                                await FileSystem.writeAsStringAsync(zipUri, base64, {
-                                    encoding: FileSystem.EncodingType.Base64,
-                                });
-
-                                await shareAsync(zipUri, {
-                                    mimeType: 'application/zip'
-                                });
-                            }).catch((error) => {
-                                console.error('Erro ao criar o arquivo ZIP:', error);
-                            });
                         } else {
-                            globalToast.show("Aviso", { data: { messageDescription: 'Não foi possível gerar os PDFs.' }, type: 'warning' })
+                            console.error('Tipo de impressão não suportado:', tipoImpressao);
                         }
-
                     })
             } else {
                 globalToast.show("Aviso", { data: { messageDescription: 'Preecha todos os campos obrigatórios!' }, type: 'warning' })
